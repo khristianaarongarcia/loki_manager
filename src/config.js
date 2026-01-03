@@ -107,15 +107,92 @@ module.exports = {
         
         // Banned words list
         bannedWords: [
-            // Add banned words here
-            // 'badword1',
-            // 'badword2'
+            // Profanity & slurs
+            'nigger', 'nigga', 'faggot', 'fag', 'retard', 'retarded',
+            'kys', 'kill yourself', 'neck yourself',
+            // Spam/Scam keywords
+            'free nitro', 'discord nitro free', 'steam gift',
+            'claim your prize', 'you have been selected',
+            'click here to claim', 'congratulations you won'
         ],
         
         // Banned regex patterns
         bannedPatterns: [
-            // Add regex patterns here
-            // '\\b(spam|scam)\\b'
+            // AI manipulation attempts - trying to get source code
+            'show\\s*(me)?\\s*(the)?\\s*(source)?\\s*code',
+            'give\\s*(me)?\\s*(the)?\\s*(source)?\\s*code',
+            'paste\\s*(the)?\\s*code',
+            'send\\s*(me)?\\s*(the)?\\s*code',
+            'share\\s*(the)?\\s*(source)?\\s*code',
+            'reveal\\s*(the)?\\s*code',
+            'display\\s*(the)?\\s*code',
+            'print\\s*(the)?\\s*code',
+            'output\\s*(the)?\\s*code',
+            'dump\\s*(the)?\\s*code',
+            'leak\\s*(the)?\\s*code',
+            'expose\\s*(the)?\\s*code',
+            
+            // AI manipulation - trying to get API keys/secrets
+            'api\\s*key',
+            'api\\s*token',
+            'api\\s*secret',
+            'show\\s*(me)?\\s*(the)?\\s*token',
+            'give\\s*(me)?\\s*(the)?\\s*key',
+            'what\\s*is\\s*(the)?\\s*password',
+            'database\\s*(password|credentials)',
+            'admin\\s*password',
+            'secret\\s*key',
+            'private\\s*key',
+            'encryption\\s*key',
+            
+            // AI manipulation - prompt injection attempts
+            'ignore\\s*(previous|all|your)\\s*instructions',
+            'disregard\\s*(previous|all|your)\\s*instructions',
+            'forget\\s*(previous|all|your)\\s*instructions',
+            'override\\s*(your)?\\s*instructions',
+            'bypass\\s*(your)?\\s*(rules|instructions|restrictions)',
+            'pretend\\s*(you\\s*are|to\\s*be)\\s*(a|an)?',
+            'act\\s*as\\s*(if|a|an)',
+            'role\\s*?play\\s*as',
+            'you\\s*are\\s*now\\s*(a|an)?',
+            'new\\s*instructions',
+            'system\\s*prompt',
+            'developer\\s*mode',
+            'jailbreak',
+            'dan\\s*mode',
+            'do\\s*anything\\s*now',
+            
+            // AI manipulation - trying to extract internal info
+            'what\\s*(are)?\\s*your\\s*instructions',
+            'show\\s*(me)?\\s*your\\s*prompt',
+            'reveal\\s*your\\s*prompt',
+            'what\\s*were\\s*you\\s*told',
+            'what\\s*is\\s*your\\s*system\\s*(prompt|message)',
+            'repeat\\s*(your)?\\s*instructions',
+            'print\\s*(your)?\\s*instructions',
+            
+            // AI manipulation - code extraction
+            'write\\s*(me)?\\s*(a|the)?\\s*full\\s*(source)?\\s*code',
+            'generate\\s*(the)?\\s*(full|complete)?\\s*code',
+            'create\\s*(a)?\\s*copy\\s*of\\s*(the)?\\s*plugin',
+            'recreate\\s*(the)?\\s*plugin',
+            'reverse\\s*engineer',
+            'decompile',
+            'give\\s*(me)?\\s*(the)?\\s*implementation',
+            'show\\s*(me)?\\s*(the)?\\s*implementation',
+            'class\\s*file',
+            'java\\s*file',
+            'kotlin\\s*file',
+            
+            // Scam patterns
+            'free\\s*(discord)?\\s*nitro',
+            '@everyone\\s*(check|click|free)',
+            'steam\\s*community\\s*gift',
+            'claim\\s*(your)?\\s*(free)?\\s*(gift|nitro|prize)',
+            
+            // Spam patterns
+            '(.)\\1{10,}',  // Repeated characters (11+ times)
+            '(\\b\\w+\\b)\\s+\\1\\s+\\1\\s+\\1'  // Same word repeated 4+ times
         ],
         
         // Maximum percentage of caps allowed (null to disable)
