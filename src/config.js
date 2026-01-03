@@ -39,7 +39,10 @@ module.exports = {
 
     // Owner settings
     owner: {
-        userId: '274032691865976833'  // Owner to notify for unanswerable questions
+        userId: '274032691865976833',  // Owner to notify for unanswerable questions
+        developerChannel: '1410455088207761469',  // Channel where users can ping developer
+        missedClickThreshold: 3,  // Number of missed "I'm Active" clicks before sending DM
+        activeCheckTimeout: 5 * 60 * 1000  // 5 minutes to click "I'm Active" button
     },
 
     // Bot settings
@@ -80,5 +83,62 @@ module.exports = {
         
         // Maximum file size to index (in bytes)
         maxFileSize: 500 * 1024 // 500KB
+    },
+
+    // Moderation settings
+    moderation: {
+        // Enable/disable auto-moderation
+        enabled: true,
+        
+        // Roles that have moderation permissions (in addition to Discord perms)
+        modRoles: [],  // Add role IDs here
+        
+        // Auto-action thresholds based on warning count
+        autoAction: {
+            kickAt: 3,   // Auto-kick at 3 warnings
+            banAt: 5     // Auto-ban at 5 warnings
+        },
+        
+        // What action to take on auto-mod violations
+        violationAction: 'warn',  // 'warn', 'kick', or 'ban'
+        
+        // Whether to delete messages that violate rules
+        deleteViolations: true,
+        
+        // Banned words list
+        bannedWords: [
+            // Add banned words here
+            // 'badword1',
+            // 'badword2'
+        ],
+        
+        // Banned regex patterns
+        bannedPatterns: [
+            // Add regex patterns here
+            // '\\b(spam|scam)\\b'
+        ],
+        
+        // Maximum percentage of caps allowed (null to disable)
+        maxCapsPercent: 70,
+        
+        // Maximum mentions allowed in a single message (null to disable)
+        maxMentions: 5,
+        
+        // Block links (except allowed domains)
+        blockLinks: false,
+        
+        // Allowed domains when blockLinks is true
+        allowedDomains: [
+            'discord.com',
+            'spigotmc.org',
+            'github.com',
+            'polymart.org'
+        ],
+        
+        // Block Discord server invites
+        blockInvites: true,
+        
+        // Check interval for expired bans (in ms)
+        banCheckInterval: 60 * 1000  // 1 minute
     }
 };
