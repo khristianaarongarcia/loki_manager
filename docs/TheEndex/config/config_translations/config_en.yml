@@ -1,0 +1,1184 @@
+# ═══════════════════════════════════════════════════════════════════════════════
+# TRANSLATED CONFIG FILE - ENGLISH
+# ═══════════════════════════════════════════════════════════════════════════════
+# HOW TO USE THIS FILE:
+#   1. Copy this file to: plugins/TheEndex/config.yml (replace existing)
+#   2. OR copy the contents into your existing config.yml
+#   3. Run /endex reload or restart your server
+#
+# NOTE: Only comments are translated. The actual YAML keys and values remain
+# the same to ensure the plugin works correctly.
+# ═══════════════════════════════════════════════════════════════════════════════
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# The Endex - Dynamic Market Economy Plugin Configuration
+# ═══════════════════════════════════════════════════════════════════════════════
+# After editing, run /endex reload (admin permission required) or restart server.
+#
+# ═══════════════════════════════════════════════════════════════════════════════
+# PERFORMANCE IMPACT GUIDE
+# ═══════════════════════════════════════════════════════════════════════════════
+# Each option is tagged with its performance impact:
+#   [PERF: MINIMAL]  - Negligible impact, safe for any server
+#   [PERF: LOW]      - Low CPU/memory usage, safe for all servers
+#   [PERF: MEDIUM]   - Moderate impact, adjust based on server size
+#   [PERF: HIGH]     - Significant impact, optimize for large servers (50+ players)
+#   [PERF: CRITICAL] - Heavy resource usage, careful tuning recommended
+#
+# General optimization tips for large servers:
+#   - Increase update-interval-seconds (300-600)
+#   - Disable price-world-storage or limit scanned-worlds
+#   - Enable chunk-caching in world-storage
+#   - Reduce history-length to 30-50
+#   - Use SQLite storage instead of YAML
+# ═══════════════════════════════════════════════════════════════════════════════
+
+# This is the English base template. For translations in other languages,
+# see the other config files in this folder:
+#   - config_zh_CN.yml (Chinese Simplified)
+#   - config_es.yml (Spanish)
+#   - config_de.yml (German)
+#   - config_fr.yml (French)
+#   - config_ru.yml (Russian)
+#   - config_ja.yml (Japanese)
+#   - config_ko.yml (Korean)
+#   - config_pt.yml (Portuguese)
+
+# For the full English config with all options, see:
+# plugins/TheEndex/config.yml (the main config file)
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# The Endex - Dynamic Market Economy Plugin Configuration
+# ═══════════════════════════════════════════════════════════════════════════════
+# After editing, run /endex reload (admin permission required) or restart server.
+#
+# ═══════════════════════════════════════════════════════════════════════════════
+# PERFORMANCE IMPACT GUIDE
+# ═══════════════════════════════════════════════════════════════════════════════
+# Each option is tagged with its performance impact:
+#   [PERF: MINIMAL]  - Negligible impact, safe for any server
+#   [PERF: LOW]      - Low CPU/memory usage, safe for all servers
+#   [PERF: MEDIUM]   - Moderate impact, adjust based on server size
+#   [PERF: HIGH]     - Significant impact, optimize for large servers (50+ players)
+#   [PERF: CRITICAL] - Heavy resource usage, careful tuning recommended
+#
+# General optimization tips for large servers:
+#   - Increase update-interval-seconds (300-600)
+#   - Disable price-world-storage or limit scanned-worlds
+#   - Enable chunk-caching in world-storage
+#   - Reduce history-length to 30-50
+#   - Use SQLite storage instead of YAML
+# ═══════════════════════════════════════════════════════════════════════════════
+
+# ───────────────────────────────────────────────────────────────────────────────
+# CONFIG VERSION
+# ───────────────────────────────────────────────────────────────────────────────
+# Internal version to detect breaking changes. Do NOT modify unless instructed.
+# If this differs from what the plugin expects, migration may be attempted.
+config-version: 1
+
+# ───────────────────────────────────────────────────────────────────────────────
+# LANGUAGE SETTINGS
+# ───────────────────────────────────────────────────────────────────────────────
+# Set the language for all plugin messages. Language files are located in
+# plugins/TheEndex/lang/ folder. You can create custom translations by copying
+# an existing language file and modifying it.
+#
+# Available languages:
+#   en      - English (default)
+#   zh_CN   - Chinese Simplified (简体中文)
+#   ru      - Russian (Русский)
+#   es      - Spanish (Español)
+#   de      - German (Deutsch)
+#   fr      - French (Français)
+#   pt      - Portuguese (Português)
+#   ja      - Japanese (日本語)
+#   ko      - Korean (한국어)
+#
+# To add a new language:
+#   1. Copy lang/en.yml to lang/xx.yml (where xx is the language code)
+#   2. Translate all messages in the new file
+#   3. Set language.locale to your language code
+#   4. Run /endex reload
+#
+# Recommended: en (or your server's primary language)
+language:
+  locale: en
+
+# ───────────────────────────────────────────────────────────────────────────────
+# PRICE UPDATE CYCLE [PERF: MEDIUM]
+# ───────────────────────────────────────────────────────────────────────────────
+# How often (in seconds) the market recalculates prices based on supply/demand.
+# 
+# Performance: Each cycle triggers price calculations, history updates, and
+# optionally world scanning. Higher intervals = less CPU usage.
+# 
+# Lower values (30-60s):
+#   - Pros: More responsive market, prices react quickly to player activity
+#   - Cons: Can feel chaotic, harder for players to predict trends
+#   - CPU: ~0.5-1% per cycle on medium servers
+# 
+# Higher values (120-300s):
+#   - Pros: Stable market, gives players time to plan trades
+#   - Cons: Less reactive, may feel sluggish on active servers
+#   - CPU: Minimal impact with longer intervals
+# 
+# Recommended: 60s for small-medium servers, 120-300s for large busy servers (50+ players)
+update-interval-seconds: 60
+
+# ───────────────────────────────────────────────────────────────────────────────
+# PRICE SENSITIVITY [PERF: MINIMAL]
+# ───────────────────────────────────────────────────────────────────────────────
+# Controls how much demand/supply imbalance affects prices each cycle.
+# Formula: new_price = old_price × (1 + (demand - supply) × sensitivity)
+# 
+# Performance: Pure math calculation, negligible impact.
+# 
+# Lower values (0.01-0.03):
+#   - Gradual price changes, more predictable for players
+#   - Good for roleplay/economy-focused servers
+# 
+# Medium values (0.04-0.07):
+#   - Balanced responsiveness, rewards market timing
+#   - Good for survival/SMP servers
+# 
+# Higher values (0.08-0.15):
+#   - Volatile market, encourages active trading
+#   - Good for economy minigames or competition servers
+# 
+# Recommended: 0.05 (5% per unit of net demand)
+price-sensitivity: 0.05
+
+# ───────────────────────────────────────────────────────────────────────────────
+# HISTORY TRACKING [PERF: LOW]
+# ───────────────────────────────────────────────────────────────────────────────
+# Number of past price points to keep for each item (used for charts/sparklines).
+# Higher values provide longer trend visibility but increase memory usage slightly.
+# 
+# Performance: ~0.5KB RAM per tracked item × history-length
+# With 100 items and history-length=100, uses ~5MB RAM.
+# 
+# Recommended: 5-10 for sparklines, 50-120 for detailed web charts
+history-length: 5
+
+# ───────────────────────────────────────────────────────────────────────────────
+# AUTOSAVE & BACKUP [PERF: LOW to MEDIUM]
+# ───────────────────────────────────────────────────────────────────────────────
+# How often (in minutes) to save market data to disk and create backups.
+# Protects against data loss from crashes. Lower values = more frequent saves.
+# 
+# Performance: Each save writes to disk. With SQLite ~1-5ms, with YAML ~10-50ms.
+# Lower intervals = more disk I/O.
+# 
+# Recommended: 5 minutes (good balance between safety and disk I/O)
+autosave-minutes: 5
+
+# Immediately save market.yml after EVERY price update (YAML mode only).
+# [PERF: HIGH when enabled] - Creates disk I/O every update cycle!
+# 
+# Enable if: Your server crashes frequently and you need maximum data safety
+# Disable if: You want better performance (rely on autosave-minutes instead)
+# 
+# Recommended: false for most servers, true only if stability is critical
+save-on-each-update: true
+
+# ───────────────────────────────────────────────────────────────────────────────
+# DATA STORAGE MODE [PERF: MEDIUM to HIGH impact on choice]
+# ───────────────────────────────────────────────────────────────────────────────
+# Choose between YAML (simple, human-readable) or SQLite (fast, scalable).
+# 
+# YAML Mode (sqlite: false):
+#   - All data stored in market.yml as plain text
+#   - Easy to edit manually, great for small servers (<50 items)
+#   - Performance degrades with many items or frequent updates
+#   - [PERF: HIGH disk I/O with many items]
+# 
+# SQLite Mode (sqlite: true) - RECOMMENDED:
+#   - Data stored in market.db binary database
+#   - Handles thousands of items efficiently
+#   - Supports advanced features (holdings, trade history, pending deliveries)
+#   - First run auto-migrates existing market.yml → market.db
+#   - [PERF: LOW - 5-10x faster than YAML]
+# 
+# Recommended: true for all servers (SQLite is faster and more reliable)
+storage:
+  sqlite: true
+
+# ───────────────────────────────────────────────────────────────────────────────
+# PRICE SMOOTHING & VOLATILITY PROTECTION [PERF: MINIMAL]
+# ───────────────────────────────────────────────────────────────────────────────
+# Prevents dramatic price swings from market manipulation or sudden demand spikes.
+# Performance: Pure math, negligible impact.
+price-smoothing:
+  # Enable exponential moving average (EMA) smoothing and max change clamping
+  enabled: true
+  
+  # EMA Alpha factor (0.0 - 1.0): How quickly prices adapt to calculated targets.
+  # 
+  # Lower values (0.1-0.2):
+  #   - Very smooth, slow-moving prices (good for stability)
+  #   - Resists manipulation attempts
+  # 
+  # Medium values (0.3-0.5):
+  #   - Balanced approach, gradual but noticeable changes
+  #   - Recommended for most servers
+  # 
+  # Higher values (0.6-0.9):
+  #   - Prices track target closely, more volatile
+  #   - Similar to having smoothing disabled
+  # 
+  # Recommended: 0.3 (30% adjustment toward target per cycle)
+  ema-alpha: 0.3
+  
+  # Maximum price change allowed per update cycle (as percentage).
+  # Set to 0 to disable this limiter (not recommended).
+  # 
+  # Examples:
+  #   15.0 = Prices can only change ±15% per update
+  #   5.0 = Very stable, conservative market
+  #   30.0 = Allows large swings, more volatile
+  # 
+  # Recommended: 15.0 (prevents price manipulation while allowing natural growth)
+  max-change-percent: 15.0
+
+# ───────────────────────────────────────────────────────────────────────────────
+# INVENTORY-DRIVEN PRICE INFLUENCE [PERF: LOW]
+# ───────────────────────────────────────────────────────────────────────────────
+# Adjusts prices based on how much of each item online players are holding.
+# Creates realistic scarcity/abundance dynamics beyond simple buy/sell transactions.
+#
+# Performance: Scans online player inventories only. ~0.1ms per player per cycle.
+# With 100 players = ~10ms total, runs async. Negligible on most servers.
+price-inventory:
+  # Enable inventory scanning for price influence.
+  # When enabled, items that players hoard become more expensive,
+  # while items nobody holds become cheaper.
+  enabled: true
+  
+  # How strongly inventory levels affect prices per cycle (0.0 - 1.0).
+  # 
+  # Lower values (0.01-0.03):
+  #   - Subtle influence, doesn't override buy/sell pressure
+  #   - Good for servers where you want transactions to dominate
+  # 
+  # Medium values (0.04-0.07):
+  #   - Noticeable hoarding effects
+  #   - Encourages diverse playstyles
+  # 
+  # Higher values (0.08-0.15):
+  #   - Strong scarcity effects, dramatic price swings
+  #   - May discourage holding certain items
+  # 
+  # Recommended: 0.02 (gentle nudge based on online player inventories)
+  sensitivity: 0.02
+  
+  # Baseline items per online player. Above this = price pressure DOWN, below = UP.
+  # 
+  # Example with baseline 64:
+  #   - If average player holds 128 diamonds → price drops
+  #   - If average player holds 16 diamonds → price rises
+  # 
+  # Recommended: 64 (one full stack as the "normal" amount)
+  per-player-baseline: 64
+  
+  # Cap the maximum price impact from inventory per cycle (as percentage).
+  # Prevents inventory scanning from causing price chaos.
+  # 
+  # Recommended: 10.0 (allows meaningful influence without overwhelming other factors)
+  max-impact-percent: 10.0
+
+# ───────────────────────────────────────────────────────────────────────────────
+# WORLD STORAGE-DRIVEN PRICE INFLUENCE [PERF: HIGH to CRITICAL]
+# ───────────────────────────────────────────────────────────────────────────────
+# ⚠️ MOST PERFORMANCE-INTENSIVE FEATURE - READ CAREFULLY ⚠️
+#
+# Scans ALL containers (chests, barrels, shulker boxes, etc.) in loaded chunks
+# to determine global item availability. This creates truly dynamic pricing based
+# on server-wide item scarcity/abundance, not just what players are carrying.
+#
+# Performance Impact:
+#   - CPU: 1-5% during active scanning, depends on loaded chunks
+#   - RAM: Caches chunk data, ~50-200MB depending on world size
+#   - Disk: Minimal (reads chunk data already in memory)
+#
+# Optimization features built-in:
+#   - Chunk result caching (dirty tracking)
+#   - TPS-aware throttling (pauses if TPS drops below 18)
+#   - Async processing (won't freeze main thread)
+#   - Batched chunk processing
+#
+# For large servers (100+ players), consider:
+#   - Setting enabled: false
+#   - OR increasing scan-interval-seconds to 600+
+#   - OR limiting scanned-worlds to just "world"
+price-world-storage:
+  # Enable global world storage scanning for price influence.
+  # When enabled, items stored in chests/barrels/etc. affect market prices.
+  # 
+  # Pros:
+  #   - Truly dynamic economy based on ALL items on server
+  #   - Encourages resource distribution and trade
+  #   - Prices reflect actual scarcity
+  # 
+  # Cons:
+  #   - Slight performance overhead (optimized, but not free)
+  #   - May need tuning for very large servers
+  # 
+  # Recommended: true for immersive economy servers
+  enabled: true
+  
+  # How often to scan world storage (in seconds).
+  # [PERF: CRITICAL] - Lower values = more CPU usage.
+  # 
+  # Performance guide:
+  #   60-120s = Responsive, suitable for small servers (<30 players) ~2-3% CPU
+  #   180-300s = Balanced, suitable for medium servers (30-100 players) ~1% CPU
+  #   300-600s = Conservative, suitable for large servers (100+ players) ~0.5% CPU
+  # 
+  # Recommended: 300 (5 minutes) for most servers, 600 for large servers
+  scan-interval-seconds: 300
+  
+  # How strongly world storage levels affect prices per cycle (0.0 - 1.0).
+  # This works similarly to price-inventory.sensitivity but for global storage.
+  # 
+  # Lower values (0.005-0.01):
+  #   - Very gentle influence, mostly driven by trades
+  #   - Good for servers where trading should dominate
+  # 
+  # Medium values (0.01-0.02):
+  #   - Noticeable but not overwhelming
+  #   - Recommended for most servers
+  # 
+  # Higher values (0.02-0.05):
+  #   - Strong scarcity effects
+  #   - Items in abundant storage become cheap quickly
+  # 
+  # Recommended: 0.01 (gentle global influence)
+  sensitivity: 0.01
+  
+  # Baseline total items across server. Above this = price DOWN, below = price UP.
+  # This is the "expected" global quantity for each item type.
+  # 
+  # Example with baseline 1000:
+  #   - If server has 5000 diamonds in storage → price drops
+  #   - If server has 200 diamonds in storage → price rises
+  # 
+  # Tip: Set higher for common items (cobblestone), lower for rare items (netherite)
+  # The system uses this as a universal baseline; individual item rarity comes from
+  # their natural spawn rates affecting actual quantities.
+  # 
+  # Recommended: 1000 (good starting point, adjust based on server size)
+  global-baseline: 1000
+  
+  # Cap the maximum price impact from world storage per cycle (as percentage).
+  # Prevents massive storage farms from crashing prices instantly.
+  # 
+  # Recommended: 5.0 (gentle cap, allows gradual price movement)
+  max-impact-percent: 5.0
+  
+  # Number of chunks to process per server tick during scanning.
+  # [PERF: HIGH] - Directly affects TPS during scans.
+  # Higher = faster scans but more main thread usage.
+  # Lower = slower scans but smoother server performance.
+  # 
+  # Performance guide:
+  #   20-30 = Very smooth, ~0.1ms/tick, minimal TPS impact (slow scans)
+  #   50-75 = Balanced, ~0.3ms/tick (recommended)
+  #   100-200 = Fast scans, ~0.5-1ms/tick, noticeable on large worlds
+  # 
+  # Recommended: 50 for most servers, 20-30 for large servers
+  chunks-per-tick: 50
+  
+  # Which container types to include in world storage scanning.
+  # Disable types you don't want to affect prices.
+  containers:
+    chests: true           # Regular and trapped chests
+    barrels: true          # Barrels
+    shulker-boxes: true    # All shulker box colors
+    hoppers: false         # Hoppers (usually transport, not storage)
+    droppers: false        # Droppers
+    dispensers: false      # Dispensers
+    furnaces: false        # Furnaces, blast furnaces, smokers
+    brewing-stands: false  # Brewing stands
+  
+  # Scan items INSIDE shulker boxes that are stored in containers.
+  # When true: A chest containing a shulker box full of diamonds counts those diamonds.
+  # When false: Only count the shulker box item itself, not its contents.
+  # 
+  # Recommended: true (gives accurate picture of total items)
+  scan-shulker-contents: true
+  
+  # Worlds to exclude from scanning (by world name, case-insensitive).
+  # Useful for excluding creative worlds, minigame worlds, etc.
+  # 
+  # Example: excluded-worlds: [creative, minigames, spawn]
+  excluded-worlds: []
+  
+  # ─────────────────────────────────────────────────────────────────────────────
+  # ANTI-MANIPULATION PROTECTION
+  # ─────────────────────────────────────────────────────────────────────────────
+  # Prevents players from building storage farms to manipulate market prices.
+  anti-manipulation:
+    # Maximum total items counted from a single chunk.
+    # If a chunk has more than this, its contribution is proportionally reduced.
+    # This prevents "storage bomb" exploits where players fill chunks with items.
+    # 
+    # Example: A chunk with 50,000 items but cap of 10,000 will only contribute
+    # 20% (10000/50000) of each material's count from that chunk.
+    # 
+    # Recommended: 10000 (allows normal bases, caps industrial farms)
+    per-chunk-item-cap: 10000
+    
+    # Maximum items of a SINGLE material counted from one chunk.
+    # Prevents price crashing a specific item via concentrated storage.
+    # 
+    # Example: 100 double chests of diamonds (345,600 items) in one chunk
+    # would only count as 5,000 diamonds toward global totals.
+    # 
+    # Recommended: 5000 (allows stacks, prevents monopoly manipulation)
+    per-material-chunk-cap: 5000
+    
+    # Minimum server TPS required to run a scan.
+    # If TPS drops below this, scanning is skipped to protect performance.
+    # 
+    # Recommended: 18.0 (skip if server is struggling)
+    min-tps: 18.0
+    
+    # Log warnings when suspicious storage patterns are detected.
+    # Alerts admins to potential market manipulation attempts.
+    # Logs to console when a chunk exceeds per-chunk-item-cap.
+    # 
+    # Recommended: true (helps identify exploiters)
+    log-suspicious: true
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # SMART CACHING [PERF: CRITICAL - Enable for best performance!]
+  # ─────────────────────────────────────────────────────────────────────────────
+  # Dramatically improves scanner performance by caching chunk results and only
+  # rescanning chunks that have been modified since the last scan.
+  # 
+  # With caching: Scans 70-90% faster on established servers!
+  # Without caching: Every scan checks ALL loaded chunks.
+  cache:
+    # Enable chunk-level caching.
+    # When enabled, the scanner tracks which chunks have container activity
+    # and only rescans those chunks. Unchanged chunks use cached results.
+    # 
+    # On established servers this can reduce scan work by 70-90%.
+    # 
+    # Recommended: true
+    enabled: true
+    
+    # How long (in seconds) before a chunk's cached result expires.
+    # After this time, the chunk will be rescanned even if not marked dirty.
+    # This ensures eventual consistency even if events are missed.
+    # 
+    # Recommended: 600 (10 minutes) - balances accuracy with performance
+    chunk-expiry-seconds: 600
+    
+    # Perform a full scan (ignoring cache) every N scan cycles.
+    # This ensures 100% accuracy periodically, catching any missed events.
+    # 
+    # Example: With scan-interval-seconds=300 and full-refresh-cycles=5,
+    # a full scan happens every 25 minutes (5 * 300 seconds).
+    # 
+    # Recommended: 5 (full scan every ~25 minutes with default interval)
+    full-refresh-cycles: 5
+    
+    # Save scan results to disk on shutdown and load on startup.
+    # Allows the market to have price data immediately after restart
+    # without waiting for the first scan to complete.
+    # 
+    # Cache file: plugins/TheEndex/world-scan-cache.json
+    # Only loads if cache is less than 1 hour old.
+    # 
+    # Recommended: true
+    persist-to-disk: true
+
+# ───────────────────────────────────────────────────────────────────────────────
+# INITIAL MARKET SETUP [PERF: MINIMAL - First run only]
+# ───────────────────────────────────────────────────────────────────────────────
+# These settings only apply when creating a fresh market (no existing market.yml/db).
+
+# Automatically add ALL Minecraft materials to the market (except AIR/LEGACY).
+# WARNING: This creates 1000+ market items! Only enable for testing or unique gameplay.
+# 
+# Pros: Every single item is tradeable from day one
+# Cons: Overwhelming UI, many items will be unused/irrelevant
+# 
+# Recommended: false (use curated important items instead)
+seed-all-materials: false
+
+# Add a curated list of commonly-used items on first run.
+# Includes ores, crops, mob drops, building blocks, tools, and armor.
+# Ignored if seed-all-materials is true.
+# 
+# Recommended: true (provides good starting market without overwhelming players)
+include-default-important-items: true
+
+# ───────────────────────────────────────────────────────────────────────────────
+# TRANSACTION TAX [PERF: MINIMAL]
+# ───────────────────────────────────────────────────────────────────────────────
+# Apply a percentage tax on ALL buy AND sell transactions.
+# Tax is added to buy costs and subtracted from sell earnings.
+# Acts as a money sink to control server economy inflation.
+# Performance: Pure math, no impact.
+# 
+# Examples:
+#   0.0 = No tax (recommended for starting out)
+#   2.5 = 2.5% tax (gentle money sink)
+#   5.0 = 5% tax (moderate economy control)
+#   10.0 = 10% tax (aggressive anti-inflation measure)
+# 
+# Recommended: 0.0-2.5% for survival servers, 5-10% if economy inflation is a problem
+transaction-tax-percent: 0.0
+
+# ───────────────────────────────────────────────────────────────────────────────
+# BUY/SELL SPREAD (Anti-Arbitrage Protection)
+# ───────────────────────────────────────────────────────────────────────────────
+# Creates a price gap between buy and sell prices, like real stock markets.
+# This prevents the "sell high, buy back cheaper, repeat" exploit loop.
+#
+# How it works:
+#   - Buy price = market price × (1 + buy-markup-percent/100)
+#   - Sell price = market price × (1 - sell-markdown-percent/100)
+#
+# Example with 1.5% spread each way:
+#   - Market price: 100
+#   - You pay to BUY: 101.50 (1.5% above market)
+#   - You receive when SELL: 98.50 (1.5% below market)
+#   - Total spread: 3% gap between buy and sell
+#
+# This means players need the price to move MORE than the spread to profit
+# from arbitrage, effectively killing small-swing manipulation.
+#
+# Balance tips:
+#   0.0-0.5% = Minimal spread, some arbitrage still possible
+#   1.0-2.0% = Recommended, kills most exploits while feeling fair
+#   3.0-5.0% = Aggressive, may feel punishing to legitimate traders
+spread:
+  # Enable the buy/sell spread system.
+  # When disabled, buy and sell use the same market price.
+  enabled: true
+  
+  # Percentage markup added to market price when BUYING.
+  # Players pay this much MORE than the displayed market price.
+  # 
+  # Example: 1.5 = Pay 1.5% above market price
+  # Recommended: 1.5
+  buy-markup-percent: 1.5
+  
+  # Percentage markdown subtracted from market price when SELLING.
+  # Players receive this much LESS than the displayed market price.
+  # 
+  # Example: 1.5 = Receive 1.5% below market price
+  # Recommended: 1.5
+  sell-markdown-percent: 1.5
+
+# ───────────────────────────────────────────────────────────────────────────────
+# ITEM BLACKLIST
+# ───────────────────────────────────────────────────────────────────────────────
+# Materials that should NEVER appear in the market, even with seed-all-materials.
+# Use Bukkit Material names (e.g., BEDROCK, COMMAND_BLOCK, BARRIER).
+# 
+# Common items to blacklist:
+#   - BEDROCK, COMMAND_BLOCK, STRUCTURE_BLOCK (admin items)
+#   - BARRIER, LIGHT, DEBUG_STICK (creative-only items)
+#   - SPAWNER (if you don't want spawner trading)
+# 
+# Example: blacklist-items: [BEDROCK, COMMAND_BLOCK, BARRIER, SPAWNER]
+# Recommended: [] (empty - let admins decide via /market remove)
+blacklist-items: []
+
+# ───────────────────────────────────────────────────────────────────────────────
+# VIRTUAL HOLDINGS SYSTEM [PERF: LOW]
+# ───────────────────────────────────────────────────────────────────────────────
+# Virtual storage for purchased items. When players buy items, they go directly
+# to holdings instead of inventory. Players can withdraw items when ready.
+# This eliminates inventory space issues during purchases and provides a safe
+# virtual wallet for owned items.
+# 
+# Performance: Uses SQLite, ~1-5ms per operation. Minimal impact.
+holdings:
+  # Enable the virtual holdings system (requires SQLite storage mode).
+  # When enabled, ALL purchases go to holdings first, then can be withdrawn.
+  # 
+  # Pros: 
+  #   - No inventory space checks needed during purchase
+  #   - Items can't be lost by dropping
+  #   - Cleaner separation of "owned" vs "carried" items
+  #   - Supports bulk purchases of any size
+  # 
+  # Cons: 
+  #   - Extra step to withdraw items to inventory
+  #   - Players must understand the holdings concept
+  # 
+  # Recommended: true (much better UX for trading)
+  enabled: true
+  
+  # Maximum total items a player can hold across ALL materials.
+  # This prevents abuse and database bloat from infinite hoarding.
+  # Set to -1 for unlimited (not recommended for public servers).
+  # 
+  # Examples:
+  #   10000 = Small limit, encourages regular withdrawals
+  #   100000 = Large limit, suitable for most servers
+  #   1000000 = Very large, for economy-focused servers
+  # 
+  # Recommended: 100000 (enough for serious traders without abuse)
+  max-total-per-player: 100000
+  
+  # Automatically attempt to withdraw items to inventory when players log in.
+  # Items are given if there's space, otherwise remain in holdings.
+  # 
+  # Recommended: false (let players manually withdraw when ready)
+  auto-withdraw-on-login: false
+
+# ───────────────────────────────────────────────────────────────────────────────
+# VIRTUAL DELIVERY SYSTEM [PERF: LOW] (DEPRECATED - use holdings instead)
+# ───────────────────────────────────────────────────────────────────────────────
+# Legacy overflow system. With virtual holdings enabled, this is only used
+# for backward compatibility. New purchases go directly to holdings.
+delivery:
+  # Enable the delivery system (requires SQLite storage mode).
+  # When enabled, overflow items from purchases are stored in deliveries.db
+  # and can be claimed later via Market GUI (Ender Chest button) or commands.
+  # 
+  # Pros: Players never lose items from full inventory, supports bulk orders
+  # Cons: Slight complexity for new players (need to claim deliveries)
+  # 
+  # Recommended: true (prevents frustration from lost items)
+  enabled: true
+  
+  # Automatically deliver pending items when players log in.
+  # Items are given if there's inventory space, otherwise remain pending.
+  # 
+  # Recommended: false (let players manually claim when ready)
+  auto-claim-on-login: false
+  
+  # Maximum number of items a single player can have pending delivery.
+  # Prevents database bloat from repeated large orders.
+  # Set to -1 for unlimited (not recommended).
+  # 
+  # Recommended: 10000 (enough for bulk traders without abuse)
+  max-pending-per-player: 10000
+
+# ───────────────────────────────────────────────────────────────────────────────
+# MARKET GUI CUSTOMIZATION [PERF: MINIMAL]
+# ───────────────────────────────────────────────────────────────────────────────
+gui:
+  # Show ASCII sparkline chart in item detail view (shift-click items in GUI).
+  # Provides visual price history at a glance.
+  # 
+  # Recommended: true (helps players spot trends)
+  details-chart: true
+
+# ───────────────────────────────────────────────────────────────────────────────
+# SHOP SYSTEM MODE [PERF: MINIMAL]
+# ───────────────────────────────────────────────────────────────────────────────
+# Choose between the DEFAULT scrollable market or a CUSTOM category-based shop.
+#
+# DEFAULT Mode:
+#   - Standard market GUI with all items in one scrollable list
+#   - Uses the existing /market command
+#   - Best for servers that want a simple stock-market feel
+#
+# CUSTOM Mode:
+#   - EconomyShopGUI-style category-based shop interface
+#   - Main menu with category icons → Category pages with items
+#   - Supports multiple shops with custom layouts
+#   - Configure in plugins/TheEndex/shops/ folder
+#
+shop:
+  # Shop display mode: DEFAULT or CUSTOM
+  # DEFAULT = Original scrollable market list
+  # CUSTOM = Category-based shop with main menu
+  mode: DEFAULT
+  
+  # When mode is CUSTOM, which shop config to use as the main shop.
+  # This refers to a file in plugins/TheEndex/shops/ folder.
+  # Example: "main" loads shops/main.yml
+  main-shop: main
+  
+  # Custom command alias for the custom shop (only used in CUSTOM mode).
+  # Players can type /shop to open the custom shop menu.
+  # Leave empty to disable the /shop command.
+  command: shop
+  
+  # Settings for CUSTOM shop mode
+  custom:
+    # Number of item slots per page in category views (excluding navigation).
+    # Common values: 28 (4 rows of 7), 36 (4 rows of 9), 45 (5 rows of 9)
+    items-per-page: 45
+    
+    # Show back button in category pages
+    show-back-button: true
+    
+    # Slot for the back button (bottom row recommended)
+    back-button-slot: 49
+    
+    # Show page navigation buttons
+    show-pagination: true
+    
+    # Slots for pagination (prev/next)
+    prev-page-slot: 48
+    next-page-slot: 50
+    
+    # Show amount selector button (same as default market GUI)
+    # Allows players to select buy/sell amount: 1, 8, 16, 32, 64
+    show-amount-button: true
+    
+    # Slot for the amount selector button
+    amount-button-slot: 45
+    
+    # Allow admins to edit items via Shift+Click (requires endex.shop.admin)
+    admin-edit: true
+    
+    # Price display format in item lore
+    # Available placeholders: %buy_price%, %sell_price%, %market_price%, %stock%, %demand%
+    price-lore:
+      - "&7"
+      - "&aLeft Click: &fBuy: &6$%buy_price%"
+      - "&cRight Click: &fSell: &6$%sell_price%"
+      - "&7"
+      - "&8Stock: %stock% | Demand: %demand%"
+    
+    # Admin lore line (shown to players with endex.shop.admin permission)
+    admin-lore: "&e⚡ Shift Click: Edit item (Admin)"
+
+# ───────────────────────────────────────────────────────────────────────────────
+# INVESTMENT SYSTEM [PERF: LOW]
+# ───────────────────────────────────────────────────────────────────────────────
+# Players can invest in items to earn passive income over time.
+# Uses compound interest based on real-time elapsed since purchase.
+# Performance: Simple math on withdraw, no ongoing calculations.
+investments:
+  # Enable the investment feature (/market invest commands).
+  # Requires SQLite storage mode.
+  # 
+  # Pros: Adds depth to economy, rewards long-term holdings
+  # Cons: May cause inflation if APR is too high
+  # 
+  # Recommended: true for economy-focused servers
+  enabled: true
+  
+  # Annual Percentage Rate for investments (compound interest).
+  # Applied continuously based on time elapsed since purchase.
+  # 
+  # Examples:
+  #   3.0 = Conservative 3% yearly return (bank-like)
+  #   5.0 = Moderate 5% yearly return (balanced)
+  #   10.0 = Aggressive 10% yearly return (high reward)
+  # 
+  # Note: Interest compounds CONTINUOUSLY, not annually!
+  # A 5% APR investment held for 1 week gains ~0.096% value.
+  # 
+  # Recommended: 5.0 (provides meaningful returns without inflation)
+  apr-percent: 5.0
+
+# ───────────────────────────────────────────────────────────────────────────────
+# HISTORY EXPORT [PERF: LOW] (BACKUPS & ANALYSIS)
+# ───────────────────────────────────────────────────────────────────────────────
+# Export price history to CSV files for external analysis or backup.
+# Performance: Disk I/O during autosave only.
+history-export:
+  # Enable automatic CSV export during autosave cycles.
+  # Creates one .csv file per item in the specified folder.
+  # 
+  # Useful for:
+  #   - Creating price charts in Excel/Google Sheets
+  #   - Backup before major config changes
+  #   - Economy analysis and balancing
+  # 
+  # Recommended: true (minimal performance impact, valuable for admins)
+  enabled: true
+  
+  # Folder name (relative to plugin data folder) for CSV exports.
+  # Full path: plugins/TheEndex/history/*.csv
+  folder: history
+
+# ───────────────────────────────────────────────────────────────────────────────
+# RESOURCE TRACKING
+# ───────────────────────────────────────────────────────────────────────────────
+# Automatically detect when players gather resources and optionally add to supply.
+tracking:
+  resources:
+    # Enable resource gathering detection (logs to database).
+    # Tracks block breaks, mob kills, fishing, etc.
+    enabled: true
+    
+    # Immediately add gathered resources to market SUPPLY (affects prices).
+    # 
+    # When true: Mining diamonds increases diamond supply → price drops
+    # When false: Only tracks data, doesn't affect market (analytics only)
+    # 
+    # WARNING: Enabling this can cause deflation on active servers!
+    # Recommended: false (keep market driven by player trades, not auto-supply)
+    apply-to-market: false
+    
+    # Which game events to track for resource gathering.
+    sources:
+      block-break: true    # Ores, crops, logs, etc.
+      mob-drops: true      # Gunpowder, bones, ender pearls, etc.
+      fishing: true        # Fish, treasure items
+
+# ───────────────────────────────────────────────────────────────────────────────
+# MARKET EVENTS SYSTEM
+# ───────────────────────────────────────────────────────────────────────────────
+# Temporary price multipliers (e.g., "Diamond Rush" = 2x diamond prices).
+# Managed via /market event commands or events.yml config.
+events:
+  # Maximum stacked multiplier allowed (prevents abuse).
+  # If multiple events affect the same item, their multipliers are multiplied
+  # together, but the result is capped at this value.
+  # 
+  # Example with cap of 10.0:
+  #   - Event A: 3x multiplier
+  #   - Event B: 5x multiplier
+  #   - Result: min(3 × 5, 10) = 10x effective price
+  # 
+  # Recommended: 10.0 (allows strong events without breaking economy)
+  multiplier-cap: 10.0
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# WEB DASHBOARD CONFIGURATION [PERF: LOW to MEDIUM]
+# ═══════════════════════════════════════════════════════════════════════════════
+# Built-in web interface for trading, viewing holdings, and real-time price charts.
+# Access at http://[server-ip]:[port] or use /market web command for session links.
+#
+# Performance: Javalin web server runs in separate threads, minimal impact on main
+# thread. Memory usage: ~20-50MB for server + active sessions.
+# CPU: <1% idle, 1-3% under active use (API calls, WebSocket connections).
+
+web:
+  # ─────────────────────────────────────────────────────────────────────────────
+  # BASIC WEB SERVER SETTINGS [PERF: LOW]
+  # ─────────────────────────────────────────────────────────────────────────────
+  
+  # Master toggle for the entire web dashboard.
+  # Disable if you only want in-game GUI, or have security concerns.
+  # 
+  # Recommended: true (web dashboard is very useful for players and admins)
+  enabled: true
+  
+  # IP address to bind the web server to.
+  # 
+  # Options:
+  #   127.0.0.1 = Localhost only (safe for testing, requires port forwarding)
+  #   0.0.0.0 = All network interfaces (allows external access)
+  #   [specific IP] = Bind to a particular network interface
+  # 
+  # Security Note: Use 127.0.0.1 for localhost-only, then use a reverse proxy
+  # (nginx/Apache) with HTTPS for production. Never expose 0.0.0.0 directly!
+  # 
+  # Recommended: 127.0.0.1 with reverse proxy for production
+  host: 127.0.0.1
+  
+  # Port number for the web server.
+  # Must be unused and not blocked by firewall.
+  # 
+  # Common ports:
+  #   3434 = Default (no conflict with Minecraft 25565)
+  #   8080 = Common alternative
+  #   80/443 = Standard HTTP/HTTPS (requires reverse proxy)
+  # 
+  # Note: Ports below 1024 require root/admin privileges on most systems.
+  # Recommended: 3434 or any unused port above 1024
+  port: 3434
+  
+  # How long web sessions remain valid without activity (in hours).
+  # Players get a session link via /market web command that expires after this time.
+  # 
+  # Shorter durations (1-2h): More secure, but players need new links frequently
+  # Longer durations (6-24h): More convenient, but sessions could be stolen
+  # 
+  # Recommended: 2 hours (good balance between security and convenience)
+  session-duration-hours: 2
+  
+  # ─────────────────────────────────────────────────────────────────────────────
+  # RESPONSE COMPRESSION [PERF: LOW - saves bandwidth]
+  # ─────────────────────────────────────────────────────────────────────────────
+  # Enable gzip compression for API responses to reduce bandwidth usage.
+  # Significantly improves load times, especially for large item lists and history.
+  # Trade-off: Small CPU cost for compression, large bandwidth savings.
+  
+  compression:
+    # Enable gzip compression for HTTP responses.
+    # Modern browsers automatically decompress; this is transparent to users.
+    # 
+    # Pros: 60-80% smaller response sizes, faster page loads
+    # Cons: Minimal CPU overhead for compression
+    # 
+    # Recommended: true (standard web optimization)
+    enabled: true
+    
+    # Compression level (1-9).
+    # Lower = faster compression, larger size
+    # Higher = slower compression, smaller size
+    # 
+    # Common values:
+    #   1 = Fastest (minimal CPU, less compression)
+    #   4 = Balanced (good compression, low CPU) [DEFAULT]
+    #   6 = Standard (typical web server default)
+    #   9 = Maximum (best compression, highest CPU)
+    # 
+    # Recommended: 4 (balanced for real-time dashboard use)
+    level: 4
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # REAL-TIME UPDATE METHODS
+  # ─────────────────────────────────────────────────────────────────────────────
+  
+  # REST API polling interval (milliseconds) for non-WebSocket clients.
+  # If WebSocket is disabled, the UI polls the API at this rate.
+  # 
+  # Lower values (500-1000ms): Near real-time updates, higher server load
+  # Higher values (2000-5000ms): Less responsive, lower server load
+  # 
+  # Recommended: 1000ms (1 second) - good responsiveness without spam
+  poll-ms: 1000
+  
+  # Number of historical data points returned by /api/items endpoint.
+  # Affects chart detail in the web UI.
+  # 
+  # Recommended: 120 points (2 hours at 60s update interval)
+  history-limit: 120
+  
+  # Server-Sent Events (SSE) for real-time updates (legacy method).
+  # SSE provides one-way server→client push updates via /api/sse endpoint.
+  # 
+  # Pros: Simple, works through HTTP proxies
+  # Cons: One-way only, less efficient than WebSocket
+  # 
+  # Note: WebSocket is preferred; keep SSE disabled unless needed for compatibility.
+  # Recommended: false (use WebSocket instead)
+  sse:
+    enabled: false
+  
+  # WebSocket for real-time bi-directional communication (modern method).
+  # Provides instant price updates, trade confirmations, and notifications.
+  # Endpoint: /api/ws
+  # 
+  # Pros: Fast, efficient, bi-directional, low latency
+  # Cons: Requires WebSocket-capable reverse proxy (nginx, Caddy, etc.)
+  # 
+  # Recommended: true (best user experience, standard for modern web apps)
+  websocket:
+    enabled: true
+  
+  # ─────────────────────────────────────────────────────────────────────────────
+  # API RATE LIMITING
+  # ─────────────────────────────────────────────────────────────────────────────
+  # Prevents API abuse and protects server from spam/DoS attacks.
+  
+  rate-limit:
+    # Enable per-session rate limiting for API endpoints.
+    # Limits how many requests a single session can make in a time window.
+    # 
+    # Recommended: true (essential security feature)
+    enabled: true
+    
+    # Maximum number of API requests allowed...
+    requests: 30
+    
+    # ...within this many seconds (rolling window).
+    # Example: 30 requests per 10 seconds = ~3 requests/second burst rate
+    # 
+    # Adjust based on server capacity:
+    #   - Small servers: 20-30 requests / 10-15 seconds
+    #   - Large servers: 50-100 requests / 10 seconds
+    # 
+    # Recommended: 30 per 10 seconds (allows burst trading without abuse)
+    per-seconds: 10
+    
+    # Exempt the built-in web UI from rate limiting.
+    # The official UI makes many legitimate requests (charts, auto-refresh).
+    # External API consumers (scripts, bots) are still rate-limited.
+    # 
+    # How it works: UI includes special headers that bypass limits.
+    # Security: Custom UI or API consumers cannot forge these headers.
+    # 
+    # Recommended: true (improves UX without security risk)
+    exempt-ui: true
+  
+  # ─────────────────────────────────────────────────────────────────────────────
+  # PERMISSIONS & ROLES
+  # ─────────────────────────────────────────────────────────────────────────────
+  # Control who can trade and view data via the web interface.
+  
+  roles:
+    # Default role when a player opens a web session link.
+    # 
+    # TRADER: Can view prices, charts, and execute buy/sell trades
+    # VIEWER: Can only view prices and charts (read-only, no trading)
+    # 
+    # Recommended: TRADER (most useful default, trust your players)
+    default: TRADER
+    
+    # Permission node to grant TRADER role via Minecraft permissions.
+    # Players with this permission can trade even if default is VIEWER.
+    # 
+    # Example: Give VIP players trading access while default users only view.
+    # Recommended: endex.web.trade
+    trader-permission: endex.web.trade
+    
+    # Permission node to view other players' holdings via /api/holdings/{uuid}.
+    # Admin-only feature for economy monitoring and anti-cheat.
+    # 
+    # Recommended: endex.web.admin
+    admin-view-permission: endex.web.admin
+  
+  # ─────────────────────────────────────────────────────────────────────────────
+  # MINECRAFT ITEM ICONS IN WEB UI
+  # ─────────────────────────────────────────────────────────────────────────────
+  # Display actual Minecraft item/block textures instead of generic icons.
+  
+  icons:
+    # Enable extraction and serving of Minecraft textures in web UI.
+    # Makes the dashboard look much more polished and professional.
+    # 
+    # Recommended: false by default (requires resource pack setup)
+    enabled: false
+    
+    # Source for the resource pack textures. Accepts:
+    #   1. Local .zip file path: "plugins/TheEndex/packs/vanilla-1.20.zip"
+    #   2. Local folder path: "plugins/TheEndex/resourcepack"
+    #   3. Direct URL to .zip: "https://example.com/pack.zip"
+    #   4. Empty string "" = Use previously extracted pack if it exists
+    # 
+    # Where to get packs:
+    #   - Download official vanilla pack from Minecraft.net
+    #   - Extract from your server's resource-packs folder
+    #   - Use custom server resource pack URL
+    # 
+    # First run with icons.enabled=true and a source will extract textures.
+    # After extraction, you can set source="" to use the cached version.
+    # 
+    # Recommended: "" (extract once, then cache for performance)
+    source: ""
+  
+  # ─────────────────────────────────────────────────────────────────────────────
+  # ADDON INTEGRATIONS (Display Only)
+  # ─────────────────────────────────────────────────────────────────────────────
+  # List of installed addons to show in the web UI "Addons" tab.
+  # Currently for navigation/display only; functional integration coming soon.
+  # 
+  # Format: [{name: "Addon Name", description: "What it does"}]
+  # Example:
+  # addons:
+  #   - name: "Crypto Addon"
+  #     description: "Futures trading and cryptocurrency simulation"
+  #   - name: "Black Market"
+  #     description: "Underground economy with risk/reward mechanics"
+  # 
+  # Recommended: Leave empty unless you have custom addons
+  addons: []
+  
+  # ─────────────────────────────────────────────────────────────────────────────
+  # CUSTOM WEB UI OVERRIDE (Advanced)
+  # ─────────────────────────────────────────────────────────────────────────────
+  # Replace the built-in web UI with your own custom HTML/CSS/JavaScript.
+  
+  custom:
+    # Enable custom UI mode (serve from folder instead of embedded resources).
+    # When enabled, files are loaded from plugins/TheEndex/webui/
+    # 
+    # Use cases:
+    #   - Rebrand the UI with your server's theme/colors
+    #   - Add custom features or integrations
+    #   - Translate UI to another language
+    # 
+    # Recommended: false (use default UI unless you're a web developer)
+    enabled: false
+    
+    # Folder name (relative to plugin data folder) containing custom UI files.
+    # Must include at minimum: index.html
+    # Full path: plugins/TheEndex/webui/index.html
+    root: webui
+    
+    # Reload index.html on every request (development mode).
+    # 
+    # When true: Changes to HTML/CSS/JS are visible immediately (no restart)
+    # When false: index.html is cached in memory (much faster)
+    # 
+    # WARNING: Only enable during active development!
+    # Recommended: false (true only when actively editing custom UI)
+    reload: false
+    
+    # Export the default built-in UI as a starting template.
+    # On first startup with custom.enabled=true, if index.html doesn't exist,
+    # the plugin will extract its embedded UI to webui/ for you to customize.
+    # 
+    # Recommended: true (provides working base to modify)
+    export-default: true
+  
+  # ─────────────────────────────────────────────────────────────────────────────
+  # INVENTORY HOLDINGS API
+  # ─────────────────────────────────────────────────────────────────────────────
+  # Real-time inventory snapshots for web dashboard "Holdings" tab.
+  
+  holdings:
+    inventory:
+      # Enable live inventory snapshot API (/api/holdings endpoint).
+      # Shows what items online players currently have in their inventory.
+      # 
+      # Privacy note: Only visible to the player themselves unless admin permission.
+      # Recommended: true (useful feature, privacy-respecting by default)
+      enabled: true
+      
+      # Include Ender Chest items in holdings count.
+      # 
+      # When true: Holdings show inventory + ender chest
+      # When false: Holdings show only main inventory
+      # 
+      # Recommended: false (ender chest is "stored" items, not actively held)
+      include-enderchest: false
+      
+      # Cache duration for inventory snapshots (in seconds).
+      # Scanning inventories is relatively fast, but caching reduces overhead.
+      # 
+      # Lower values (5-10s): More accurate real-time data
+      # Higher values (30-60s): Better performance, slightly stale data
+      # 
+      # Recommended: 15 seconds (good balance)
+      cache-seconds: 15
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# LOGGING & DEBUGGING [PERF: LOW - verbose mode increases disk I/O]
+# ═══════════════════════════════════════════════════════════════════════════════
+logging:
+  # Enable verbose debug logging (INFO level messages).
+  # [PERF: MEDIUM when enabled] - Logs every price update, transaction, and API request.
+  # 
+  # When true: Detailed logs for troubleshooting and monitoring
+  # When false: Only warnings and errors logged (cleaner console)
+  # 
+  # WARNING: Verbose mode significantly increases log file size!
+  # Only enable when actively debugging issues or monitoring economy.
+  # 
+  # Recommended: false (enable temporarily for troubleshooting)
+  verbose: false
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# UPDATE CHECKER [PERF: MINIMAL - runs once on startup]
+# ═══════════════════════════════════════════════════════════════════════════════
+# Checks for new plugin versions on startup and notifies in console + ops.
+update-checker:
+  # Enable automatic update checking on server startup.
+  enabled: true
+  
+  # Notify operators (OPs) when they join if an update is available.
+  # They'll receive a clickable message with the download link.
+  notify-ops: true
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# END OF CONFIGURATION
+# ═══════════════════════════════════════════════════════════════════════════════
+# Remember to run /endex reload after making changes!
+# 
+# For more help:
+#   - Documentation: https://lokixcz-plugins.kagsystems.tech/introduction/
+#   - Discord Support: https://discord.com/invite/ujFRXksUBE
+#   - Issue Tracker: https://github.com/khristianaarongarcia/endex/issues
+# 
+# Enjoy your dynamic market economy! 🎉

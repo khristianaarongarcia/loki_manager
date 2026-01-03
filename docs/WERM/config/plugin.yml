@@ -1,0 +1,21 @@
+name: WERM
+version: ${version}
+main: com.werm.plugin.WERMPlugin
+description: WERM - Web Engine for Realm Monetization
+author: WERM
+website: https://werm.gg
+api-version: 1.13
+
+commands:
+  werm:
+    description: WERM verification commands
+    usage: /werm verify <code>
+    aliases: [w]
+
+permissions:
+  werm.verify:
+    description: Allows players to verify their Minecraft account with WERM
+    default: true
+  werm.admin:
+    description: Admin commands for WERM
+    default: op

@@ -1,0 +1,37 @@
+name: Depo
+version: '${version}'
+main: org.lokixcz.depo.Depo
+api-version: '1.20'
+description: Universal dependency manager for Spigot/Paper plugins
+authors:
+  - LokixCZ
+commands:
+  depo:
+    description: Depo management commands
+    usage: "/depo <status|reload|download> or /depo download <direct|github> <url|owner/repo> [assetFilter]"
+    permission: depo.use
+permissions:
+  depo.use:
+    description: Allows use of /depo commands
+    default: op
+  depo.notify:
+    description: Receive Depo notifications about installed dependencies
+    default: op
+  depo.download:
+    description: Allows /depo download subcommands
+    default: op
+    children:
+      depo.download.direct: true
+      depo.download.github: true
+  depo.download.direct:
+    description: Allows /depo download direct
+    default: op
+  depo.download.github:
+    description: Allows /depo download github
+    default: op
+  depo.resolve:
+    description: Allows resolving dependency conflicts interactively
+    default: op
+  depo.soft:
+    description: Manage soft dependency downloads (/depo soft)
+    default: op

@@ -1,0 +1,365 @@
+# ╔══════════════════════════════════════════════════════════════════════════════╗
+# ║              FICHIER DE CONFIGURATION TRADUIT - FRANÇAIS                     ║
+# ║                                                                              ║
+# ║  COMMENT UTILISER CE FICHIER:                                                ║
+# ║  1. Renommez ce fichier en 'config.yml'                                      ║
+# ║  2. Remplacez le config.yml existant dans plugins/TheEndex/                  ║
+# ║  OU copiez uniquement les commentaires dont vous avez besoin                 ║
+# ║                                                                              ║
+# ║  NOTE: Les valeurs de configuration restent en anglais car elles             ║
+# ║  sont lues par le plugin. Seuls les commentaires sont traduits.              ║
+# ╚══════════════════════════════════════════════════════════════════════════════╝
+
+# ============================================================================
+#                   THE ENDEX - FICHIER DE CONFIGURATION
+#         Par Mineables - La solution ultime Économie/Bourse
+# ============================================================================
+#
+# INDICATEURS DE PERFORMANCE POUR LA CONFIGURATION
+# Chaque paramètre est étiqueté avec son impact sur les performances:
+#   [PERF: MINIMAL]  - Impact négligeable sur les performances
+#   [PERF: LOW]      - Faible impact sur les performances
+#   [PERF: MEDIUM]   - Impact modéré sur les performances
+#   [PERF: HIGH]     - Impact élevé - activer avec précaution
+#   [PERF: CRITICAL] - Impact critique - activer uniquement si nécessaire
+#
+# CONSEILS GÉNÉRAUX DE PERFORMANCE:
+# - Utiliser SQLite pour de meilleures performances avec beaucoup de joueurs
+# - Garder le cache activé pour les données fréquemment consultées
+# - Augmenter les intervalles de scan si les ressources serveur sont limitées
+# - Activer la journalisation détaillée uniquement pour le débogage
+# ============================================================================
+
+# ╔══════════════════════════════════════════════════════════════════════════════╗
+# ║                      PARAMÈTRES GÉNÉRAUX                                     ║
+# ╚══════════════════════════════════════════════════════════════════════════════╝
+
+general:
+  # Langue pour les messages du plugin [PERF: MINIMAL]
+  language: "en"
+
+  # [PERF: MEDIUM] Fréquence de mise à jour des prix (en secondes).
+  # Valeurs plus basses = plus de charge CPU. Recommandé: 30-300
+  update-interval-seconds: 60
+
+  # Préfixe pour tous les messages du plugin [PERF: MINIMAL]
+  prefix: "&8[&6TheEndex&8]&r "
+
+  # Décimales pour l'affichage des prix [PERF: MINIMAL]
+  decimal-places: 2
+
+  # Symbole monétaire pour l'affichage des prix [PERF: MINIMAL]
+  currency-symbol: "$"
+
+  # [PERF: MINIMAL] Sensibilité aux changements de prix (0.01 à 1.0).
+  # Valeurs plus basses = mouvements de prix plus doux
+  price-sensitivity: 0.15
+
+  # Mode débogage pour sortie console étendue [PERF: LOW si activé]
+  debug: false
+
+  # [PERF: LOW] Nombre de mises à jour de prix à conserver dans l'historique.
+  # Affecte l'utilisation de la mémoire avec de grandes quantités
+  history-length: 100
+
+# ╔══════════════════════════════════════════════════════════════════════════════╗
+# ║                 PARAMÈTRES DE SAUVEGARDE AUTOMATIQUE                         ║
+# ╚══════════════════════════════════════════════════════════════════════════════╝
+
+autosave:
+  # Activer/désactiver la sauvegarde automatique [PERF: LOW à MEDIUM]
+  enabled: true
+  # Intervalle entre les sauvegardes automatiques en minutes
+  interval-minutes: 5
+  # Notifier les joueurs des sauvegardes
+  notify-players: false
+  # Sauvegarder uniquement les données modifiées (plus efficace)
+  only-dirty: true
+
+# ╔══════════════════════════════════════════════════════════════════════════════╗
+# ║                     CONFIGURATION DU STOCKAGE                                ║
+# ╚══════════════════════════════════════════════════════════════════════════════╝
+# GUIDE DE PERFORMANCE:
+# - YAML: [PERF: HIGH] Simple mais plus lent avec de grandes données
+# - SQLite: [PERF: MEDIUM] Recommandé pour la plupart des serveurs
+# - MySQL: [PERF: LOW-MEDIUM] Meilleur pour grands serveurs ou réseaux
+
+storage:
+  # Type de stockage: "yaml", "sqlite", ou "mysql"
+  mode: "sqlite"
+
+  sqlite:
+    # Nom du fichier de base de données [PERF: LOW]
+    file: "database.db"
+
+  mysql:
+    # Hôte et port MySQL [PERF: DÉPEND DU RÉSEAU]
+    host: "localhost"
+    port: 3306
+    database: "theendex"
+    username: "root"
+    password: ""
+    # Préfixe des tables de base de données
+    table-prefix: "endex_"
+    # Paramètres du pool de connexions
+    pool:
+      maximum-pool-size: 10
+      minimum-idle: 2
+      connection-timeout: 30000
+      idle-timeout: 600000
+      max-lifetime: 1800000
+
+# ╔══════════════════════════════════════════════════════════════════════════════╗
+# ║                       LISSAGE DES PRIX                                       ║
+# ╚══════════════════════════════════════════════════════════════════════════════╝
+
+price-smoothing:
+  # Activer le lissage des prix [PERF: MINIMAL]
+  enabled: true
+  # Facteur de lissage (0.0-1.0) - plus élevé = changements plus doux
+  factor: 0.3
+  # Seuil - changement minimum avant ajustement de prix
+  threshold: 0.05
+
+# ╔══════════════════════════════════════════════════════════════════════════════╗
+# ║                      SUIVI DE L'INVENTAIRE                                   ║
+# ╚══════════════════════════════════════════════════════════════════════════════╝
+# Suit les stocks d'items dans les inventaires des joueurs
+
+price-inventory:
+  # Activer le suivi d'inventaire [PERF: LOW]
+  enabled: true
+  # [PERF: LOW] Impact de l'inventaire sur les prix (0.0-1.0)
+  influence: 0.1
+  # Scanner les inventaires des joueurs à la connexion
+  scan-on-join: true
+  # Scanner les inventaires des joueurs à la déconnexion
+  scan-on-quit: true
+
+# ╔══════════════════════════════════════════════════════════════════════════════╗
+# ║                  TARIFICATION DU STOCKAGE MONDIAL                            ║
+# ╚══════════════════════════════════════════════════════════════════════════════╝
+# ⚠️ ATTENTION: C'est la fonctionnalité la plus gourmande en performances!
+# Scanne les chunks chargés pour compter les items dans les coffres/conteneurs
+
+price-world-storage:
+  # [PERF: HIGH à CRITICAL] Activer le scan du stockage mondial
+  # Activer UNIQUEMENT si absolument nécessaire pour des prix réalistes
+  enabled: false
+  # [PERF: HIGH] Impact du stockage mondial sur les prix
+  influence: 0.3
+  # [PERF: CRITICAL] Fréquence de scan du monde (en secondes)
+  # Recommandé: 600+ pour serveurs de production
+  scan-interval-seconds: 300
+  # [PERF: HIGH] Chunks par tick à scanner - plus bas = meilleur pour le serveur
+  chunks-per-tick: 5
+  # Types de conteneurs spécifiques activés
+  scan-chests: true
+  scan-barrels: true
+  scan-shulkers: true
+  scan-hoppers: false
+
+# ╔══════════════════════════════════════════════════════════════════════════════╗
+# ║                      PARAMÈTRES DU CACHE                                     ║
+# ╚══════════════════════════════════════════════════════════════════════════════╝
+
+cache:
+  # [PERF: CRITICAL - Activer pour meilleures performances!]
+  # Le cache réduit drastiquement les requêtes à la base de données
+  enabled: true
+  # Expiration du cache en secondes
+  expiry-seconds: 300
+  # Entrées maximum dans le cache
+  max-size: 1000
+
+# ╔══════════════════════════════════════════════════════════════════════════════╗
+# ║                      SYSTÈME DE PORTEFEUILLE                                 ║
+# ╚══════════════════════════════════════════════════════════════════════════════╝
+
+holdings:
+  # Activer le système de portefeuille [PERF: LOW]
+  enabled: true
+  # Maximum d'items différents qu'un joueur peut détenir
+  max-items-per-player: 50
+  # Quantité maximum par type d'item
+  max-quantity-per-item: 1000000
+
+# ╔══════════════════════════════════════════════════════════════════════════════╗
+# ║                      SYSTÈME DE LIVRAISON                                    ║
+# ╚══════════════════════════════════════════════════════════════════════════════╝
+
+delivery:
+  # Activer le système de livraison [PERF: LOW]
+  enabled: true
+  # [PERF: LOW] Traiter les livraisons à la connexion
+  process-on-join: true
+  # Notifier pour les livraisons en attente
+  notify-on-login: true
+
+# ╔══════════════════════════════════════════════════════════════════════════════╗
+# ║                      PARAMÈTRES DE L'INTERFACE                               ║
+# ╚══════════════════════════════════════════════════════════════════════════════╝
+
+gui:
+  # Activer le système d'interface [PERF: MINIMAL]
+  enabled: true
+  # Jouer un son à l'ouverture de l'interface
+  open-sound: true
+  # Jouer un son à la fermeture de l'interface
+  close-sound: true
+  # Titres d'interface
+  market-title: "&6&lLe Marché Endex"
+  portfolio-title: "&6&lVotre Portefeuille"
+
+# ╔══════════════════════════════════════════════════════════════════════════════╗
+# ║                      PARAMÈTRES DE LA BOUTIQUE                               ║
+# ╚══════════════════════════════════════════════════════════════════════════════╝
+
+shop:
+  # Activer le système de boutique [PERF: MINIMAL]
+  enabled: true
+  # Afficher uniquement les items enregistrés dans la boutique
+  registered-only: false
+  # Taxe à l'achat (0.0 à 1.0)
+  buy-tax: 0.0
+  # Taxe à la vente (0.0 à 1.0)
+  sell-tax: 0.0
+
+# ╔══════════════════════════════════════════════════════════════════════════════╗
+# ║                   SYSTÈME D'INVESTISSEMENT                                   ║
+# ╚══════════════════════════════════════════════════════════════════════════════╝
+
+investments:
+  # Activer le système d'investissement [PERF: LOW]
+  enabled: true
+  # Activer tous les types d'investissement disponibles
+  allow-stocks: true
+  allow-bonds: true
+  allow-commodities: true
+  # Montant minimum d'investissement
+  minimum-investment: 100.0
+  # Intervalle de distribution des dividendes en minutes
+  dividend-interval-minutes: 60
+
+# ╔══════════════════════════════════════════════════════════════════════════════╗
+# ║                      TABLEAU DE BORD WEB                                     ║
+# ╚══════════════════════════════════════════════════════════════════════════════╝
+
+web:
+  # [PERF: LOW à MEDIUM] Activer le tableau de bord web
+  enabled: false
+  # Port pour le serveur web
+  port: 8080
+  # Titre du tableau de bord
+  title: "Tableau de Bord TheEndex"
+  # Paramètres CORS
+  cors:
+    enabled: true
+    allowed-origins:
+      - "*"
+  # Authentification par clé API
+  api-key:
+    enabled: true
+    key: "CHANGEZ_CETTE_CLE"
+  # Limitation de débit
+  rate-limit:
+    enabled: true
+    requests-per-minute: 60
+
+# ╔══════════════════════════════════════════════════════════════════════════════╗
+# ║                         COMPRESSION                                          ║
+# ╚══════════════════════════════════════════════════════════════════════════════╝
+
+compression:
+  # [PERF: LOW] Activer la compression HTTP - réduit la bande passante
+  enabled: true
+  # Niveau de compression (1-9, plus élevé = plus de compression, plus de CPU)
+  level: 6
+  # Taille minimum pour compression (octets)
+  min-size: 1024
+
+# ╔══════════════════════════════════════════════════════════════════════════════╗
+# ║                       JOURNALISATION                                         ║
+# ╚══════════════════════════════════════════════════════════════════════════════╝
+
+logging:
+  # [PERF: LOW] Journaliser les transactions dans un fichier
+  log-transactions: true
+  # [PERF: LOW] Journaliser les changements de prix
+  log-price-changes: false
+  # [PERF: MEDIUM si activé] Journalisation détaillée
+  verbose: false
+  # Nom du fichier de journal
+  file: "transactions.log"
+  # Taille maximale du fichier journal en Mo
+  max-size-mb: 10
+  # Nombre de sauvegardes de journaux à conserver
+  max-backups: 5
+
+# ╔══════════════════════════════════════════════════════════════════════════════╗
+# ║                VÉRIFICATION DES MISES À JOUR                                 ║
+# ╚══════════════════════════════════════════════════════════════════════════════╝
+
+update-checker:
+  # [PERF: MINIMAL] Vérifier les nouvelles mises à jour
+  enabled: true
+  # Notifier uniquement les admins des mises à jour
+  notify-ops-only: true
+
+# ╔══════════════════════════════════════════════════════════════════════════════╗
+# ║                   ENREGISTREMENT DES ITEMS                                   ║
+# ╚══════════════════════════════════════════════════════════════════════════════╝
+# Enregistrez ici les items avec leurs prix de base.
+# Format: MATERIAU: prix_de_base
+# Utilisez les noms de matériaux Minecraft (MAJUSCULES)
+
+items:
+  DIAMOND: 100.0
+  GOLD_INGOT: 50.0
+  IRON_INGOT: 25.0
+  EMERALD: 75.0
+  COAL: 5.0
+  LAPIS_LAZULI: 10.0
+  REDSTONE: 8.0
+  NETHERITE_INGOT: 500.0
+  COPPER_INGOT: 15.0
+  AMETHYST_SHARD: 20.0
+
+# ╔══════════════════════════════════════════════════════════════════════════════╗
+# ║                      LIMITES DE PRIX                                         ║
+# ╚══════════════════════════════════════════════════════════════════════════════╝
+# Empêche les fluctuations de prix extrêmes
+
+price-limits:
+  # Activer les limites de prix [PERF: MINIMAL]
+  enabled: true
+  # Prix minimum (absolu)
+  min-price: 0.01
+  # Prix maximum (absolu)
+  max-price: 1000000.0
+  # Changement de prix maximum par mise à jour (pourcentage, 0.0-1.0)
+  max-change-percent: 0.25
+
+# ╔══════════════════════════════════════════════════════════════════════════════╗
+# ║                   ÉVÉNEMENTS DE MARCHÉ                                       ║
+# ╚══════════════════════════════════════════════════════════════════════════════╝
+# Événements aléatoires qui affectent le marché
+
+market-events:
+  # Activer les événements de marché [PERF: LOW]
+  enabled: true
+  # Probabilité d'un événement par mise à jour de prix (0.0-1.0)
+  chance: 0.05
+  # Minutes minimum entre les événements
+  min-interval-minutes: 30
+
+# ╔══════════════════════════════════════════════════════════════════════════════╗
+# ║                       PERMISSIONS                                            ║
+# ╚══════════════════════════════════════════════════════════════════════════════╝
+# Fonctionnalités basées sur les permissions
+
+permissions:
+  # Activer les vérifications de permissions [PERF: MINIMAL]
+  enabled: true
+  # Permission de contournement pour les admins
+  admin-bypass: "endex.admin"

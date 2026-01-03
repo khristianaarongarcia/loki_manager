@@ -1,0 +1,63 @@
+# ═══════════════════════════════════════════════════════════════════════════════
+# The Endex - Deliveries GUI Configuration
+# ═══════════════════════════════════════════════════════════════════════════════
+# This file controls the pending deliveries view (legacy overflow system).
+
+# GUI identifier
+id: deliveries
+
+# Enable this GUI configuration
+enabled: true
+
+# ───────────────────────────────────────────────────────────────────────────────
+# BASIC SETTINGS
+# ───────────────────────────────────────────────────────────────────────────────
+title: "&5Pending Deliveries"
+size: 54  # 6 rows
+
+# ───────────────────────────────────────────────────────────────────────────────
+# LAYOUT
+# ───────────────────────────────────────────────────────────────────────────────
+# Item display area
+item-slots:
+  start: 0
+  end: 44
+
+# Control bar (bottom row)
+controls:
+  claim-all:
+    slot: 49
+    material: EMERALD_BLOCK
+    name: "&aClaim All"
+    lore:
+      - "&7Claim all pending deliveries"
+      - "&8(as much as fits in inventory)"
+  
+  back:
+    slot: 53
+    material: ARROW
+    name: "&eBack to Market"
+
+# ───────────────────────────────────────────────────────────────────────────────
+# COLORS
+# ───────────────────────────────────────────────────────────────────────────────
+colors:
+  item-name: "&b"
+  pending-count: "&6"
+
+# ───────────────────────────────────────────────────────────────────────────────
+# ITEM DISPLAY FORMAT
+# ───────────────────────────────────────────────────────────────────────────────
+item-lore:
+  - "&6Pending: &e%count%"
+  - "&7Inventory space: &a%capacity%"
+  - ""
+  - "&aLeft-click: &7Claim as much as fits"
+  - "&eRight-click: &7Claim 1 stack (%stack_size%)"
+
+# Empty deliveries message
+empty:
+  material: BARRIER
+  name: "&7No pending deliveries"
+  lore:
+    - "&8All items have been claimed!"

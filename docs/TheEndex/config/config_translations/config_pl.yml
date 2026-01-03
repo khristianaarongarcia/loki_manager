@@ -1,0 +1,1153 @@
+# ═══════════════════════════════════════════════════════════════════════════════
+# PRZETŁUMACZONY PLIK KONFIGURACYJNY - POLSKI
+# ═══════════════════════════════════════════════════════════════════════════════
+# JAK UŻYWAĆ TEGO PLIKU:
+#   1. Skopiuj ten plik do: plugins/TheEndex/config.yml (zastąp istniejący)
+#   2. LUB skopiuj zawartość do istniejącego config.yml
+#   3. Uruchom /endex reload lub zrestartuj serwer
+#
+# UWAGA: Tylko komentarze są przetłumaczone. Rzeczywiste klucze i wartości YAML
+# pozostają takie same, aby zapewnić poprawne działanie pluginu.
+# ═══════════════════════════════════════════════════════════════════════════════
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# The Endex - Konfiguracja Pluginu Dynamicznej Ekonomii Rynkowej
+# ═══════════════════════════════════════════════════════════════════════════════
+# Po edycji uruchom /endex reload (wymagane uprawnienia admina) lub zrestartuj serwer.
+#
+# ═══════════════════════════════════════════════════════════════════════════════
+# PRZEWODNIK WPŁYWU NA WYDAJNOŚĆ
+# ═══════════════════════════════════════════════════════════════════════════════
+# Każda opcja jest oznaczona wpływem na wydajność:
+#   [PERF: MINIMAL]  - Znikomy wpływ, bezpieczne dla każdego serwera
+#   [PERF: LOW]      - Niskie zużycie CPU/pamięci, bezpieczne dla wszystkich serwerów
+#   [PERF: MEDIUM]   - Umiarkowany wpływ, dostosuj w zależności od wielkości serwera
+#   [PERF: HIGH]     - Znaczący wpływ, optymalizuj dla dużych serwerów (50+ graczy)
+#   [PERF: CRITICAL] - Duże zużycie zasobów, zalecane ostrożne dostrajanie
+#
+# Ogólne wskazówki optymalizacyjne dla dużych serwerów:
+#   - Zwiększ update-interval-seconds (300-600)
+#   - Wyłącz price-world-storage lub ogranicz scanned-worlds
+#   - Włącz chunk-caching w world-storage
+#   - Zmniejsz history-length do 30-50
+#   - Użyj zapisu SQLite zamiast YAML
+# ═══════════════════════════════════════════════════════════════════════════════
+
+# To jest polski szablon. Dla tłumaczeń w innych językach,
+# zobacz inne pliki konfiguracyjne w tym folderze.
+
+# Dla pełnej angielskiej konfiguracji ze wszystkimi opcjami, zobacz:
+# plugins/TheEndex/config.yml (główny plik konfiguracyjny)
+
+# ───────────────────────────────────────────────────────────────────────────────
+# WERSJA KONFIGURACJI
+# ───────────────────────────────────────────────────────────────────────────────
+# Wewnętrzna wersja do wykrywania zmian łamiących kompatybilność. NIE modyfikuj.
+config-version: 1
+
+# ───────────────────────────────────────────────────────────────────────────────
+# USTAWIENIA JĘZYKOWE
+# ───────────────────────────────────────────────────────────────────────────────
+# Ustaw język dla wszystkich wiadomości pluginu. Pliki językowe znajdują się w
+# folderze plugins/TheEndex/lang/. Możesz tworzyć własne tłumaczenia kopiując
+# istniejący plik językowy i modyfikując go.
+#
+# Dostępne języki:
+#   en      - Angielski (domyślny)
+#   pl      - Polski
+#   zh_CN   - Chiński Uproszczony
+#   ru      - Rosyjski
+#   es      - Hiszpański
+#   de      - Niemiecki
+#   fr      - Francuski
+#   pt      - Portugalski
+#   ja      - Japoński
+#   ko      - Koreański
+#
+# Aby dodać nowy język:
+#   1. Skopiuj lang/en.yml do lang/xx.yml (gdzie xx to kod języka)
+#   2. Przetłumacz wszystkie wiadomości w nowym pliku
+#   3. Ustaw language.locale na twój kod języka
+#   4. Uruchom /endex reload
+#
+# Zalecane: en (lub główny język twojego serwera)
+language:
+  locale: pl
+
+# ───────────────────────────────────────────────────────────────────────────────
+# CYKL AKTUALIZACJI CEN [PERF: MEDIUM]
+# ───────────────────────────────────────────────────────────────────────────────
+# Jak często (w sekundach) rynek przelicza ceny na podstawie podaży/popytu.
+# 
+# Wydajność: Każdy cykl wyzwala obliczenia cen, aktualizacje historii i
+# opcjonalnie skanowanie świata. Wyższe interwały = mniejsze zużycie CPU.
+# 
+# Niskie wartości (30-60s):
+#   - Zalety: Bardziej responsywny rynek, ceny reagują szybko na aktywność graczy
+#   - Wady: Może wydawać się chaotyczny, trudniej przewidzieć trendy
+#   - CPU: ~0.5-1% na cykl na średnich serwerach
+# 
+# Wyższe wartości (120-300s):
+#   - Zalety: Stabilny rynek, daje graczom czas na planowanie handlu
+#   - Wady: Mniej reaktywny, może wydawać się powolny na aktywnych serwerach
+#   - CPU: Minimalny wpływ przy dłuższych interwałach
+# 
+# Zalecane: 60s dla małych-średnich serwerów, 120-300s dla dużych zajętych serwerów (50+ graczy)
+update-interval-seconds: 60
+
+# ───────────────────────────────────────────────────────────────────────────────
+# WRAŻLIWOŚĆ CENOWA [PERF: MINIMAL]
+# ───────────────────────────────────────────────────────────────────────────────
+# Kontroluje jak bardzo nierównowaga popytu/podaży wpływa na ceny w każdym cyklu.
+# Wzór: nowa_cena = stara_cena × (1 + (popyt - podaż) × wrażliwość)
+# 
+# Wydajność: Czysta matematyka, znikomy wpływ.
+# 
+# Niskie wartości (0.01-0.03):
+#   - Stopniowe zmiany cen, bardziej przewidywalne dla graczy
+#   - Dobre dla serwerów roleplay/ekonomicznych
+# 
+# Średnie wartości (0.04-0.07):
+#   - Zrównoważona responsywność, nagradza wyczucie rynku
+#   - Dobre dla serwerów survival/SMP
+# 
+# Wyższe wartości (0.08-0.15):
+#   - Zmienny rynek, zachęca do aktywnego handlu
+#   - Dobre dla minigier ekonomicznych lub serwerów rywalizacyjnych
+# 
+# Zalecane: 0.05 (5% na jednostkę popytu netto)
+price-sensitivity: 0.05
+
+# ───────────────────────────────────────────────────────────────────────────────
+# ŚLEDZENIE HISTORII [PERF: LOW]
+# ───────────────────────────────────────────────────────────────────────────────
+# Liczba przeszłych punktów cenowych do zachowania dla każdego przedmiotu (używane do wykresów).
+# Wyższe wartości zapewniają dłuższą widoczność trendów ale nieznacznie zwiększają zużycie pamięci.
+# 
+# Wydajność: ~0.5KB RAM na śledzony przedmiot × długość historii
+# Przy 100 przedmiotach i history-length=100, zużywa ~5MB RAM.
+# 
+# Zalecane: 5-10 dla wykresów liniowych, 50-120 dla szczegółowych wykresów web
+history-length: 5
+
+# ───────────────────────────────────────────────────────────────────────────────
+# AUTOZAPIS I KOPIA ZAPASOWA [PERF: LOW do MEDIUM]
+# ───────────────────────────────────────────────────────────────────────────────
+# Jak często (w minutach) zapisywać dane rynku na dysk i tworzyć kopie zapasowe.
+# Chroni przed utratą danych przy awariach. Niższe wartości = częstsze zapisy.
+# 
+# Wydajność: Każdy zapis pisze na dysk. Z SQLite ~1-5ms, z YAML ~10-50ms.
+# Niższe interwały = więcej operacji dyskowych I/O.
+# 
+# Zalecane: 5 minut (dobry balans między bezpieczeństwem a I/O dysku)
+autosave-minutes: 5
+
+# Natychmiast zapisz market.yml po KAŻDEJ aktualizacji cen (tylko tryb YAML).
+# [PERF: HIGH gdy włączone] - Tworzy operacje dyskowe I/O w każdym cyklu aktualizacji!
+# 
+# Włącz jeśli: Twój serwer często się zawiesza i potrzebujesz maksymalnego bezpieczeństwa danych
+# Wyłącz jeśli: Chcesz lepszej wydajności (polegaj na autosave-minutes)
+# 
+# Zalecane: false dla większości serwerów, true tylko jeśli stabilność jest krytyczna
+save-on-each-update: true
+
+# ───────────────────────────────────────────────────────────────────────────────
+# TRYB PRZECHOWYWANIA DANYCH [PERF: MEDIUM do HIGH wpływ na wybór]
+# ───────────────────────────────────────────────────────────────────────────────
+# Wybierz między YAML (prosty, czytelny dla człowieka) lub SQLite (szybki, skalowalny).
+# 
+# Tryb YAML (sqlite: false):
+#   - Wszystkie dane przechowywane w market.yml jako zwykły tekst
+#   - Łatwy do ręcznej edycji, świetny dla małych serwerów (<50 przedmiotów)
+#   - Wydajność spada przy wielu przedmiotach lub częstych aktualizacjach
+#   - [PERF: HIGH I/O dysku przy wielu przedmiotach]
+# 
+# Tryb SQLite (sqlite: true) - ZALECANE:
+#   - Dane przechowywane w binarnej bazie danych market.db
+#   - Obsługuje tysiące przedmiotów wydajnie
+#   - Wspiera zaawansowane funkcje (zasoby, historia handlu, oczekujące dostawy)
+#   - Pierwsze uruchomienie automatycznie migruje istniejący market.yml → market.db
+#   - [PERF: LOW - 5-10x szybsze niż YAML]
+# 
+# Zalecane: true dla wszystkich serwerów (SQLite jest szybsze i bardziej niezawodne)
+storage:
+  sqlite: true
+
+# ───────────────────────────────────────────────────────────────────────────────
+# WYGŁADZANIE CEN I OCHRONA PRZED ZMIENNOŚCIĄ [PERF: MINIMAL]
+# ───────────────────────────────────────────────────────────────────────────────
+# Zapobiega dramatycznym wahaniom cen przez manipulację rynkiem lub nagłe skoki popytu.
+# Wydajność: Czysta matematyka, znikomy wpływ.
+price-smoothing:
+  # Włącz wygładzanie wykładniczą średnią kroczącą (EMA) i ograniczenie maksymalnej zmiany
+  enabled: true
+  
+  # Współczynnik Alpha EMA (0.0 - 1.0): Jak szybko ceny adaptują się do obliczonych celów.
+  # 
+  # Niskie wartości (0.1-0.2):
+  #   - Bardzo płynne, wolno zmieniające się ceny (dobre dla stabilności)
+  #   - Odporne na próby manipulacji
+  # 
+  # Średnie wartości (0.3-0.5):
+  #   - Zrównoważone podejście, stopniowe ale zauważalne zmiany
+  #   - Zalecane dla większości serwerów
+  # 
+  # Wyższe wartości (0.6-0.9):
+  #   - Ceny śledzą cel blisko, bardziej zmienne
+  #   - Podobne do wyłączonego wygładzania
+  # 
+  # Zalecane: 0.3 (30% dostosowania w kierunku celu na cykl)
+  ema-alpha: 0.3
+  
+  # Maksymalna zmiana ceny dozwolona na cykl aktualizacji (jako procent).
+  # Ustaw na 0 aby wyłączyć ten limit (niezalecane).
+  # 
+  # Przykłady:
+  #   15.0 = Ceny mogą zmienić się tylko o ±15% na aktualizację
+  #   5.0 = Bardzo stabilny, konserwatywny rynek
+  #   30.0 = Pozwala na duże wahania, bardziej zmienny
+  # 
+  # Zalecane: 15.0 (zapobiega manipulacji cenami pozwalając na naturalny wzrost)
+  max-change-percent: 15.0
+
+# ───────────────────────────────────────────────────────────────────────────────
+# WPŁYW EKWIPUNKU NA CENY [PERF: LOW]
+# ───────────────────────────────────────────────────────────────────────────────
+# Dostosowuje ceny na podstawie tego ile każdego przedmiotu posiadają gracze online.
+# Tworzy realistyczną dynamikę niedoboru/nadmiaru poza prostymi transakcjami kupna/sprzedaży.
+#
+# Wydajność: Skanuje tylko ekwipunki graczy online. ~0.1ms na gracza na cykl.
+# Przy 100 graczach = ~10ms łącznie, działa asynchronicznie. Znikome na większości serwerów.
+price-inventory:
+  # Włącz skanowanie ekwipunku dla wpływu na ceny.
+  # Gdy włączone, przedmioty które gracze chomikują stają się droższe,
+  # podczas gdy przedmioty których nikt nie trzyma stają się tańsze.
+  enabled: true
+  
+  # Jak silnie poziomy ekwipunku wpływają na ceny na cykl (0.0 - 1.0).
+  # 
+  # Niskie wartości (0.01-0.03):
+  #   - Subtelny wpływ, nie przebija presji kupna/sprzedaży
+  #   - Dobre dla serwerów gdzie chcesz aby transakcje dominowały
+  # 
+  # Średnie wartości (0.04-0.07):
+  #   - Zauważalne efekty chomikowania
+  #   - Zachęca do różnorodnych stylów gry
+  # 
+  # Wyższe wartości (0.08-0.15):
+  #   - Silne efekty niedoboru, dramatyczne wahania cen
+  #   - Może zniechęcać do trzymania pewnych przedmiotów
+  # 
+  # Zalecane: 0.02 (delikatne pchnięcie na podstawie ekwipunków graczy online)
+  sensitivity: 0.02
+  
+  # Bazowa ilość przedmiotów na gracza online. Powyżej tego = presja cenowa W DÓŁ, poniżej = W GÓRĘ.
+  # 
+  # Przykład z bazą 64:
+  #   - Jeśli średni gracz trzyma 128 diamentów → cena spada
+  #   - Jeśli średni gracz trzyma 16 diamentów → cena rośnie
+  # 
+  # Zalecane: 64 (jeden pełny stack jako "normalna" ilość)
+  per-player-baseline: 64
+  
+  # Ogranicz maksymalny wpływ ceny z ekwipunku na cykl (jako procent).
+  # Zapobiega chaosowi cenowemu przez skanowanie ekwipunku.
+  # 
+  # Zalecane: 10.0 (pozwala na znaczący wpływ bez przytłaczania innych czynników)
+  max-impact-percent: 10.0
+
+# ───────────────────────────────────────────────────────────────────────────────
+# WPŁYW MAGAZYNÓW ŚWIATA NA CENY [PERF: HIGH do CRITICAL]
+# ───────────────────────────────────────────────────────────────────────────────
+# ⚠️ NAJBARDZIEJ WYMAGAJĄCA WYDAJNOŚCIOWO FUNKCJA - CZYTAJ UWAŻNIE ⚠️
+#
+# Skanuje WSZYSTKIE kontenery (skrzynie, beczki, shulkery, itp.) w załadowanych chunkach
+# aby określić globalną dostępność przedmiotów. To tworzy prawdziwie dynamiczne ceny oparte
+# na niedoborze/nadmiarze przedmiotów na całym serwerze, nie tylko tym co gracze noszą.
+#
+# Wpływ na wydajność:
+#   - CPU: 1-5% podczas aktywnego skanowania, zależy od załadowanych chunków
+#   - RAM: Buforuje dane chunków, ~50-200MB w zależności od wielkości świata
+#   - Dysk: Minimalny (czyta dane chunków już w pamięci)
+#
+# Wbudowane funkcje optymalizacyjne:
+#   - Buforowanie wyników chunków (śledzenie zmian)
+#   - Dławienie zależne od TPS (pauzuje jeśli TPS spadnie poniżej 18)
+#   - Przetwarzanie asynchroniczne (nie zamrozi głównego wątku)
+#   - Przetwarzanie wsadowe chunków
+#
+# Dla dużych serwerów (100+ graczy), rozważ:
+#   - Ustawienie enabled: false
+#   - LUB zwiększenie scan-interval-seconds do 600+
+#   - LUB ograniczenie scanned-worlds tylko do "world"
+price-world-storage:
+  # Włącz globalne skanowanie magazynów świata dla wpływu na ceny.
+  # Gdy włączone, przedmioty przechowywane w skrzyniach/beczkach/itp. wpływają na ceny rynkowe.
+  # 
+  # Zalety:
+  #   - Prawdziwie dynamiczna ekonomia oparta na WSZYSTKICH przedmiotach na serwerze
+  #   - Zachęca do dystrybucji zasobów i handlu
+  #   - Ceny odzwierciedlają rzeczywisty niedobór
+  # 
+  # Wady:
+  #   - Niewielki narzut wydajności (zoptymalizowany, ale nie darmowy)
+  #   - Może wymagać dostrojenia dla bardzo dużych serwerów
+  # 
+  # Zalecane: true dla immersyjnych serwerów ekonomicznych
+  enabled: true
+  
+  # Jak często skanować magazyny świata (w sekundach).
+  # [PERF: CRITICAL] - Niższe wartości = większe zużycie CPU.
+  # 
+  # Przewodnik wydajności:
+  #   60-120s = Responsywny, odpowiedni dla małych serwerów (<30 graczy) ~2-3% CPU
+  #   180-300s = Zrównoważony, odpowiedni dla średnich serwerów (30-100 graczy) ~1% CPU
+  #   300-600s = Konserwatywny, odpowiedni dla dużych serwerów (100+ graczy) ~0.5% CPU
+  # 
+  # Zalecane: 300 (5 minut) dla większości serwerów, 600 dla dużych serwerów
+  scan-interval-seconds: 300
+  
+  # Jak silnie poziomy magazynów świata wpływają na ceny na cykl (0.0 - 1.0).
+  # Działa podobnie do price-inventory.sensitivity ale dla globalnych magazynów.
+  # 
+  # Niskie wartości (0.005-0.01):
+  #   - Bardzo delikatny wpływ, głównie napędzany przez handel
+  #   - Dobre dla serwerów gdzie handel powinien dominować
+  # 
+  # Średnie wartości (0.01-0.02):
+  #   - Zauważalne ale nie przytłaczające
+  #   - Zalecane dla większości serwerów
+  # 
+  # Wyższe wartości (0.02-0.05):
+  #   - Silne efekty niedoboru
+  #   - Przedmioty w obfitych magazynach tanieją szybko
+  # 
+  # Zalecane: 0.01 (delikatny globalny wpływ)
+  sensitivity: 0.01
+  
+  # Bazowa całkowita ilość przedmiotów na serwerze. Powyżej tego = cena W DÓŁ, poniżej = cena W GÓRĘ.
+  # To jest "oczekiwana" globalna ilość dla każdego typu przedmiotu.
+  # 
+  # Przykład z bazą 1000:
+  #   - Jeśli serwer ma 5000 diamentów w magazynach → cena spada
+  #   - Jeśli serwer ma 200 diamentów w magazynach → cena rośnie
+  # 
+  # Wskazówka: Ustaw wyżej dla pospolitych przedmiotów (bruk), niżej dla rzadkich (netherite)
+  # System używa tego jako uniwersalnej bazy; rzadkość poszczególnych przedmiotów wynika z
+  # ich naturalnych stóp spawnu wpływających na rzeczywiste ilości.
+  # 
+  # Zalecane: 1000 (dobry punkt startowy, dostosuj w zależności od wielkości serwera)
+  global-baseline: 1000
+  
+  # Ogranicz maksymalny wpływ ceny z magazynów świata na cykl (jako procent).
+  # Zapobiega natychmiastowemu załamaniu cen przez masowe farmy magazynowe.
+  # 
+  # Zalecane: 5.0 (delikatny limit, pozwala na stopniowy ruch cen)
+  max-impact-percent: 5.0
+  
+  # Liczba chunków do przetworzenia na tick serwera podczas skanowania.
+  # [PERF: HIGH] - Bezpośrednio wpływa na TPS podczas skanów.
+  # Wyższe = szybsze skany ale większe użycie głównego wątku.
+  # Niższe = wolniejsze skany ale płynniejsza wydajność serwera.
+  # 
+  # Przewodnik wydajności:
+  #   20-30 = Bardzo płynne, ~0.1ms/tick, minimalny wpływ na TPS (wolne skany)
+  #   50-75 = Zrównoważone, ~0.3ms/tick (zalecane)
+  #   100-200 = Szybkie skany, ~0.5-1ms/tick, zauważalne na dużych światach
+  # 
+  # Zalecane: 50 dla większości serwerów, 20-30 dla dużych serwerów
+  chunks-per-tick: 50
+  
+  # Które typy kontenerów uwzględniać w skanowaniu magazynów świata.
+  # Wyłącz typy których nie chcesz aby wpływały na ceny.
+  containers:
+    chests: true           # Zwykłe i pułapki
+    barrels: true          # Beczki
+    shulker-boxes: true    # Wszystkie kolory shulker boxów
+    hoppers: false         # Leje (zazwyczaj transport, nie magazyn)
+    droppers: false        # Podajniki
+    dispensers: false      # Dozowniki
+    furnaces: false        # Piece, wielkie piece, wędzarki
+    brewing-stands: false  # Statywy alchemiczne
+  
+  # Skanuj przedmioty WEWNĄTRZ shulker boxów przechowywanych w kontenerach.
+  # Gdy true: Skrzynia zawierająca shulker box pełen diamentów liczy te diamenty.
+  # Gdy false: Liczy tylko sam przedmiot shulker box, nie jego zawartość.
+  # 
+  # Zalecane: true (daje dokładny obraz całkowitych przedmiotów)
+  scan-shulker-contents: true
+  
+  # Światy do wykluczenia ze skanowania (po nazwie świata, wielkość liter bez znaczenia).
+  # Przydatne do wykluczania światów kreatywnych, minigier, itp.
+  # 
+  # Przykład: excluded-worlds: [creative, minigames, spawn]
+  excluded-worlds: []
+  
+  # ─────────────────────────────────────────────────────────────────────────────
+  # OCHRONA ANTY-MANIPULACYJNA
+  # ─────────────────────────────────────────────────────────────────────────────
+  # Zapobiega budowaniu farm magazynowych przez graczy w celu manipulacji cenami rynkowymi.
+  anti-manipulation:
+    # Maksymalna całkowita liczba przedmiotów liczona z pojedynczego chunka.
+    # Jeśli chunk ma więcej niż to, jego wkład jest proporcjonalnie redukowany.
+    # To zapobiega exploitom "bomb magazynowych" gdzie gracze wypełniają chunki przedmiotami.
+    # 
+    # Przykład: Chunk z 50,000 przedmiotów ale limitem 10,000 wniesie tylko
+    # 20% (10000/50000) liczby każdego materiału z tego chunka.
+    # 
+    # Zalecane: 10000 (pozwala na normalne bazy, ogranicza farmy przemysłowe)
+    per-chunk-item-cap: 10000
+    
+    # Maksymalna liczba przedmiotów POJEDYNCZEGO materiału liczona z jednego chunka.
+    # Zapobiega załamaniu ceny konkretnego przedmiotu przez skoncentrowane magazynowanie.
+    # 
+    # Przykład: 100 podwójnych skrzyń diamentów (345,600 przedmiotów) w jednym chunku
+    # liczyłoby się tylko jako 5,000 diamentów do sum globalnych.
+    # 
+    # Zalecane: 5000 (pozwala na stacki, zapobiega manipulacji monopolistycznej)
+    per-material-chunk-cap: 5000
+    
+    # Minimalny TPS serwera wymagany do uruchomienia skanu.
+    # Jeśli TPS spadnie poniżej tego, skanowanie jest pomijane dla ochrony wydajności.
+    # 
+    # Zalecane: 18.0 (pomiń jeśli serwer ma problemy)
+    min-tps: 18.0
+    
+    # Loguj ostrzeżenia gdy wykryto podejrzane wzorce magazynowania.
+    # Alarmuje adminów o potencjalnych próbach manipulacji rynkiem.
+    # Loguje do konsoli gdy chunk przekroczy per-chunk-item-cap.
+    # 
+    # Zalecane: true (pomaga zidentyfikować exploiterów)
+    log-suspicious: true
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # INTELIGENTNE BUFOROWANIE [PERF: CRITICAL - Włącz dla najlepszej wydajności!]
+  # ─────────────────────────────────────────────────────────────────────────────
+  # Dramatycznie poprawia wydajność skanera przez buforowanie wyników chunków i
+  # ponowne skanowanie tylko chunków zmodyfikowanych od ostatniego skanu.
+  # 
+  # Z buforowaniem: Skany 70-90% szybsze na ustalonych serwerach!
+  # Bez buforowania: Każdy skan sprawdza WSZYSTKIE załadowane chunki.
+  cache:
+    # Włącz buforowanie na poziomie chunka.
+    # Gdy włączone, skaner śledzi które chunki mają aktywność kontenerów
+    # i ponownie skanuje tylko te chunki. Niezmienione chunki używają zbuforowanych wyników.
+    # 
+    # Na ustalonych serwerach może to zredukować pracę skanu o 70-90%.
+    # 
+    # Zalecane: true
+    enabled: true
+    
+    # Jak długo (w sekundach) zanim zbuforowany wynik chunka wygaśnie.
+    # Po tym czasie, chunk zostanie ponownie przeskanowany nawet jeśli nie oznaczony jako brudny.
+    # To zapewnia ostateczną spójność nawet jeśli zdarzenia zostaną pominięte.
+    # 
+    # Zalecane: 600 (10 minut) - balansuje dokładność z wydajnością
+    chunk-expiry-seconds: 600
+    
+    # Wykonaj pełny skan (ignorując cache) co N cykli skanowania.
+    # To zapewnia 100% dokładności okresowo, wyłapując wszelkie pominięte zdarzenia.
+    # 
+    # Przykład: Z scan-interval-seconds=300 i full-refresh-cycles=5,
+    # pełny skan następuje co 25 minut (5 * 300 sekund).
+    # 
+    # Zalecane: 5 (pełny skan co ~25 minut z domyślnym interwałem)
+    full-refresh-cycles: 5
+    
+    # Zapisz wyniki skanu na dysk przy wyłączeniu i wczytaj przy starcie.
+    # Pozwala rynkowi mieć dane cenowe natychmiast po restarcie
+    # bez czekania na zakończenie pierwszego skanu.
+    # 
+    # Plik cache: plugins/TheEndex/world-scan-cache.json
+    # Wczytuje tylko jeśli cache ma mniej niż 1 godzinę.
+    # 
+    # Zalecane: true
+    persist-to-disk: true
+
+# ───────────────────────────────────────────────────────────────────────────────
+# POCZĄTKOWA KONFIGURACJA RYNKU [PERF: MINIMAL - Tylko pierwsze uruchomienie]
+# ───────────────────────────────────────────────────────────────────────────────
+# Te ustawienia mają zastosowanie tylko przy tworzeniu świeżego rynku (brak istniejącego market.yml/db).
+
+# Automatycznie dodaj WSZYSTKIE materiały Minecraft do rynku (oprócz AIR/LEGACY).
+# OSTRZEŻENIE: To tworzy 1000+ przedmiotów rynkowych! Włącz tylko dla testów lub unikalnej rozgrywki.
+# 
+# Zalety: Każdy pojedynczy przedmiot jest handlowalny od pierwszego dnia
+# Wady: Przytłaczające UI, wiele przedmiotów będzie nieużywanych/nieistotnych
+# 
+# Zalecane: false (użyj wyselekcjonowanych ważnych przedmiotów zamiast tego)
+seed-all-materials: false
+
+# Dodaj wyselekcjonowaną listę powszechnie używanych przedmiotów przy pierwszym uruchomieniu.
+# Zawiera rudy, plony, dropy z mobów, bloki budowlane, narzędzia i zbroje.
+# Ignorowane jeśli seed-all-materials jest true.
+# 
+# Zalecane: true (zapewnia dobry rynek startowy bez przytłaczania graczy)
+include-default-important-items: true
+
+# ───────────────────────────────────────────────────────────────────────────────
+# PODATEK TRANSAKCYJNY [PERF: MINIMAL]
+# ───────────────────────────────────────────────────────────────────────────────
+# Zastosuj procentowy podatek na WSZYSTKIE transakcje kupna I sprzedaży.
+# Podatek jest dodawany do kosztów kupna i odejmowany od zarobków ze sprzedaży.
+# Działa jako odpływ pieniędzy do kontroli inflacji ekonomii serwera.
+# Wydajność: Czysta matematyka, brak wpływu.
+# 
+# Przykłady:
+#   0.0 = Brak podatku (zalecane na początek)
+#   2.5 = 2.5% podatku (delikatny odpływ pieniędzy)
+#   5.0 = 5% podatku (umiarkowana kontrola ekonomii)
+#   10.0 = 10% podatku (agresywny środek antyinflacyjny)
+# 
+# Zalecane: 0.0-2.5% dla serwerów survival, 5-10% jeśli inflacja ekonomii jest problemem
+transaction-tax-percent: 0.0
+
+# ───────────────────────────────────────────────────────────────────────────────
+# SPREAD KUPNA/SPRZEDAŻY (Ochrona Anty-Arbitrażowa)
+# ───────────────────────────────────────────────────────────────────────────────
+# Tworzy lukę cenową między cenami kupna i sprzedaży, jak na prawdziwych giełdach.
+# To zapobiega pętli exploitu "sprzedaj drogo, odkup taniej, powtórz".
+#
+# Jak to działa:
+#   - Cena kupna = cena rynkowa × (1 + buy-markup-percent/100)
+#   - Cena sprzedaży = cena rynkowa × (1 - sell-markdown-percent/100)
+#
+# Przykład z 1.5% spreadem w każdą stronę:
+#   - Cena rynkowa: 100
+#   - Płacisz przy KUPNIE: 101.50 (1.5% powyżej rynku)
+#   - Otrzymujesz przy SPRZEDAŻY: 98.50 (1.5% poniżej rynku)
+#   - Całkowity spread: 3% luki między kupnem a sprzedażą
+#
+# To oznacza że gracze potrzebują aby cena ruszyła się WIĘCEJ niż spread aby zyskać
+# na arbitrażu, skutecznie zabijając manipulację małymi wahaniami.
+#
+# Wskazówki balansu:
+#   0.0-0.5% = Minimalny spread, pewien arbitraż wciąż możliwy
+#   1.0-2.0% = Zalecane, zabija większość exploitów będąc uczciwym
+#   3.0-5.0% = Agresywne, może wydawać się karzące dla legalnych handlarzy
+spread:
+  # Włącz system spreadu kupna/sprzedaży.
+  # Gdy wyłączone, kupno i sprzedaż używają tej samej ceny rynkowej.
+  enabled: true
+  
+  # Procentowy narzut dodawany do ceny rynkowej przy KUPNIE.
+  # Gracze płacą o tyle WIĘCEJ niż wyświetlana cena rynkowa.
+  # 
+  # Przykład: 1.5 = Płać 1.5% powyżej ceny rynkowej
+  # Zalecane: 1.5
+  buy-markup-percent: 1.5
+  
+  # Procentowa obniżka odejmowana od ceny rynkowej przy SPRZEDAŻY.
+  # Gracze otrzymują o tyle MNIEJ niż wyświetlana cena rynkowa.
+  # 
+  # Przykład: 1.5 = Otrzymaj 1.5% poniżej ceny rynkowej
+  # Zalecane: 1.5
+  sell-markdown-percent: 1.5
+
+# ───────────────────────────────────────────────────────────────────────────────
+# CZARNA LISTA PRZEDMIOTÓW
+# ───────────────────────────────────────────────────────────────────────────────
+# Materiały które NIGDY nie powinny pojawić się w rynku, nawet z seed-all-materials.
+# Użyj nazw Bukkit Material (np. BEDROCK, COMMAND_BLOCK, BARRIER).
+# 
+# Powszechne przedmioty do zablokowania:
+#   - BEDROCK, COMMAND_BLOCK, STRUCTURE_BLOCK (przedmioty admina)
+#   - BARRIER, LIGHT, DEBUG_STICK (przedmioty tylko kreatywne)
+#   - SPAWNER (jeśli nie chcesz handlu spawnerami)
+# 
+# Przykład: blacklist-items: [BEDROCK, COMMAND_BLOCK, BARRIER, SPAWNER]
+# Zalecane: [] (puste - niech admini decydują przez /market remove)
+blacklist-items: []
+
+# ───────────────────────────────────────────────────────────────────────────────
+# SYSTEM WIRTUALNYCH ZASOBÓW [PERF: LOW]
+# ───────────────────────────────────────────────────────────────────────────────
+# Wirtualny magazyn dla zakupionych przedmiotów. Gdy gracze kupują przedmioty, trafiają one bezpośrednio
+# do zasobów zamiast do ekwipunku. Gracze mogą wypłacić przedmioty gdy są gotowi.
+# To eliminuje problemy z miejscem w ekwipunku podczas zakupów i zapewnia bezpieczny
+# wirtualny portfel dla posiadanych przedmiotów.
+# 
+# Wydajność: Używa SQLite, ~1-5ms na operację. Minimalny wpływ.
+holdings:
+  # Włącz system wirtualnych zasobów (wymaga trybu zapisu SQLite).
+  # Gdy włączone, WSZYSTKIE zakupy trafiają najpierw do zasobów, potem mogą być wypłacone.
+  # 
+  # Zalety: 
+  #   - Brak sprawdzania miejsca w ekwipunku podczas zakupu
+  #   - Przedmioty nie mogą zostać zgubione przez upuszczenie
+  #   - Czyste oddzielenie przedmiotów "posiadanych" vs "noszonych"
+  #   - Obsługuje zakupy hurtowe dowolnej wielkości
+  # 
+  # Wady: 
+  #   - Dodatkowy krok wypłaty przedmiotów do ekwipunku
+  #   - Gracze muszą zrozumieć koncepcję zasobów
+  # 
+  # Zalecane: true (dużo lepsze UX dla handlu)
+  enabled: true
+  
+  # Maksymalna całkowita liczba przedmiotów jaką gracz może trzymać we WSZYSTKICH materiałach.
+  # To zapobiega nadużyciom i puchnięciu bazy danych od nieskończonego chomikowania.
+  # Ustaw na -1 dla nielimitowanych (niezalecane dla serwerów publicznych).
+  # 
+  # Przykłady:
+  #   10000 = Mały limit, zachęca do regularnych wypłat
+  #   100000 = Duży limit, odpowiedni dla większości serwerów
+  #   1000000 = Bardzo duży, dla serwerów ekonomicznych
+  # 
+  # Zalecane: 100000 (wystarczająco dla poważnych handlarzy bez nadużyć)
+  max-total-per-player: 100000
+  
+  # Automatycznie próbuj wypłacić przedmioty do ekwipunku gdy gracze się logują.
+  # Przedmioty są dawane jeśli jest miejsce, w przeciwnym razie pozostają w zasobach.
+  # 
+  # Zalecane: false (pozwól graczom ręcznie wypłacać gdy są gotowi)
+  auto-withdraw-on-login: false
+
+# ───────────────────────────────────────────────────────────────────────────────
+# SYSTEM WIRTUALNYCH DOSTAW [PERF: LOW] (PRZESTARZAŁE - użyj zasobów zamiast tego)
+# ───────────────────────────────────────────────────────────────────────────────
+# System nadmiarowy legacy. Z włączonymi wirtualnymi zasobami, jest używany tylko
+# dla kompatybilności wstecznej. Nowe zakupy trafiają bezpośrednio do zasobów.
+delivery:
+  # Włącz system dostaw (wymaga trybu zapisu SQLite).
+  # Gdy włączone, nadmiarowe przedmioty z zakupów są przechowywane w deliveries.db
+  # i mogą być odebrane później przez GUI Rynku (przycisk Skrzyni Kresu) lub komendy.
+  # 
+  # Zalety: Gracze nigdy nie tracą przedmiotów z pełnego ekwipunku, wspiera zamówienia hurtowe
+  # Wady: Niewielka złożoność dla nowych graczy (muszą odebrać dostawy)
+  # 
+  # Zalecane: true (zapobiega frustracji z utraconych przedmiotów)
+  enabled: true
+  
+  # Automatycznie dostarczaj oczekujące przedmioty gdy gracze się logują.
+  # Przedmioty są dawane jeśli jest miejsce w ekwipunku, w przeciwnym razie pozostają oczekujące.
+  # 
+  # Zalecane: false (pozwól graczom ręcznie odbierać gdy są gotowi)
+  auto-claim-on-login: false
+  
+  # Maksymalna liczba przedmiotów jaką pojedynczy gracz może mieć oczekujących na dostawę.
+  # Zapobiega puchnięciu bazy danych od powtarzanych dużych zamówień.
+  # Ustaw na -1 dla nielimitowanych (niezalecane).
+  # 
+  # Zalecane: 10000 (wystarczająco dla handlarzy hurtowych bez nadużyć)
+  max-pending-per-player: 10000
+
+# ───────────────────────────────────────────────────────────────────────────────
+# DOSTOSOWANIE GUI RYNKU [PERF: MINIMAL]
+# ───────────────────────────────────────────────────────────────────────────────
+gui:
+  # Pokaż wykres ASCII sparkline w widoku szczegółów przedmiotu (shift-klik na przedmioty w GUI).
+  # Zapewnia wizualną historię cen na pierwszy rzut oka.
+  # 
+  # Zalecane: true (pomaga graczom zauważyć trendy)
+  details-chart: true
+
+# ───────────────────────────────────────────────────────────────────────────────
+# TRYB SYSTEMU SKLEPU [PERF: MINIMAL]
+# ───────────────────────────────────────────────────────────────────────────────
+# Wybierz między DOMYŚLNYM przewijanym rynkiem a WŁASNYM sklepem opartym na kategoriach.
+#
+# Tryb DEFAULT:
+#   - Standardowe GUI rynku ze wszystkimi przedmiotami na jednej przewijanej liście
+#   - Używa istniejącej komendy /market
+#   - Najlepsze dla serwerów które chcą prostego odczucia giełdy
+#
+# Tryb CUSTOM:
+#   - Interfejs sklepu oparty na kategoriach w stylu EconomyShopGUI
+#   - Główne menu z ikonami kategorii → Strony kategorii z przedmiotami
+#   - Obsługuje wiele sklepów z własnymi układami
+#   - Konfiguruj w folderze plugins/TheEndex/shops/
+#
+shop:
+  # Tryb wyświetlania sklepu: DEFAULT lub CUSTOM
+  # DEFAULT = Oryginalna przewijana lista rynku
+  # CUSTOM = Sklep oparty na kategoriach z menu głównym
+  mode: DEFAULT
+  
+  # Gdy tryb to CUSTOM, która konfiguracja sklepu ma być używana jako główny sklep.
+  # To odnosi się do pliku w folderze plugins/TheEndex/shops/.
+  # Przykład: "main" ładuje shops/main.yml
+  main-shop: main
+  
+  # Własny alias komendy dla własnego sklepu (używane tylko w trybie CUSTOM).
+  # Gracze mogą wpisać /shop aby otworzyć menu własnego sklepu.
+  # Zostaw puste aby wyłączyć komendę /shop.
+  command: shop
+  
+  # Ustawienia dla trybu sklepu CUSTOM
+  custom:
+    # Liczba slotów przedmiotów na stronę w widokach kategorii (wyłączając nawigację).
+    # Powszechne wartości: 28 (4 rzędy po 7), 36 (4 rzędy po 9), 45 (5 rzędów po 9)
+    items-per-page: 45
+    
+    # Pokaż przycisk powrotu na stronach kategorii
+    show-back-button: true
+    
+    # Slot dla przycisku powrotu (zalecany dolny rząd)
+    back-button-slot: 49
+    
+    # Pokaż przyciski nawigacji stron
+    show-pagination: true
+    
+    # Sloty dla nawigacji (poprzednia/następna)
+    prev-page-slot: 48
+    next-page-slot: 50
+    
+    # Pokaż przycisk wyboru ilości (taki sam jak w domyślnym GUI rynku)
+    # Pozwala graczom wybrać ilość kupna/sprzedaży: 1, 8, 16, 32, 64
+    show-amount-button: true
+    
+    # Slot dla przycisku wyboru ilości
+    amount-button-slot: 45
+    
+    # Pozwól adminom edytować przedmioty przez Shift+Klik (wymaga endex.shop.admin)
+    admin-edit: true
+    
+    # Format wyświetlania ceny w opisie przedmiotu
+    # Dostępne placeholdery: %buy_price%, %sell_price%, %market_price%, %stock%, %demand%
+    price-lore:
+      - "&7"
+      - "&aLewy Klik: &fKup: &6$%buy_price%"
+      - "&cPrawy Klik: &fSprzedaj: &6$%sell_price%"
+      - "&7"
+      - "&8Zapas: %stock% | Popyt: %demand%"
+    
+    # Linia opisu admina (pokazywana graczom z uprawnieniem endex.shop.admin)
+    admin-lore: "&e⚡ Shift Klik: Edytuj przedmiot (Admin)"
+
+# ───────────────────────────────────────────────────────────────────────────────
+# SYSTEM INWESTYCJI [PERF: LOW]
+# ───────────────────────────────────────────────────────────────────────────────
+# Gracze mogą inwestować w przedmioty aby zarabiać pasywny dochód w czasie.
+# Używa procentu składanego opartego na rzeczywistym czasie od zakupu.
+# Wydajność: Prosta matematyka przy wypłacie, brak ciągłych obliczeń.
+investments:
+  # Włącz funkcję inwestycji (komendy /market invest).
+  # Wymaga trybu zapisu SQLite.
+  # 
+  # Zalety: Dodaje głębi ekonomii, nagradza długoterminowe trzymanie
+  # Wady: Może powodować inflację jeśli APR jest zbyt wysokie
+  # 
+  # Zalecane: true dla serwerów ekonomicznych
+  enabled: true
+  
+  # Roczna Stopa Procentowa dla inwestycji (procent składany).
+  # Stosowana ciągle na podstawie czasu upływającego od zakupu.
+  # 
+  # Przykłady:
+  #   3.0 = Konserwatywny 3% roczny zwrot (jak w banku)
+  #   5.0 = Umiarkowany 5% roczny zwrot (zrównoważony)
+  #   10.0 = Agresywny 10% roczny zwrot (wysoka nagroda)
+  # 
+  # Uwaga: Odsetki składają się CIĄGLE, nie rocznie!
+  # Inwestycja 5% APR trzymana przez 1 tydzień zyskuje ~0.096% wartości.
+  # 
+  # Zalecane: 5.0 (zapewnia znaczące zwroty bez inflacji)
+  apr-percent: 5.0
+
+# ───────────────────────────────────────────────────────────────────────────────
+# EKSPORT HISTORII [PERF: LOW] (KOPIE ZAPASOWE I ANALIZA)
+# ───────────────────────────────────────────────────────────────────────────────
+# Eksportuj historię cen do plików CSV dla zewnętrznej analizy lub kopii zapasowej.
+# Wydajność: I/O dysku tylko podczas autozapisu.
+history-export:
+  # Włącz automatyczny eksport CSV podczas cykli autozapisu.
+  # Tworzy jeden plik .csv na przedmiot w określonym folderze.
+  # 
+  # Przydatne do:
+  #   - Tworzenia wykresów cen w Excel/Google Sheets
+  #   - Kopii zapasowej przed dużymi zmianami konfiguracji
+  #   - Analizy ekonomii i balansowania
+  # 
+  # Zalecane: true (minimalny wpływ na wydajność, wartościowe dla adminów)
+  enabled: true
+  
+  # Nazwa folderu (względna do folderu danych pluginu) dla eksportów CSV.
+  # Pełna ścieżka: plugins/TheEndex/history/*.csv
+  folder: history
+
+# ───────────────────────────────────────────────────────────────────────────────
+# ŚLEDZENIE ZASOBÓW
+# ───────────────────────────────────────────────────────────────────────────────
+# Automatycznie wykrywaj gdy gracze zbierają zasoby i opcjonalnie dodawaj do podaży.
+tracking:
+  resources:
+    # Włącz wykrywanie zbierania zasobów (loguje do bazy danych).
+    # Śledzi niszczenie bloków, zabijanie mobów, łowienie ryb, itp.
+    enabled: true
+    
+    # Natychmiast dodaj zebrane zasoby do PODAŻY rynku (wpływa na ceny).
+    # 
+    # Gdy true: Wydobywanie diamentów zwiększa podaż diamentów → cena spada
+    # Gdy false: Tylko śledzi dane, nie wpływa na rynek (tylko analityka)
+    # 
+    # OSTRZEŻENIE: Włączenie tego może spowodować deflację na aktywnych serwerach!
+    # Zalecane: false (utrzymaj rynek napędzany przez handel graczy, nie auto-podaż)
+    apply-to-market: false
+    
+    # Które zdarzenia gry śledzić dla zbierania zasobów.
+    sources:
+      block-break: true    # Rudy, plony, drewno, itp.
+      mob-drops: true      # Proch, kości, perły kresu, itp.
+      fishing: true        # Ryby, skarby
+
+# ───────────────────────────────────────────────────────────────────────────────
+# SYSTEM WYDARZEŃ RYNKOWYCH
+# ───────────────────────────────────────────────────────────────────────────────
+# Tymczasowe mnożniki cen (np. "Gorączka Diamentów" = 2x ceny diamentów).
+# Zarządzane przez komendy /market event lub konfigurację events.yml.
+events:
+  # Maksymalny skumulowany mnożnik dozwolony (zapobiega nadużyciom).
+  # Jeśli wiele wydarzeń wpływa na ten sam przedmiot, ich mnożniki są mnożone
+  # razem, ale wynik jest ograniczony do tej wartości.
+  # 
+  # Przykład z limitem 10.0:
+  #   - Wydarzenie A: 3x mnożnik
+  #   - Wydarzenie B: 5x mnożnik
+  #   - Wynik: min(3 × 5, 10) = 10x efektywna cena
+  # 
+  # Zalecane: 10.0 (pozwala na silne wydarzenia bez psucia ekonomii)
+  multiplier-cap: 10.0
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# KONFIGURACJA DASHBOARDU WEB [PERF: LOW do MEDIUM]
+# ═══════════════════════════════════════════════════════════════════════════════
+# Wbudowany interfejs web do handlu, przeglądania zasobów i wykresów cen w czasie rzeczywistym.
+# Dostęp pod http://[server-ip]:[port] lub użyj komendy /market web dla linków sesji.
+#
+# Wydajność: Serwer web Javalin działa w oddzielnych wątkach, minimalny wpływ na główny
+# wątek. Zużycie pamięci: ~20-50MB dla serwera + aktywne sesje.
+# CPU: <1% w spoczynku, 1-3% przy aktywnym użyciu (wywołania API, połączenia WebSocket).
+
+web:
+  # ─────────────────────────────────────────────────────────────────────────────
+  # PODSTAWOWE USTAWIENIA SERWERA WEB [PERF: LOW]
+  # ─────────────────────────────────────────────────────────────────────────────
+  
+  # Główny przełącznik dla całego dashboardu web.
+  # Wyłącz jeśli chcesz tylko GUI w grze, lub masz obawy o bezpieczeństwo.
+  # 
+  # Zalecane: true (dashboard web jest bardzo przydatny dla graczy i adminów)
+  enabled: true
+  
+  # Adres IP do powiązania serwera web.
+  # 
+  # Opcje:
+  #   127.0.0.1 = Tylko localhost (bezpieczne do testów, wymaga przekierowania portów)
+  #   0.0.0.0 = Wszystkie interfejsy sieciowe (pozwala na dostęp zewnętrzny)
+  #   [konkretne IP] = Powiąż z konkretnym interfejsem sieciowym
+  # 
+  # Uwaga Bezpieczeństwa: Użyj 127.0.0.1 dla tylko-localhost, potem użyj reverse proxy
+  # (nginx/Apache) z HTTPS dla produkcji. Nigdy nie wystawiaj 0.0.0.0 bezpośrednio!
+  # 
+  # Zalecane: 127.0.0.1 z reverse proxy dla produkcji
+  host: 127.0.0.1
+  
+  # Numer portu dla serwera web.
+  # Musi być nieużywany i nie zablokowany przez firewall.
+  # 
+  # Powszechne porty:
+  #   3434 = Domyślny (brak konfliktu z Minecraft 25565)
+  #   8080 = Powszechna alternatywa
+  #   80/443 = Standardowe HTTP/HTTPS (wymaga reverse proxy)
+  # 
+  # Uwaga: Porty poniżej 1024 wymagają uprawnień root/admin na większości systemów.
+  # Zalecane: 3434 lub dowolny nieużywany port powyżej 1024
+  port: 3434
+  
+  # Jak długo sesje web pozostają ważne bez aktywności (w godzinach).
+  # Gracze otrzymują link sesji przez komendę /market web który wygasa po tym czasie.
+  # 
+  # Krótsze czasy (1-2h): Bardziej bezpieczne, ale gracze potrzebują nowych linków często
+  # Dłuższe czasy (6-24h): Wygodniejsze, ale sesje mogą zostać ukradzione
+  # 
+  # Zalecane: 2 godziny (dobry balans między bezpieczeństwem a wygodą)
+  session-duration-hours: 2
+  
+  # ─────────────────────────────────────────────────────────────────────────────
+  # KOMPRESJA ODPOWIEDZI [PERF: LOW - oszczędza przepustowość]
+  # ─────────────────────────────────────────────────────────────────────────────
+  # Włącz kompresję gzip dla odpowiedzi API aby zredukować zużycie przepustowości.
+  # Znacząco poprawia czasy ładowania, szczególnie dla dużych list przedmiotów i historii.
+  # Kompromis: Mały koszt CPU za kompresję, duże oszczędności przepustowości.
+  
+  compression:
+    # Włącz kompresję gzip dla odpowiedzi HTTP.
+    # Nowoczesne przeglądarki automatycznie dekompresują; jest to przezroczyste dla użytkowników.
+    # 
+    # Zalety: 60-80% mniejsze rozmiary odpowiedzi, szybsze ładowanie stron
+    # Wady: Minimalny narzut CPU na kompresję
+    # 
+    # Zalecane: true (standardowa optymalizacja web)
+    enabled: true
+    
+    # Poziom kompresji (1-9).
+    # Niższy = szybsza kompresja, większy rozmiar
+    # Wyższy = wolniejsza kompresja, mniejszy rozmiar
+    # 
+    # Powszechne wartości:
+    #   1 = Najszybszy (minimalne CPU, mniejsza kompresja)
+    #   4 = Zrównoważony (dobra kompresja, niskie CPU) [DOMYŚLNE]
+    #   6 = Standard (typowy domyślny serwera web)
+    #   9 = Maksymalny (najlepsza kompresja, najwyższe CPU)
+    # 
+    # Zalecane: 4 (zrównoważony dla użycia dashboardu w czasie rzeczywistym)
+    level: 4
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # METODY AKTUALIZACJI W CZASIE RZECZYWISTYM
+  # ─────────────────────────────────────────────────────────────────────────────
+  
+  # Interwał odpytywania REST API (milisekundy) dla klientów bez WebSocket.
+  # Jeśli WebSocket jest wyłączony, UI odpytuje API z tą częstotliwością.
+  # 
+  # Niskie wartości (500-1000ms): Aktualizacje bliskie czasu rzeczywistego, wyższe obciążenie serwera
+  # Wyższe wartości (2000-5000ms): Mniej responsywne, niższe obciążenie serwera
+  # 
+  # Zalecane: 1000ms (1 sekunda) - dobra responsywność bez spamu
+  poll-ms: 1000
+  
+  # Liczba historycznych punktów danych zwracanych przez endpoint /api/items.
+  # Wpływa na szczegółowość wykresu w web UI.
+  # 
+  # Zalecane: 120 punktów (2 godziny przy interwale aktualizacji 60s)
+  history-limit: 120
+  
+  # Server-Sent Events (SSE) dla aktualizacji w czasie rzeczywistym (metoda legacy).
+  # SSE zapewnia jednokierunkowe aktualizacje push serwer→klient przez endpoint /api/sse.
+  # 
+  # Zalety: Proste, działa przez proxy HTTP
+  # Wady: Tylko jednokierunkowe, mniej wydajne niż WebSocket
+  # 
+  # Uwaga: WebSocket jest preferowany; trzymaj SSE wyłączone chyba że potrzebne dla kompatybilności.
+  # Zalecane: false (użyj WebSocket zamiast tego)
+  sse:
+    enabled: false
+  
+  # WebSocket dla dwukierunkowej komunikacji w czasie rzeczywistym (nowoczesna metoda).
+  # Zapewnia natychmiastowe aktualizacje cen, potwierdzenia handlu i powiadomienia.
+  # Endpoint: /api/ws
+  # 
+  # Zalety: Szybkie, wydajne, dwukierunkowe, niskie opóźnienia
+  # Wady: Wymaga reverse proxy obsługującego WebSocket (nginx, Caddy, itp.)
+  # 
+  # Zalecane: true (najlepsze doświadczenie użytkownika, standard dla nowoczesnych aplikacji web)
+  websocket:
+    enabled: true
+  
+  # ─────────────────────────────────────────────────────────────────────────────
+  # LIMITOWANIE API (RATE LIMITING)
+  # ─────────────────────────────────────────────────────────────────────────────
+  # Zapobiega nadużyciom API i chroni serwer przed atakami spam/DoS.
+  
+  rate-limit:
+    # Włącz limitowanie na sesję dla endpointów API.
+    # Limituje ile żądań pojedyncza sesja może wykonać w oknie czasowym.
+    # 
+    # Zalecane: true (kluczowa funkcja bezpieczeństwa)
+    enabled: true
+    
+    # Maksymalna liczba dozwolonych żądań API...
+    requests: 30
+    
+    # ...w ciągu tylu sekund (okno kroczące).
+    # Przykład: 30 żądań na 10 sekund = ~3 żądania/sekundę szybkości burst
+    # 
+    # Dostosuj w zależności od pojemności serwera:
+    #   - Małe serwery: 20-30 żądań / 10-15 sekund
+    #   - Duże serwery: 50-100 żądań / 10 sekund
+    # 
+    # Zalecane: 30 na 10 sekund (pozwala na handel seryjny bez nadużyć)
+    per-seconds: 10
+    
+    # Zwolnij wbudowane web UI z limitowania.
+    # Oficjalne UI wykonuje wiele legalnych żądań (wykresy, auto-odświeżanie).
+    # Zewnętrzni konsumenci API (skrypty, boty) są nadal limitowani.
+    # 
+    # Jak to działa: UI zawiera specjalne nagłówki które omijają limity.
+    # Bezpieczeństwo: Własne UI lub konsumenci API nie mogą sfałszować tych nagłówków.
+    # 
+    # Zalecane: true (poprawia UX bez ryzyka bezpieczeństwa)
+    exempt-ui: true
+  
+  # ─────────────────────────────────────────────────────────────────────────────
+  # UPRAWNIENIA I ROLE
+  # ─────────────────────────────────────────────────────────────────────────────
+  # Kontroluj kto może handlować i przeglądać dane przez interfejs web.
+  
+  roles:
+    # Domyślna rola gdy gracz otwiera link sesji web.
+    # 
+    # TRADER: Może przeglądać ceny, wykresy i wykonywać transakcje kupna/sprzedaży
+    # VIEWER: Może tylko przeglądać ceny i wykresy (tylko do odczytu, brak handlu)
+    # 
+    # Zalecane: TRADER (najbardziej użyteczne domyślnie, zaufaj swoim graczom)
+    default: TRADER
+    
+    # Węzeł uprawnień do nadania roli TRADER przez uprawnienia Minecraft.
+    # Gracze z tym uprawnieniem mogą handlować nawet jeśli domyślnie jest VIEWER.
+    # 
+    # Przykład: Daj graczom VIP dostęp do handlu podczas gdy domyślni użytkownicy tylko przeglądają.
+    # Zalecane: endex.web.trade
+    trader-permission: endex.web.trade
+    
+    # Węzeł uprawnień do przeglądania zasobów innych graczy przez /api/holdings/{uuid}.
+    # Funkcja tylko dla adminów do monitorowania ekonomii i anty-cheat.
+    # 
+    # Zalecane: endex.web.admin
+    admin-view-permission: endex.web.admin
+  
+  # ─────────────────────────────────────────────────────────────────────────────
+  # IKONY PRZEDMIOTÓW MINECRAFT W WEB UI
+  # ─────────────────────────────────────────────────────────────────────────────
+  # Wyświetlaj rzeczywiste tekstury przedmiotów/bloków Minecraft zamiast ogólnych ikon.
+  
+  icons:
+    # Włącz ekstrakcję i serwowanie tekstur Minecraft w web UI.
+    # Sprawia że dashboard wygląda znacznie bardziej profesjonalnie.
+    # 
+    # Zalecane: false domyślnie (wymaga konfiguracji resource packa)
+    enabled: false
+    
+    # Źródło tekstur resource packa. Akceptuje:
+    #   1. Lokalna ścieżka pliku .zip: "plugins/TheEndex/packs/vanilla-1.20.zip"
+    #   2. Lokalna ścieżka folderu: "plugins/TheEndex/resourcepack"
+    #   3. Bezpośredni URL do .zip: "https://example.com/pack.zip"
+    #   4. Pusty ciąg "" = Użyj wcześniej wyekstrahowanego packa jeśli istnieje
+    # 
+    # Gdzie zdobyć packi:
+    #   - Pobierz oficjalny vanilla pack z Minecraft.net
+    #   - Wyekstrahuj z folderu resource-packs twojego serwera
+    #   - Użyj własnego URL resource packa serwera
+    # 
+    # Pierwsze uruchomienie z icons.enabled=true i źródłem wyekstrahuje tekstury.
+    # Po ekstrakcji, możesz ustawić source="" aby używać wersji zcache'owanej.
+    # 
+    # Zalecane: "" (wyekstrahuj raz, potem cache dla wydajności)
+    source: ""
+  
+  # ─────────────────────────────────────────────────────────────────────────────
+  # INTEGRACJE ADDONÓW (Tylko Wyświetlanie)
+  # ─────────────────────────────────────────────────────────────────────────────
+  # Lista zainstalowanych addonów do pokazania w zakładce "Addons" w web UI.
+  # Obecnie tylko dla nawigacji/wyświetlania; funkcjonalna integracja wkrótce.
+  # 
+  # Format: [{name: "Nazwa Addonu", description: "Co robi"}]
+  # Przykład:
+  # addons:
+  #   - name: "Crypto Addon"
+  #     description: "Handel futures i symulacja kryptowalut"
+  #   - name: "Black Market"
+  #     description: "Podziemna ekonomia z mechaniką ryzyka/nagrody"
+  # 
+  # Zalecane: Zostaw puste chyba że masz własne addony
+  addons: []
+  
+  # ─────────────────────────────────────────────────────────────────────────────
+  # NADPISANIE WŁASNEGO WEB UI (Zaawansowane)
+  # ─────────────────────────────────────────────────────────────────────────────
+  # Zastąp wbudowane web UI swoim własnym HTML/CSS/JavaScript.
+  
+  custom:
+    # Włącz tryb własnego UI (serwuj z folderu zamiast wbudowanych zasobów).
+    # Gdy włączone, pliki są ładowane z plugins/TheEndex/webui/
+    # 
+    # Przypadki użycia:
+    #   - Rebranding UI z motywem/kolorami twojego serwera
+    #   - Dodanie własnych funkcji lub integracji
+    #   - Tłumaczenie UI na inny język
+    # 
+    # Zalecane: false (użyj domyślnego UI chyba że jesteś web developerem)
+    enabled: false
+    
+    # Nazwa folderu (względna do folderu danych pluginu) zawierającego pliki własnego UI.
+    # Musi zawierać co najmniej: index.html
+    # Pełna ścieżka: plugins/TheEndex/webui/index.html
+    root: webui
+    
+    # Przeładuj index.html przy każdym żądaniu (tryb developerski).
+    # 
+    # Gdy true: Zmiany w HTML/CSS/JS są widoczne natychmiast (bez restartu)
+    # Gdy false: index.html jest buforowany w pamięci (dużo szybciej)
+    # 
+    # OSTRZEŻENIE: Włącz tylko podczas aktywnego rozwoju!
+    # Zalecane: false (true tylko gdy aktywnie edytujesz własne UI)
+    reload: false
+    
+    # Eksportuj domyślne wbudowane UI jako szablon startowy.
+    # Przy pierwszym uruchomieniu z custom.enabled=true, jeśli index.html nie istnieje,
+    # plugin wyekstrahuje swoje wbudowane UI do webui/ dla ciebie do dostosowania.
+    # 
+    # Zalecane: true (zapewnia działającą bazę do modyfikacji)
+    export-default: true
+  
+  # ─────────────────────────────────────────────────────────────────────────────
+  # API ZASOBÓW EKWIPUNKU
+  # ─────────────────────────────────────────────────────────────────────────────
+  # Migawki ekwipunku w czasie rzeczywistym dla zakładki "Zasoby" w dashboardzie web.
+  
+  holdings:
+    inventory:
+      # Włącz API migawki ekwipunku na żywo (endpoint /api/holdings).
+      # Pokazuje jakie przedmioty gracze online obecnie mają w swoim ekwipunku.
+      # 
+      # Uwaga prywatności: Widoczne tylko dla samego gracza chyba że uprawnienie admina.
+      # Zalecane: true (użyteczna funkcja, szanująca prywatność domyślnie)
+      enabled: true
+      
+      # Uwzględnij przedmioty ze Skrzyni Kresu w liczbie zasobów.
+      # 
+      # Gdy true: Zasoby pokazują ekwipunek + skrzynię kresu
+      # Gdy false: Zasoby pokazują tylko główny ekwipunek
+      # 
+      # Zalecane: false (skrzynia kresu to "przechowywane" przedmioty, nie aktywnie trzymane)
+      include-enderchest: false
+      
+      # Czas buforowania dla migawek ekwipunku (w sekundach).
+      # Skanowanie ekwipunków jest stosunkowo szybkie, ale buforowanie redukuje narzut.
+      # 
+      # Niskie wartości (5-10s): Dokładniejsze dane w czasie rzeczywistym
+      # Wyższe wartości (30-60s): Lepsza wydajność, nieco nieświeże dane
+      # 
+      # Zalecane: 15 sekund (dobry balans)
+      cache-seconds: 15
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# LOGOWANIE I DEBUGOWANIE [PERF: LOW - tryb verbose zwiększa I/O dysku]
+# ═══════════════════════════════════════════════════════════════════════════════
+logging:
+  # Włącz szczegółowe logowanie debugowania (poziom INFO).
+  # [PERF: MEDIUM gdy włączone] - Loguje każdą aktualizację ceny, transakcję i żądanie API.
+  # 
+  # Gdy true: Szczegółowe logi do rozwiązywania problemów i monitorowania
+  # Gdy false: Tylko ostrzeżenia i błędy logowane (czystsza konsola)
+  # 
+  # OSTRZEŻENIE: Tryb verbose znacząco zwiększa rozmiar pliku logów!
+  # Włącz tylko gdy aktywnie debugujesz problemy lub monitorujesz ekonomię.
+  # 
+  # Zalecane: false (włącz tymczasowo do rozwiązywania problemów)
+  verbose: false
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# SPRAWDZANIE AKTUALIZACJI [PERF: MINIMAL - uruchamia się raz przy starcie]
+# ═══════════════════════════════════════════════════════════════════════════════
+# Sprawdza nowe wersje pluginu przy starcie i powiadamia w konsoli + opów.
+update-checker:
+  # Włącz automatyczne sprawdzanie aktualizacji przy starcie serwera.
+  enabled: true
+  
+  # Powiadom operatorów (OP) gdy dołączą jeśli aktualizacja jest dostępna.
+  # Otrzymają klikalną wiadomość z linkiem do pobrania.
+  notify-ops: true
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# KONIEC KONFIGURACJI
+# ═══════════════════════════════════════════════════════════════════════════════
+# Pamiętaj aby uruchomić /endex reload po wprowadzeniu zmian!
+# 
+# Więcej pomocy:
+#   - Dokumentacja: https://lokixcz-plugins.kagsystems.tech/introduction/
+#   - Wsparcie Discord: https://discord.com/invite/ujFRXksUBE
+#   - Śledzenie Błędów: https://github.com/khristianaarongarcia/endex/issues
+# 
+# Ciesz się swoją dynamiczną ekonomią rynkową! 🎉

@@ -1,0 +1,648 @@
+# The Endex - 한국어 언어 파일
+# 언어: 한국어 (ko)
+# 번역: Gemini AI
+
+# =============================================================================
+# 일반 메시지 (GENERAL MESSAGES)
+# =============================================================================
+general:
+  prefix: "&6[TheEndex]"
+  no-permission: "&c권한이 없습니다."
+  player-only: "&c이 명령어는 플레이어만 사용할 수 있습니다."
+  invalid-args: "&c인자가 올바르지 않습니다. &e/market help&c를 입력해 명령어를 확인하세요."
+  player-not-found: "&c플레이어를 찾을 수 없습니다: {player}"
+  invalid-number: "&c유효하지 않은 숫자입니다: {value}"
+  invalid-amount: "&c유효한 수량을 입력해주세요."
+  invalid-item: "&c알 수 없는 아이템입니다: {item}"
+  must-hold-item: "&c이 명령어를 사용하려면 아이템을 손에 들어야 합니다."
+  reload-success: "&a설정을 성공적으로 다시 불러왔습니다!"
+  reload-complete: "&6[The Endex] &a재설정 완료."
+  enabled: "&a활성화됨"
+  disabled: "&c비활성화됨"
+  yes: "예"
+  no: "아니요"
+  none: "없음"
+  page: "페이지"
+  
+# =============================================================================
+# 시장 명령어 (MARKET COMMANDS)
+# =============================================================================
+market:
+  shop:
+    not-available: "&c커스텀 상점 시스템을 사용할 수 없습니다."
+    opened: "&a상점을 열었습니다: {name}"
+    not-found: "&c상점을 찾을 수 없습니다: {name}"
+    
+  default:
+    opened-gui: "&a시장 메뉴를 열었습니다."
+    no-gui-console: "&c콘솔에서는 메뉴를 열 수 없습니다."
+    
+  editor:
+    opened: "&a시장 에디터를 열었습니다."
+    not-available: "&c이 버전에서는 시장 에디터를 사용할 수 없습니다."
+    
+  top:
+    header: "&6=== 상위 거래자 ==="
+    entry: "&e{rank}. &f{player} &7- &a{amount}"
+    invalid-type: "&c유효하지 않은 타입입니다. 사용 가능: bought, sold, profit"
+    no-data: "&7데이터가 아직 없습니다."
+    page-info: "&7페이지 {page}/{total}"
+    
+  event:
+    header: "&6=== 진행 중인 시장 이벤트 ==="
+    none: "&7현재 진행 중인 이벤트가 없습니다."
+    broadcast: "&a[{event}] 이벤트가 시작되었습니다! &7(배율: {multiplier}배)"
+    silent: "&7[{event}] 이벤트가 조용히 시작되었습니다. &7(배율: {multiplier}배)"
+    active: "&e{event} &7- 배율: &a{multiplier}배"
+    usage-hint: "&7&e/market event <이름> [silent]&7를 사용하여 이벤트를 실행하세요."
+    cleared: "&a모든 시장 이벤트가 종료되었습니다."
+    end-usage: "&c사용법: /market event end <이름>"
+    ended: "&a이벤트 종료: &e{event}"
+    not-found: "&c'{event}' 이벤트는 현재 진행 중이 아닙니다."
+    unknown: "&c알 수 없는 이벤트입니다: {event}"
+    usage: "&c사용법: /market event <start|end|clear|list> [이름] [silent]"
+
+  delivery:
+    not-enabled: "&c배송 시스템이 활성화되어 있지 않습니다."
+    usage: "&c사용법: /market delivery [list|claim|claimall]"
+    gui-hint: "&7&e/market delivery list&7를 입력해 대기 중인 배송을 확인하세요."
+    no-pending: "&7대기 중인 배송이 없습니다."
+    header: "&6=== 대기 중인 배송 (페이지 {page}/{total}) ==="
+    entry: "&e{item} &7x&a{amount}"
+    claim-usage: "&c사용법: /market delivery claim <아이템>"
+    claim-none: "&c받을 {item} 배송이 없습니다."
+    claim-success: "&a{item} {amount}개를 받았습니다!"
+    claim-partial: "&a{item} {amount}개를 받았습니다. 인벤토리가 부족하여 &e{remaining}개가 남았습니다&7."
+    still-pending: "&7인벤토리가 가득 차서 {item} {remaining}개가 대기 중입니다."
+    make-space: "&7인벤토리에 공간을 만든 후 다시 시도하세요."
+    claimall-none: "&c받을 배송물이 없습니다."
+    claimall-success: "&a모든 배송물을 받았습니다! (총 {count}개)"
+    claimall-partial: "&a{claimed}개의 배송을 받았습니다. {remaining}개 아이템이 아직 대기 중입니다."
+
+  holdings:
+    not-enabled: "&c개인 창고 시스템이 활성화되어 있지 않습니다."
+    empty: "&7창고가 비어 있습니다."
+    header: "&6=== 나의 창고 (페이지 {page}/{total}) ==="
+    entry: "&e{item} &7x&a{amount} &7(가치: &e{value}&7)"
+    and-more: "&7...외 {count}종의 아이템"
+    total-value: "&6총 자산 가치: &e{value}"
+    withdraw-hint: "&7&e/market withdraw <아이템>&7를 입력해 아이템을 꺼낼 수 있습니다."
+    gui-hint: "&7또는 &e/market gui holdings&7를 입력해 메뉴를 확인하세요."
+
+  withdraw:
+    header: "&6=== 아이템 꺼내기 ==="
+    usage-single: "&e/market withdraw <아이템> [수량] &7- 특정 아이템 꺼내기"
+    usage-all: "&e/market withdraw all &7- 모든 아이템 꺼내기"
+    success: "&e{item} {amount}개&a를 창고에서 꺼냈습니다!"
+    failed: "&c{item}를 꺼내지 못했습니다."
+    inventory-full: "&c인벤토리가 가득 찼습니다. &e{item} {remaining}개가 창고에 남아 있습니다."
+    still-holding: "&7창고에 {item} {remaining}개가 남아 있습니다."
+    nothing: "&c창고에 {item}가 없습니다."
+    all-header: "&6창고에서 모든 아이템을 꺼내는 중..."
+    none-withdrawn: "&c아이템을 꺼내지 못했습니다. 인벤토리를 확인하세요."
+    total-success: "&a{count}종의 아이템을 꺼냈습니다!"
+    and-more: "&7({remaining}종의 아이템이 창고에 더 남아 있습니다)"
+    still-remaining: "&7일부 아이템은 인벤토리 공간이 부족하여 꺼내지 못했습니다."
+    make-space: "&7공간을 확보한 후 &e/market withdraw all&7을 다시 입력하세요."
+
+  buy:
+    success: "&a{item} {amount}개를 {price}에 구매했습니다!"
+    success-single: "&a{item}를 {price}에 구매했습니다!"
+    not-enough-money: "&c금액이 부족합니다. (필요: {price}, 보유: {balance})"
+    item-not-available: "&c이 아이템은 구매할 수 없습니다."
+    item-not-tracked: "&c{item}은 시장 추적 대상이 아닙니다."
+    inventory-full: "&c인벤토리가 가득 찼습니다."
+    max-exceeded: "&c한 번에 최대 {max}개까지만 구매할 수 있습니다."
+    price-info: "&7{item}: &e개당 {price} &7(최대 구매: {max})"
+    usage: "&c사용법: /market buy <아이템> <수량>"
+    cancelled: "&c서버 정책에 의해 구매가 취소되었습니다."
+    capped: "&6인벤토리 공간 부족으로 {item} 구매가 {amount}개로 제한되었습니다 (요청: {requested})."
+    capacity-hint: "&7팁: 대량 구매 시 인벤토리를 비우거나 개인 창고를 이용하세요."
+    tax-info: "&8(세금: {percent}% 적용 시 {tax})"
+    
+  sell:
+    success: "&a{item} {amount}개를 {price}에 판매했습니다! (세금 {tax} / {percent}%)"
+    success-single: "&a{item}를 {price}에 판매했습니다!"
+    not-enough-items: "&c{item}이 부족합니다. (필요: {required}, 보유: {owned})"
+    item-not-sellable: "&c이 아이템은 판매할 수 없습니다."
+    item-not-tracked: "&c{item}은 시장 추적 대상이 아닙니다."
+    not-holding-item: "&c아이템을 손에 들어야 판매할 수 있습니다."
+    price-info: "&7{item}: &e개당 {price}"
+    sold-all: "&a보유한 모든 {item} ({amount}개)을 {price}에 판매했습니다!"
+    nothing-to-sell: "&c판매할 아이템이 없습니다."
+    usage: "&c사용법: /market sell <아이템> <수량>"
+    cancelled: "&c서버 정책에 의해 판매가 취소되었습니다."
+
+  sellholdings:
+    success: "&a창고의 {item} {amount}개를 {price}에 판매했습니다! (세금 {tax} / {percent}%)"
+    usage: "&c사용법: /market sellholdings <아이템> <수량>"
+    
+  price:
+    header: "&6=== {item} 시세 ==="
+    buy-price: "&a구매가: &e{price}"
+    sell-price: "&c판매가: &e{price}"
+    not-tradeable: "&c이 아이템은 거래할 수 없습니다."
+    price-change: "&7시세 변동 (24시간): {change}"
+    trend-up: "&a↑ {percent}%"
+    trend-down: "&c↓ {percent}%"
+    trend-stable: "&7→ 안정적"
+    usage: "&c사용법: /market price <아이템>"
+    invalid-material: "&c알 수 없는 아이템: {material}"
+    
+  holdings_alt:
+    header: "&6=== 나의 자산 === "
+    no-holdings: "&7아직 투자한 내역이 없습니다."
+    item-line: "&e{item}: &a{amount}개 &7(가치: &e{value}&7)"
+    total-value: "&6총 자산 가치: &e{value}"
+    profit-loss: "&7수익/손실: {pl}"
+    limit-reached: "&c창고 한도에 도달했습니다 (최대 {max}개). 아이템을 먼저 꺼내세요."
+    added-to-holdings: "&e  → 아이템이 &d나의 창고&e에 추가되었습니다."
+    withdraw-command: "&7&e/market withdraw {item}&7을 입력해 인벤토리로 가져올 수 있습니다."
+    none-of-item: "&c창고에 {item}가 없습니다."
+    not-enough: "&c창고에 {item}이 {owned}개뿐입니다. ({required}개 필요)"
+    
+  invest:
+    success: "&a{price}를 {item} {amount}개에 투자했습니다!"
+    not-enough-money: "&c투자를 위해 {price}가 필요합니다."
+    invalid-amount: "&c유효한 투자 수량을 입력하세요."
+    not-enabled: "&c투자 기능이 비활성화되어 있습니다."
+    usage: "&e/market invest buy <아이템> <수량> &7| &e/market invest list &7| &e/market invest redeem-all"
+    
+  trend:
+    header: "&6=== 시장 동향 ==="
+    top-gainers: "&a▲ 상승 종목"
+    top-losers: "&c▼ 하락 종목"
+    item-line: "&e{item}: {change}"
+    no-data: "&7시장 데이터가 없습니다."
+    
+  history:
+    header: "&6=== 거래 내역 ==="
+    no-history: "&7거래 내역이 없습니다."
+    buy-line: "&a[구매] &e{item} x{amount} &7가격: &e{price} &7({time})"
+    sell-line: "&c[판매] &e{item} x{amount} &7가격: &e{price} &7({time})"
+    
+  search:
+    header: "&6=== '{query}' 검색 결과 ==="
+    no-results: "&7'{query}'에 대한 결과가 없습니다."
+    result-line: "&e{item} &7- 구매: &a{buy} &7| 판매: &c{sell}"
+
+# =============================================================================
+# GUI 메시지 (GUI MESSAGES)
+# =============================================================================
+gui:
+  market:
+    title: "&5The Endex 시장"
+    buy-title: "&5구매: {item}"
+    sell-title: "&5판매: {item}"
+    category-title: "&5{category}"
+    category_section: "&8카테고리 섹션"
+    search_prompt: "&e채팅창에 검색어를 입력하세요. 빈 메시지는 검색 취소입니다."
+    
+  details:
+    title: "&5Endex: &b{item}"
+    title_prefix: "Endex:"
+    chart: "&8차트: &7{bars}"
+    inventory_holdings: "&7인벤토리: &b{inv} &7| 창고: &d{holdings}"
+    buy_1: "&a1개 구매"
+    buy_64: "&a64개 구매"
+    sell_1_inv: "&c인벤토리에서 1개 판매"
+    sell_all_inv: "&c인벤토리 모두 판매 ({count}개)"
+    sell_1_holdings: "&d창고에서 1개 판매"
+    sell_all_holdings: "&d창고 모두 판매 ({count}개)"
+    
+  deliveries:
+    title: "&5대기 중인 배송"
+    unavailable: "&c배송 시스템을 사용할 수 없습니다."
+    no_pending: "&7대기 중인 배송 없음"
+    all_claimed: "&8모든 아이템을 받았습니다!"
+    pending_count: "&6&e{count}개&6의 아이템이 대기 중입니다"
+    click_hint: "&8클릭하여 세부 정보 확인 및 받기"
+    empty: "&7배송 대기 목록이 비어 있습니다"
+    item_pending: "&6대기 중: &e{count}"
+    inv_space: "&7인벤토리 여유: &a{space}"
+    left_click: "&a좌클릭: &7가능한 만큼 받기"
+    right_click: "&e우클릭: &71세트 받기 ({stack})"
+    claim_all: "&a모두 받기"
+    claim_all_desc: "&7대기 중인 모든 배송물을 받습니다"
+    claim_all_hint: "&8(인벤토리 공간만큼)"
+    claimed: "&a{item} {count}개를 받았습니다!"
+    still_pending: "&e{item} {count}개가 대기 중입니다 (인벤토리 가득 참)."
+    still_pending_simple: "&e{item} {count}개가 아직 대기 중입니다."
+    claimed_total: "&a총 {count}개의 아이템을 받았습니다!"
+    items_remaining: "&e{count}개의 아이템이 대기 중입니다 (인벤토리 가득 참)."
+    item-detail: "&7  • &b{item}: &6{count}"
+    
+  holdings:
+    title: "&5나의 창고"
+    unavailable: "&c창고 시스템을 사용할 수 없습니다."
+    count: "&6{count} &e/ {max}개"
+    materials: "&7{count}종의 아이템"
+    click_hint: "&8클릭하여 세부 정보 확인 및 꺼내기"
+    empty: "&7창고가 비어 있습니다"
+    empty_hint: "&8아이템을 구매하면 여기에 보관됩니다"
+    no_items: "&7창고에 보관된 아이템이 없습니다"
+    no_items_hint1: "&8아이템을 구매하여 창고를 채워보세요"
+    no_items_hint2: "&8사용법: /market buy <아이템> <수량>"
+    item_qty: "&6수량: &e{qty}"
+    item_avg_cost: "&7평균 구매가: &f{cost}"
+    item_current_price: "&7현재가: &a{price}"
+    item_value: "&7가치: &a{value} {pnl_color}({pnl})"
+    inv_space: "&7인벤토리 여유: &a{space}"
+    left_click: "&a좌클릭: &7모두 꺼내기"
+    right_click: "&e우클릭: &71세트 꺼내기 ({stack})"
+    stats_title: "&6자산 통계"
+    stats_total_items: "&7총 아이템 수: &e{count} / {max}"
+    stats_unique: "&7보유 종류: &e{count}종"
+    stats_total_value: "&7총 가치: &a{value}"
+    stats_total_cost: "&7총 구매 비용: &f{cost}"
+    stats_pnl: "수익률: {pnl}"
+    withdraw_all: "&a모두 꺼내기"
+    withdraw_all_desc: "&7창고의 모든 아이템을 꺼냅니다"
+    withdraw_all_hint: "&8(인벤토리 공간만큼)"
+    withdrew: "&a{item} {count}개를 꺼냈습니다!"
+    still_in_holdings: "&e{item} {count}개가 창고에 남았습니다 (인벤토리 가득 참)."
+    still_in_holdings_simple: "&e{item} {count}개가 창고에 남아 있습니다."
+    withdrew_total: "&a총 {count}개의 아이템을 꺼냈습니다!"
+    items_remaining: "&e{count}개의 아이템이 창고에 남아 있습니다 (인벤토리 가득 참)."
+    
+  buttons:
+    back: "&e뒤로가기"
+    back_to_market: "&e시장으로 돌아가기"
+    next_page: "&e다음 페이지"
+    prev_page: "&e이전 페이지"
+    close: "&c닫기"
+    search: "&b검색: {search} &7(좌: 설정, 우: 초기화)"
+    search_none: "&8<없음>"
+    category: "&b카테고리: {category} &7(클릭)"
+    group: "&d그룹화: {status} &7(클릭)"
+    group_on: "종류별 정렬 (ON)"
+    group_off: "OFF"
+    sort: "&d정렬: {sort} &7(클릭)"
+    holdings: "&d나의 창고 &7(클릭)"
+    deliveries: "&d배송함 &7(클릭)"
+    
+  item:
+    price: "&7가격: &a{price} &7({arrow} {diff}, {pct})"
+    buy_sell: "&a구매: {buy} &7| &e판매: {sell}"
+    last_cycle: "&8최근 사이클: &7수요 {demand} / 공급 {supply} ({pct})"
+    event_multiplier: "&3이벤트: {mul}배 &7적용: &a{effective}"
+    min_max: "&8최저 {min}  최고 {max}"
+    history: "&7내역: {history}"
+    click_hint: "&8좌: 구매  우: 판매  수량: {amount}"
+    details_hint: "&8Shift/휠 클릭: 상세 정보"
+    you_have: "&7보유 수량: &b{count}개"
+    balance: "&7잔액: &6{balance}"
+
+# =============================================================================
+# 커스텀 상점 (CUSTOM SHOPS)
+# =============================================================================
+shops:
+  created: "&a커스텀 상점 '{name}'이 생성되었습니다!"
+  deleted: "&c상점 '{name}'이 삭제되었습니다."
+  not-found: "&c상점을 찾을 수 없습니다: {name}"
+  not-available: "&c상점 시스템을 사용할 수 없습니다."
+  already-exists: "&c이미 존재하는 상점 이름입니다."
+  item-added: "&a{item}이 상점 '{name}'에 추가되었습니다."
+  item-removed: "&c{item}이 상점 '{name}'에서 제거되었습니다."
+  buy-only: "&7이 상점은 구매만 가능합니다."
+  sell-only: "&7이 상점은 판매만 가능합니다."
+  editor-not-available: "&c상점 에디터를 사용할 수 없습니다."
+  
+  editor:
+    title: "&5상점 에디터: {name}"
+    add-item: "&a아이템 추가"
+    remove-item: "&c아이템 제거"
+    edit-prices: "&e가격 수정"
+    toggle-buy: "&6구매 활성화 전환"
+    toggle-sell: "&6판매 활성화 전환"
+    save: "&a변경 사항 저장"
+    
+  gui:
+    not-loaded: "&c상점 시스템이 로드되지 않았습니다."
+    back-to-menu: "&c« 메뉴로 돌아가기"
+    back-to-menu-lore: "&7카테고리 목록으로 돌아가기"
+    search-title: "&b🔍 검색"
+    search-title-with: "&b🔍 검색어: {query}"
+    search-lore-empty: "&7클릭하여 아이템 검색"
+    search-lore-current: "&7현재: &b{query}"
+    search-lore-found: "&7검색 결과: &f{count}개"
+    search-lore-left: "&e좌클릭: &f검색어 입력"
+    search-lore-new: "&e좌클릭: &f새로운 검색"
+    search-lore-right: "&c우클릭: &f검색어 초기화"
+    search-lore-hint: "&8채팅으로 필터링"
+    search-prompt: "&a✎ &e검색어를 입력하세요. 취소하려면 &ccancel&e을 입력하세요."
+    search-cancelled: "&e검색이 취소되었습니다."
+    search-applied: "&a✔ &f{query}&7 검색 결과를 적용했습니다."
+    search-cleared: "&e검색 필터가 해제되었습니다."
+    sort-title: "&d정렬: {sort} &7(클릭)"
+    sort-lore-current: "&7현재 방식: &f{sort}"
+    sort-lore-cycle: "&e클릭하여 변경:"
+    sort-lore-options: "&f이름 → 가격 → 변동률"
+    holdings-title: "&d나의 창고 &7(클릭)"
+    holdings-count: "&6{count} &e/ {max}개"
+    holdings-materials: "&7{count}종의 아이템"
+    holdings-click-hint: "&8클릭하여 꺼내기"
+    holdings-empty: "&7창고가 비어 있음"
+    holdings-empty-hint: "&8아이템을 구매하여 보관하세요"
+    prev-page: "&e« 이전 페이지"
+    prev-page-lore: "&7{page} 페이지로 이동"
+    next-page: "&e다음 페이지 »"
+    next-page-lore: "&7{page} 페이지로 이동"
+    category-items: "&7아이템 {count}개"
+    category-click: "&e클릭하여 탐색"
+    close: "&c닫기"
+    close-lore: "&7메뉴를 닫습니다"
+    item-separator: "&8────────────────"
+    item-buy-price: "&a구매가: &f{price}"
+    item-sell-price: "&c판매가: &f{price}"
+    item-change: "&7변동률: {color}{symbol} {change}%"
+    item-permission: "&c⚠ 필요 권한: {permission}"
+    item-left-click: "&e좌클릭: &fx{amount} 구매"
+    item-right-click: "&e우클릭: &fx{amount} 판매"
+    item-shift-click: "&eShift+클릭: &f모두 판매"
+    item-static: "&8고정 가격 (시장 연동 없음)"
+    item-custom: "&d✦ 특별 아이템"
+    details-buy-1: "&a1개 구매"
+    details-buy-64: "&a64개 구매"
+    details-sell-1: "&c1개 판매"
+    details-sell-all: "&c모두 판매 ({count})"
+    details-back: "&e뒤로가기"
+    custom-purchased: "&f{item} {amount}개&a를 &f{price}&a에 구매했습니다."
+    custom-sold: "&f{item} {amount}개&a를 &f{price}&a에 판매했습니다. &7({details})"
+    custom-sold-inv: "인벤토리에서 {count}개"
+    custom-sold-holdings: "창고에서 {count}개"
+    custom-no-item: "&c판매할 {item}이 없습니다!"
+    custom-not-enough-money: "&c돈이 부족합니다! 필요: {need}, 보유: {have}"
+    custom-inventory-full: "&c인벤토리가 가득 찼습니다!"
+    custom-transaction-failed: "&c거래 실패: {error}"
+    custom-economy-unavailable: "&c경제 시스템을 사용할 수 없습니다!"
+    custom-item-info-name: "&d✦ &f{name}"
+    custom-item-info-prices: "&a구매: &f{buy} &7| &c판매: &f{sell}"
+    balance-display: "&6잔액: {balance}"
+
+# =============================================================================
+# 관리자 명령어 (ADMIN COMMANDS)
+# =============================================================================
+admin:
+  reload: "&aThe Endex 설정 및 언어 파일을 다시 불러왔습니다!"
+  economy-reset: "&c모든 플레이어의 경제 데이터를 초기화했습니다."
+  player-reset: "&c{player}의 경제 데이터를 초기화했습니다."
+  price-set: "&a{item}의 시세를 설정했습니다: 구매={buy}, 판매={sell}"
+  price-reset: "&a{item}의 시세를 기본값으로 초기화했습니다."
+  market-paused: "&c시장이 일시 중지되었습니다. 거래가 불가능합니다."
+  market-resumed: "&a시장이 재개되었습니다. 거래가 가능합니다."
+  give-holdings: "&a{player}의 창고에 {item} {amount}개를 지급했습니다."
+  not-in-config: "&c{item}은 설정 파일에 존재하지 않습니다."
+  already-in-config: "&c{item}은 이미 설정되어 있습니다."
+  
+  add:
+    success: "&a{item}&a을 시장에 추가했습니다! 기준가: &e{base}&a, 최저가: &e{min}&a, 최고가: &e{max}"
+    usage: "&c사용법: /market additem <아이템> <기준가> [최저가] [최고가]"
+    invalid-material: "&c유효하지 않은 아이템: {material}"
+    
+  remove:
+    success: "&a{item}&a을 시장에서 제거했습니다."
+    usage: "&c사용법: /market removeitem <아이템>"
+    
+  setbase:
+    success: "&e{item}&a의 기준가를 &e{price}&a로 설정했습니다."
+    usage: "&c사용법: /market setbase <아이템> <가격>"
+    
+  setmin:
+    success: "&e{item}&a의 최저가를 &e{price}&a로 설정했습니다."
+    usage: "&c사용법: /market setmin <아이템> <가격>"
+    
+  setmax:
+    success: "&e{item}&a의 최고가를 &e{price}&a로 설정했습니다."
+    usage: "&c사용법: /market setmax <아이템> <가격>"
+    
+  setprice:
+    success: "&e{item}&a의 현재가를 &e{price}&a로 설정했습니다."
+    usage: "&c사용법: /market setprice <아이템> <가격>"
+    
+  enable:
+    success: "&e{item}&a을 시장에서 활성화했습니다."
+    usage: "&c사용법: /market enableitem <아이템>"
+    already: "&e{item}&a은 이미 활성화되어 있습니다."
+    
+  disable:
+    success: "&e{item}&a을 시장에서 비활성화했습니다."
+    usage: "&c사용법: /market disableitem <아이템>"
+    already: "&e{item}&a은 이미 비활성화되어 있습니다."
+    
+  items:
+    empty: "&7시장에 설정된 아이템이 없습니다."
+    header: "&6=== 시장 아이템 (페이지 {page}/{total}) ==="
+    entry: "&e{item} &7- 기준: &a{base}&7, 최저: &c{min}&7, 최고: &a{max}&7, 현재: &e{current} {status}"
+    enabled: "&a[ON]"
+    disabled: "&c[OFF]"
+    page-usage: "&7&e/market items <페이지>&7를 입력해 다음 목록을 확인하세요."
+  
+  stats:
+    header: "&6=== The Endex 통계 ==="
+    total-transactions: "&7총 거래 횟수: &e{count}"
+    total-volume: "&7총 거래량: &e{amount}"
+    active-players: "&7활성 거래자 수: &e{count}"
+    items-tracked: "&7추적 중인 아이템: &e{count}"
+
+# =============================================================================
+# 이벤트 (EVENTS)
+# =============================================================================
+events:
+  market-crash:
+    start: "&c&l⚠ 시장 폭락! &e모든 아이템의 가격이 {percent}% 하락했습니다! 지금이 매수 기회입니다!"
+    end: "&a&l✓ 시장이 안정을 되찾았습니다."
+    
+  market-boom:
+    start: "&a&l↑ 시장 호황! &e아이템 가격이 {percent}% 급등했습니다!"
+    end: "&7시장 호황기가 종료되었습니다."
+    
+  flash-sale:
+    start: "&b&l★ 반짝 세일! &e{item}이 {time} 동안 {percent}% 할인됩니다!"
+    end: "&7반짝 세일이 종료되었습니다."
+    
+  double-xp:
+    start: "&6&l✦ 경험치 2배! &e모든 거래 시 획득하는 경험치가 2배가 됩니다!"
+    end: "&7경험치 2배 이벤트가 종료되었습니다."
+    
+  happy-hour:
+    start: "&d&l♫ 해피 아워! &e{time} 동안 모든 거래 수수료가 면제됩니다!"
+    end: "&7해피 아워가 종료되었습니다."
+
+# =============================================================================
+# 알림 (NOTIFICATIONS)
+# =============================================================================
+notifications:
+  price-alert:
+    reached: "&e{item}이 목표 가격인 {price}에 도달했습니다!"
+    above: "&a{item}이 {price} 위로 상승했습니다!"
+    below: "&c{item}이 {price} 아래로 하락했습니다!"
+    
+  investment:
+    profit: "&a{item} 투자 가치가 {percent}% 상승했습니다! ({profit} 수익)"
+    loss: "&c{item} 투자 가치가 {percent}% 하락했습니다. ({loss} 손실)"
+    
+  daily-summary:
+    header: "&6=== 일일 시장 요약 ==="
+    portfolio-value: "&7나의 자산 가치: &e{value}"
+    daily-change: "&7일일 변동폭: {change}"
+    top-performer: "&7최고 실적: &a{item} (+{percent}%)"
+    worst-performer: "&7최저 실적: &c{item} ({percent}%)"
+
+# =============================================================================
+# ENDEX 명령어 (ENDEX COMMAND)
+# =============================================================================
+endex:
+  plugin-info: "&6[The Endex] &b동적 경제 시장 시스템"
+  usage-hint: "&7&b/endex help&7 또는 &b/endex market&7을 입력하여 메뉴를 여세요."
+  
+  help:
+    header: "&6[The Endex] &b명령어 목록:"
+    base-info: "&b/endex&7 — 플러그인 정보 확인"
+    market: "&b/endex market&7 — 시장 GUI 열기"
+    price: "&b/market price <아이템>&7 — 시세 정보 확인"
+    top: "&b/market top&7 — 거래 순위 확인"
+    buy: "&b/market buy <아이템> <수량>&7 — 아이템 구매"
+    sell: "&b/market sell <아이템> <수량>&7 — 아이템 판매"
+    invest: "&b/market invest [buy|list|redeem-all]&7 — 투자 시스템"
+    reload: "&b/endex reload&7 — 설정 다시 불러오기"
+    shopedit: "&b/endex shopedit&7 — 상점 에디터 열기"
+    webui-export: "&b/endex webui export&7 — 웹 인터페이스 내보내기"
+    webui-reload: "&b/endex webui reload&7 — 웹 캐시 초기화"
+    event: "&b/market event [list|<이름>|end <이름>|clear]&7 — 이벤트 관리"
+    web: "&b/endex web&7 — 웹 거래소 링크 받기"
+  
+  market:
+    player-only: "&c플레이어만 시장 GUI를 열 수 있습니다."
+  
+  version:
+    info: "&6[The Endex] &bv{version} &7(데이터 저장 방식: {storage})"
+    help-hint: "&7&b/endex help&7를 입력해 명령어를 확인하세요."
+  
+  reload:
+    no-permission: "&c권한이 없습니다."
+  
+  webui:
+    no-permission: "&c권한이 없습니다."
+    not-available: "&c웹 서버를 사용할 수 없습니다."
+    export-success: "&6[The Endex] &a웹 UI를 커스텀 폴더로 내보냈습니다."
+    reload-success: "&6[The Endex] &b웹 캐시를 초기화했습니다."
+  
+  track:
+    no-permission: "&c권한이 없습니다."
+    disabled: "&c수집 추적 기능이 비활성화되어 있습니다."
+    header: "&6[The Endex] &b최다 수집 아이템 (서버 시작 후):"
+    no-data: "&7(데이터 없음)"
+    entry: "&b{material}&7: {amount}개"
+    footer: "&7총계는 tracking.yml에 저장됩니다."
+    unable-to-read: "&c추적 데이터를 읽을 수 없습니다."
+    usage: "&c사용법: /endex track dump"
+  
+  web:
+    player-only: "&c플레이어 전용 명령어입니다."
+    no-permission: "&c웹 인터페이스 권한이 없습니다."
+    not-available: "&c웹 서버가 오프라인입니다."
+    session-header: "&6[The Endex] &b나의 개인 거래 세션:"
+    link-clickable: "&b&n여기를 클릭하여 거래소 열기"
+    link-hover: "&7브라우저에서 거래소를 엽니다."
+    link-plain: "&b&n{url}"
+    link-hint: "&7(링크를 클릭하거나 복사하세요)"
+    session-expires: "&7세션은 2시간 후 만료됩니다."
+  
+  shopedit:
+    player-only: "&c플레이어 전용 명령어입니다."
+    no-permission: "&c상점 에디터 권한이 없습니다."
+    not-available: "&c상점 에디터를 사용할 수 없습니다."
+  
+  unknown-subcommand: "&c알 수 없는 명령어입니다. /endex help를 확인하세요."
+
+# =============================================================================
+# 시장 명령어 도움말 (MARKET HELP)
+# =============================================================================
+market-help:
+  separator: "&6═══════════════════════════════════════"
+  title: "&d&lThe Endex &7- 시장 도움말"
+  empty-line: ""
+  
+  basic:
+    market: "&e/market &7- 시장/상점 GUI 열기"
+    shop: "&e/market shop [ID] &7- 특정 커스텀 상점 열기"
+    stock: "&e/market stock &7- 주식형 시장 열기"
+    price: "&e/market price <아이템> &7- 가격 확인"
+    buy: "&e/market buy <아이템> <수량> &7- 아이템 구매"
+    sell: "&e/market sell <아이템> <수량> &7- 인벤토리 아이템 판매"
+    sellholdings: "&e/market sellholdings <아이템> <수량> &7- 창고 아이템 판매"
+    top: "&e/market top &7- 수익/손실 순위 확인"
+  
+  holdings-section: "&b창고 및 배송:"
+  holdings:
+    holdings: "&e/market holdings &7- 나의 가상 창고 보기"
+    withdraw: "&e/market withdraw <아이템> [수량] &7- 창고에서 꺼내기"
+    withdraw-all: "&e/market withdraw all &7- 모든 창고 아이템 꺼내기"
+    delivery: "&e/market delivery &7- 대기 중인 배송 확인"
+    delivery-claim: "&e/market delivery claim <아이템> &7- 특정 배송물 수령"
+    delivery-claim-all: "&e/market delivery claim-all &7- 모든 배송물 수령"
+  
+  invest-section: "&b투자:"
+  invest:
+    buy: "&e/market invest buy <아이템> <수량> &7- 아이템에 투자"
+    list: "&e/market invest list &7- 나의 투자 목록 보기"
+    redeem: "&e/market invest redeem-all &7- 모든 투자금 회수"
+  
+  admin-events-section: "&c관리자 이벤트:"
+  admin-events:
+    list: "&e/market event &7- 이벤트 목록 및 시작"
+    trigger: "&e/market event <이름> &7- 특정 이벤트 발생"
+    end: "&e/market event end <이름> &7- 특정 이벤트 강제 종료"
+    clear: "&e/market event clear &7- 모든 이벤트 종료"
+  
+  admin-editor-section: "&c관리자 상점 에디터:"
+  admin-editor:
+    editor: "&e/market editor &7- 비주얼 상점 에디터 열기"
+  
+  admin-items-section: "&c관리자 아이템 관리:"
+  admin-items:
+    add: "&e/market add <아이템> <기준> [최저] [최고] &7- 아이템 추가"
+    remove: "&e/market remove <아이템> &7- 아이템 제거"
+    setbase: "&e/market setbase <아이템> <가격> &7- 기준가 설정"
+    setmin: "&e/market setmin <아이템> <가격> &7- 최저가 설정"
+    setmax: "&e/market setmax <아이템> <가격> &7- 최고가 설정"
+    setprice: "&e/market setprice <아이템> <가격> &7- 현재가 강제 설정"
+    toggle: "&e/market enable/disable <아이템> &7- 활성화 전환"
+    items: "&e/market items [페이지] &7- 전체 아이템 목록 보기"
+
+# 시세 확인 명령어 (MARKET PRICE)
+market-price:
+  usage: "&c사용법: /market price <아이템>"
+  unknown-material: "&c알 수 없는 아이템: {material}"
+  not-tracked: "&c{material}은 추적 대상이 아닙니다."
+  header: "&6[The Endex] &b{item}&7: &a{price} &7({arrow}&7 {diff})"
+  event-multiplier: "&3이벤트 배율: &bx{multiplier}  &7실제 적용: &a{effective}"
+  stats: "&8기준 {base}  최저 {min}  최고 {max}"
+  history-label: "&7기록: {history}"
+  chart-label: "&8차트: &7{chart}"
+
+# 거래 메시지 (TRANSACTIONS)
+market-transaction:
+  item-dropped: "&e[TheEndex] &6{item} {count}개가 바닥에 떨어졌습니다 (수령 한도 초과)."
+  item-dropped-zero: "&e[TheEndex] &6{item} {count}개가 바닥에 떨어졌습니다."
+  item-dropped-limit: "&e[TheEndex] &6{item} {count}개가 바닥에 떨어졌습니다 (배송 한도 도달)."
+  item-dropped-full: "&e[TheEndex] &6{item} {count}개가 바닥에 떨어졌습니다 (인벤토리 가득 참)."
+  buy-success: "&6[TheEndex] &a{item} {amount}개를 {price}에 구매했습니다."
+  buy-delivered: "&e  지급: {delivered} | 대기: {pending} &7(시장 메뉴 엔더상자 확인)"
+  buy-with-tax: "&6[TheEndex] &a{item} {amount}개를 {price}에 구매했습니다 (세금 {tax} / {taxpct}%)."
+  buy-dropped: "&6[TheEndex] &a{item} {amount}개를 {price}에 구매했습니다."
+  buy-dropped-note: "&e  지급: {delivered} | 바닥 드롭: {dropped}"
+  top-gainer: "&a+{percent}% &b{item}"
+  top-loser: "&c{percent}% &b{item}"
+
+# 시간 형식 (TIME FORMATS)
+time:
+  seconds: "{value}초"
+  minutes: "{value}분"
+  hours: "{value}시간"
+  days: "{value}일"
+  ago: "{time} 전"
+  remaining: "{time} 남음"
+  now: "지금"
+  never: "없음"

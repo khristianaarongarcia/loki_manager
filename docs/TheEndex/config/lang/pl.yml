@@ -1,0 +1,891 @@
+# The Endex - Polish Language File
+# Language: Polish (pl)
+# Author: The Endex Team
+
+# =============================================================================
+# GENERAL MESSAGES
+# =============================================================================
+general:
+  prefix: "&6[TheEndex]"
+  no-permission: "&cNie masz uprawnień do wykonania tej czynności."
+  player-only: "&cTa komenda może być używana tylko przez graczy."
+  invalid-args: "&cNieprawidłowe argumenty. Użyj &e/market help &caby zobaczyć komendy."
+  player-not-found: "&cGracz nie znaleziony: {player}"
+  invalid-number: "&cNieprawidłowa liczba: {value}"
+  invalid-amount: "&cProszę podać prawidłową ilość."
+  invalid-item: "&cNieznany przedmiot: {item}"
+  must-hold-item: "&cMusisz trzymać przedmiot, aby użyć tej komendy."
+  reload-success: "&aKonfiguracja przeładowana pomyślnie!"
+  reload-complete: "&6[The Endex] &aPrzeładowanie zakończone."
+  enabled: "&aWłączone"
+  disabled: "&cWyłączone"
+  yes: "Tak"
+  no: "Nie"
+  none: "Brak"
+  page: "Strona"
+  
+# =============================================================================
+# MARKET COMMANDS
+# =============================================================================
+market:
+  # Shop/GUI access
+  shop:
+    not-available: "&cSystem własnych sklepów nie jest dostępny."
+    opened: "&aOtwarto sklep: {name}"
+    not-found: "&cSklep nie znaleziony: {name}"
+    
+  # Default market
+  default:
+    opened-gui: "&aOtwarto GUI rynku."
+    no-gui-console: "&cGUI nie może być otwarte z konsoli. Użyj podkomend."
+    
+  # Editor command
+  editor:
+    opened: "&aOtwarto edytor rynku."
+    not-available: "&cEdytor rynku nie jest dostępny w tej wersji."
+    
+  # Top command
+  top:
+    header: "&6=== Najlepsi Handlarze ==="
+    entry: "&e{rank}. &f{player} &7- &a{amount}"
+    invalid-type: "&cNieprawidłowy typ. Użyj: bought, sold, profit"
+    no-data: "&7Brak dostępnych danych."
+    page-info: "&7Strona {page}/{total}"
+    
+  # Event command
+  event:
+    header: "&6=== Aktywne Wydarzenia Rynkowe ==="
+    none: "&7Brak aktywnych wydarzeń rynkowych."
+    broadcast: "&a[{event}] rozpoczęte! &7(Mnożnik: {multiplier}x)"
+    silent: "&7[{event}] rozpoczęte po cichu. &7(Mnożnik: {multiplier}x)"
+    active: "&e{event} &7- Mnożnik: &a{multiplier}x"
+    usage-hint: "&7Użyj &e/market event <eventname> [silent] &7aby wywołać wydarzenie."
+    cleared: "&aWszystkie wydarzenia rynkowe zostały wyczyszczone."
+    end-usage: "&cUżycie: /market event end <eventname>"
+    ended: "&aZakończono wydarzenie: &e{event}"
+    not-found: "&cWydarzenie '{event}' nie jest obecnie aktywne."
+    unknown: "&cNieznane wydarzenie: {event}"
+    usage: "&cUżycie: /market event <start|end|clear|list> [eventname] [silent]"
+
+  # Delivery command
+  delivery:
+    not-enabled: "&cSystem dostaw nie jest włączony."
+    usage: "&cUżycie: /market delivery [list|claim|claimall]"
+    gui-hint: "&7Użyj &e/market delivery list &7aby zobaczyć oczekujące dostawy."
+    no-pending: "&7Nie masz oczekujących dostaw."
+    header: "&6=== Oczekujące Dostawy (Strona {page}/{total}) ==="
+    entry: "&e{item} &7x&a{amount}"
+    claim-usage: "&cUżycie: /market delivery claim <material>"
+    claim-none: "&cNie masz żadnych {item} oczekujących na dostawę."
+    claim-success: "&aOdebrano &e{amount}x {item}&a do ekwipunku!"
+    claim-partial: "&aOdebrano &e{amount}x {item}&a. &e{remaining} wciąż oczekuje &7(pełny ekwipunek)."
+    still-pending: "&7{remaining}x {item} wciąż oczekuje z powodu braku miejsca."
+    make-space: "&7Zwolnij miejsce w ekwipunku i spróbuj ponownie."
+    claimall-none: "&cNie masz żadnych dostaw do odebrania."
+    claimall-success: "&aOdebrano wszystkie dostawy! ({count} przedmiotów)"
+    claimall-partial: "&aOdebrano {claimed} dostaw. {remaining} przedmiotów wciąż oczekuje."
+
+  # Holdings command
+  holdings:
+    not-enabled: "&cSystem zasobów nie jest włączony."
+    empty: "&7Nie masz żadnych przedmiotów w zasobach."
+    header: "&6=== Twoje Zasoby (Strona {page}/{total}) ==="
+    entry: "&e{item} &7x&a{amount} &7(Wartość: &e{value}&7)"
+    and-more: "&7...i {count} więcej przedmiotów."
+    total-value: "&6Całkowita Wartość: &e{value}"
+    withdraw-hint: "&7Użyj &e/market withdraw <item> &7aby wypłacić przedmioty."
+    gui-hint: "&7Lub użyj &e/market gui holdings &7dla interfejsu wizualnego."
+
+  # Withdraw command  
+  withdraw:
+    header: "&6=== Wypłać Przedmioty ==="
+    usage-single: "&e/market withdraw <material> [amount] &7- Wypłać konkretny przedmiot"
+    usage-all: "&e/market withdraw all &7- Wypłać wszystko co możliwe"
+    success: "&aWypłacono &e{amount}x {item}&a do ekwipunku!"
+    failed: "&cNie udało się wypłacić {item}. Spróbuj ponownie."
+    inventory-full: "&cEkwipunek pełny. &e{remaining} {item} wciąż w zasobach."
+    still-holding: "&7{remaining}x {item} pozostało w zasobach."
+    nothing: "&cNie masz żadnych {item} w zasobach."
+    all-header: "&6Wypłacanie wszystkich przedmiotów z zasobów..."
+    none-withdrawn: "&cNie można wypłacić żadnych przedmiotów. Ekwipunek może być pełny."
+    total-success: "&aWypłacono {count} różnych przedmiotów do ekwipunku!"
+    and-more: "&7({remaining} typów przedmiotów wciąż w zasobach)"
+    still-remaining: "&7Niektóre przedmioty nie mogły zostać wypłacone z powodu braku miejsca."
+    make-space: "&7Zwolnij miejsce i użyj &e/market withdraw all &7ponownie."
+
+  # Buy command
+  buy:
+    success: "&aKupiono {amount}x {item} za {price}!"
+    success-single: "&aKupiono {item} za {price}!"
+    not-enough-money: "&cPotrzebujesz {price} ale masz tylko {balance}."
+    item-not-available: "&cTen przedmiot nie jest dostępny do kupienia."
+    item-not-tracked: "&c{item} nie jest śledzony przez rynek."
+    inventory-full: "&cTwój ekwipunek jest pełny. Zrób miejsce i spróbuj ponownie."
+    max-exceeded: "&cMożesz kupić maksymalnie {max} na raz."
+    price-info: "&7{item}: &e{price} za sztukę &7(Kup do {max})"
+    usage: "&cUżycie: /market buy <material> <amount>"
+    cancelled: "&cZakup anulowany przez politykę serwera."
+    capped: "&6Zakup ograniczony do {amount} {item} z powodu miejsca w ekwipunku (żądano: {requested})."
+    capacity-hint: "&7Wskazówka: Opróżnij ekwipunek lub użyj Skrzyni Kresu dla większych zamówień."
+    tax-info: "&8(Podatek: {tax} przy {percent}%)"
+    
+  # Sell command
+  sell:
+    success: "&aSprzedano {amount}x {item} za {price}! (podatek {tax} przy {percent}%)"
+    success-single: "&aSprzedano {item} za {price}!"
+    not-enough-items: "&cMasz tylko {owned} z {required} wymaganych {item}."
+    item-not-sellable: "&cTen przedmiot nie może zostać sprzedany."
+    item-not-tracked: "&c{item} nie jest śledzony przez rynek."
+    not-holding-item: "&cMusisz trzymać przedmiot aby sprzedać."
+    price-info: "&7{item}: &e{price} za sztukę"
+    sold-all: "&aSprzedano wszystkie {item} ({amount}) za {price}!"
+    nothing-to-sell: "&cNie masz tego przedmiotu na sprzedaż."
+    usage: "&cUżycie: /market sell <material> <amount>"
+    cancelled: "&cSprzedaż anulowana przez politykę serwera."
+
+  # Sell Holdings command  
+  sellholdings:
+    success: "&aSprzedano {amount}x {item} z zasobów za {price}! (podatek {tax} przy {percent}%)"
+    usage: "&cUżycie: /market sellholdings <material> <amount>"
+    
+  # Price command
+  price:
+    header: "&6=== Cena dla {item} ==="
+    buy-price: "&aCena Kupna: &e{price}"
+    sell-price: "&cCena Sprzedaży: &e{price}"
+    not-tradeable: "&cTen przedmiot nie jest handlowalny."
+    price-change: "&7Zmiana ceny (24h): {change}"
+    trend-up: "&a↑ {percent}%"
+    trend-down: "&c↓ {percent}%"
+    trend-stable: "&7→ Stabilna"
+    usage: "&cUżycie: /market price <material>"
+    invalid-material: "&cNieznany materiał: {material}"
+    
+  # Holdings command
+  holdings:
+    header: "&6=== Twoje Zasoby ==="
+    no-holdings: "&7Nie masz jeszcze żadnych inwestycji."
+    item-line: "&e{item}: &a{amount} &7(Wartość: &e{value}&7)"
+    total-value: "&6Całkowita Wartość Portfela: &e{value}"
+    profit-loss: "&7Zysk/Strata: {pl}"
+    not-enabled: "&cSystem zasobów nie jest włączony."
+    limit-reached: "&cLimit zasobów osiągnięty (max {max} przedmiotów). Wypłać trochę przedmiotów."
+    withdraw-hint: "&7Użyj &e/market withdraw &7aby odebrać przedmioty z zasobów."
+    added-to-holdings: "&e  → Przedmioty dodane do Twoich &dZasobów&e."
+    withdraw-command: "&7Użyj &e/market withdraw {item} &7aby odebrać przedmioty do ekwipunku."
+    none-of-item: "&cNie masz żadnych {item} w swoich zasobach."
+    not-enough: "&cMasz tylko {owned} z {required} wymaganych {item} w zasobach."
+    
+  # Delivery command
+  delivery:
+    header: "&6=== Oczekujące Dostawy ==="
+    no-deliveries: "&7Nie masz oczekujących dostaw."
+    item-line: "&e{item} x{amount} &7- Gotowe do odbioru"
+    claim-success: "&aOdebrano {amount}x {item}!"
+    claim-all-success: "&aOdebrano wszystkie dostawy!"
+    nothing-to-claim: "&cBrak dostaw do odebrania."
+    new-delivery: "&6[TheEndex] &aMasz nowe przedmioty gotowe do dostawy! Użyj &e/market delivery&a aby odebrać."
+    not-enabled: "&cSystem dostaw nie jest włączony."
+    
+  # Invest command
+  invest:
+    success: "&aZainwestowano {price} w {amount}x {item}!"
+    not-enough-money: "&cPotrzebujesz {price} aby dokonać tej inwestycji."
+    invalid-amount: "&cProszę podać prawidłową kwotę inwestycji."
+    not-enabled: "&cInwestycje są wyłączone w konfiguracji."
+    usage: "&e/market invest buy <material> <amount> &7| &e/market invest list &7| &e/market invest redeem-all"
+    
+  # Trend command
+  trend:
+    header: "&6=== Trendy Rynkowe ==="
+    top-gainers: "&a▲ Największe Wzrosty"
+    top-losers: "&c▼ Największe Spadki"
+    item-line: "&e{item}: {change}"
+    no-data: "&7Brak dostępnych przedmiotów rynkowych."
+    
+  # History command
+  history:
+    header: "&6=== Historia Transakcji ==="
+    no-history: "&7Brak znalezionych transakcji."
+    buy-line: "&a[KUPNO] &e{item} x{amount} &7za &e{price} &7({time})"
+    sell-line: "&c[SPRZEDAŻ] &e{item} x{amount} &7za &e{price} &7({time})"
+    
+  # Search command
+  search:
+    header: "&6=== Wyniki Wyszukiwania dla '{query}' ==="
+    no-results: "&7Brak przedmiotów pasujących do '{query}'."
+    result-line: "&e{item} &7- Kup: &a{buy} &7| Sprzedaj: &c{sell}"
+    
+  # Withdraw command
+  withdraw:
+    success: "&aWypłacono {amount}x {item} do ekwipunku!"
+    help-header: "&6Komendy Wypłat:"
+    help-specific: "&e/market withdraw <material> &7- Wypłać cały materiał"
+    help-amount: "&e/market withdraw <material> <amount> &7- Wypłać konkretną ilość"
+    help-all: "&e/market withdraw all &7- Wypłać wszystko co możliwe"
+    not-available: "&cNie masz żadnych {item} w zasobach."
+    inventory-full: "&cTwój ekwipunek jest pełny. Zrób miejsce i spróbuj ponownie."
+    remaining: "&e{amount} {item} wciąż w zasobach (ekwipunek był pełny)."
+
+# =============================================================================
+# MARKET GUI
+# =============================================================================
+gui:
+  market:
+    title: "&5The Endex"
+    buy-title: "&5Kup: {item}"
+    sell-title: "&5Sprzedaj: {item}"
+    category-title: "&5{category}"
+    category_section: "&8Sekcja kategorii"
+    search_prompt: "&eWpisz zapytanie w czacie. Wyślij pustą wiadomość aby wyczyścić."
+    
+  details:
+    title: "&5Endex: &b{item}"
+    title_prefix: "Endex:"
+    chart: "&8Wykres: &7{bars}"
+    inventory_holdings: "&7Ekwipunek: &b{inv} &7| Zasoby: &d{holdings}"
+    buy_1: "&aKup 1"
+    buy_64: "&aKup 64"
+    sell_1_inv: "&cSprzedaj 1 z Ekwipunku"
+    sell_all_inv: "&cSprzedaj Wszystko z Ekwipunku ({count})"
+    sell_1_holdings: "&dSprzedaj 1 z Zasobów"
+    sell_all_holdings: "&dSprzedaj Wszystko z Zasobów ({count})"
+    
+  deliveries:
+    title: "&5Oczekujące Dostawy"
+    unavailable: "&cSystem dostaw nie jest dostępny."
+    no_pending: "&7Brak oczekujących dostaw"
+    all_claimed: "&8Wszystkie przedmioty zostały odebrane!"
+    pending_count: "&6Masz &e{count} &6przedmiot(ów) oczekujących"
+    click_hint: "&8Kliknij aby zobaczyć i odebrać"
+    empty: "&7Brak oczekujących dostaw"
+    item_pending: "&6Oczekujące: &e{count}"
+    inv_space: "&7Miejsce w ekwipunku: &a{space}"
+    left_click: "&aLewy-klik: &7Odbierz ile się zmieści"
+    right_click: "&ePrawy-klik: &7Odbierz 1 stack ({stack})"
+    claim_all: "&aOdbierz Wszystko"
+    claim_all_desc: "&7Odbierz wszystkie oczekujące dostawy"
+    claim_all_hint: "&8(ile się zmieści w ekwipunku)"
+    claimed: "&aOdebrano &6{count} {item}&a!"
+    still_pending: "&e{count} {item} wciąż oczekuje (pełny ekwipunek)."
+    still_pending_simple: "&e{count} {item} wciąż oczekuje."
+    claimed_total: "&aOdebrano &6{count} &aprzedmiotów!"
+    items_remaining: "&e{count} przedmiotów wciąż oczekuje (pełny ekwipunek)."
+    item-detail: "&7  • &b{item}: &6{count}"
+    
+  holdings:
+    title: "&5Moje Zasoby"
+    unavailable: "&cSystem zasobów nie jest dostępny."
+    count: "&6{count} &e/ {max} przedmiotów"
+    materials: "&7{count} różnych materiałów"
+    click_hint: "&8Kliknij aby zobaczyć i wypłacić"
+    empty: "&7Brak przedmiotów w zasobach"
+    empty_hint: "&8Kup przedmioty aby je tu dodać"
+    no_items: "&7Brak przedmiotów w zasobach"
+    no_items_hint1: "&8Kup przedmioty aby je tu dodać"
+    no_items_hint2: "&8Użyj /market buy <item> <amount>"
+    item_qty: "&6Ilość: &e{qty}"
+    item_avg_cost: "&7Średni Koszt: &f{cost}"
+    item_current_price: "&7Obecna Cena: &a{price}"
+    item_value: "&7Wartość: &a{value} {pnl_color}({pnl})"
+    inv_space: "&7Miejsce w ekwipunku: &a{space}"
+    left_click: "&aLewy-klik: &7Wypłać wszystko"
+    right_click: "&ePrawy-klik: &7Wypłać 1 stack ({stack})"
+    stats_title: "&6Statystyki Portfela"
+    stats_total_items: "&7Wszystkie Przedmioty: &e{count} / {max}"
+    stats_unique: "&7Unikalne Materiały: &e{count}"
+    stats_total_value: "&7Całkowita Wartość: &a{value}"
+    stats_total_cost: "&7Całkowity Koszt: &f{cost}"
+    stats_pnl: "Z/S: {pnl}"
+    withdraw_all: "&aWypłać Wszystko"
+    withdraw_all_desc: "&7Wypłać wszystkie przedmioty z zasobów"
+    withdraw_all_hint: "&8(ile się zmieści w ekwipunku)"
+    withdrew: "&aWypłacono &6{count} {item}&a!"
+    still_in_holdings: "&e{count} {item} wciąż w zasobach (pełny ekwipunek)."
+    still_in_holdings_simple: "&e{count} {item} wciąż w zasobach."
+    withdrew_total: "&aWypłacono &6{count} &aprzedmiotów!"
+    items_remaining: "&e{count} przedmiotów wciąż w zasobach (pełny ekwipunek)."
+    
+  buttons:
+    back: "&eWróć"
+    back_to_market: "&eWróć do Rynku"
+    next_page: "&eNastępna Strona"
+    prev_page: "&ePoprzednia Strona"
+    close: "&cZamknij"
+    search: "&bSzukaj: {search} &7(Lewy: ustaw, Prawy: wyczyść)"
+    search_none: "&8<brak>"
+    category: "&bKategoria: {category} &7(kliknij)"
+    group: "&dGrupa: {status} &7(kliknij)"
+    group_on: "Kategoria A–Z (WŁ)"
+    group_off: "Wył"
+    sort: "&dSortuj: {sort} &7(kliknij)"
+    holdings: "&dMoje Zasoby &7(kliknij)"
+    deliveries: "&dOczekujące Dostawy &7(kliknij)"
+    
+  item:
+    price: "&7Cena: &a{price} &7({arrow} {diff}, {pct})"
+    buy_sell: "&aKup: {buy} &7| &eSprzedaj: {sell}"
+    last_cycle: "&8Ostatni cykl: &7Popyt {demand} / Podaż {supply} ({pct})"
+    event_multiplier: "&3Wydarzenie: x{mul} &7Efekt: &a{effective}"
+    min_max: "&8Min {min}  Max {max}"
+    history: "&7Historia: {history}"
+    click_hint: "&8Lewy: Kup  Prawy: Sprzedaj  Ilość: {amount}"
+    details_hint: "&8Shift/Środkowy-klik: Szczegóły"
+    you_have: "&7Masz: &b{count} {material}"
+    balance: "&7Saldo: &6{balance}"
+
+# =============================================================================
+# CUSTOM SHOPS
+# =============================================================================
+shops:
+  created: "&aWłasny sklep '{name}' utworzony!"
+  deleted: "&cUsunięto sklep '{name}'."
+  not-found: "&cSklep nie znaleziony: {name}"
+  not-available: "&cSystem własnych sklepów nie jest dostępny."
+  already-exists: "&cSklep o tej nazwie już istnieje."
+  item-added: "&aDodano {item} do sklepu '{name}'."
+  item-removed: "&cUsunięto {item} ze sklepu '{name}'."
+  buy-only: "&7Ten sklep pozwala tylko na kupowanie."
+  sell-only: "&7Ten sklep pozwala tylko na sprzedawanie."
+  editor-not-available: "&cEdytor sklepu nie jest dostępny."
+  
+  editor:
+    title: "&5Edytor Sklepu: {name}"
+    add-item: "&aDodaj Przedmiot"
+    remove-item: "&cUsuń Przedmiot"
+    edit-prices: "&eEdytuj Ceny"
+    toggle-buy: "&6Przełącz Kupno"
+    toggle-sell: "&6Przełącz Sprzedaż"
+    save: "&aZapisz Zmiany"
+    
+  # Custom Shop GUI messages
+  gui:
+    not-loaded: "&cSystem własnych sklepów nie jest załadowany."
+    
+    # Navigation buttons
+    back-to-menu: "&c« Wróć do Menu"
+    back-to-menu-lore: "&7Wróć do kategorii sklepu"
+    
+    # Search
+    search-title: "&b🔍 Szukaj"
+    search-title-with: "&b🔍 Szukaj: {query}"
+    search-lore-empty: "&7Kliknij aby szukać przedmiotów"
+    search-lore-current: "&7Obecnie: &b{query}"
+    search-lore-found: "&7Znaleziono: &f{count} przedmiotów"
+    search-lore-left: "&eLewy-klik: &fWpisz wyszukiwanie"
+    search-lore-new: "&eLewy-klik: &fNowe wyszukiwanie"
+    search-lore-right: "&cPrawy-klik: &fWyczyść wyszukiwanie"
+    search-lore-hint: "&8Wpisz w czacie aby filtrować przedmioty"
+    search-prompt: "&a✎ &eWpisz zapytanie w czacie, lub wpisz &ccancel &eaby anulować."
+    search-cancelled: "&eWyszukiwanie anulowane."
+    search-applied: "&a✔ &7Szukanie: &f{query}"
+    search-cleared: "&eWyszukiwanie wyczyszczone."
+    
+    # Sort button
+    sort-title: "&dSortuj: {sort} &7(kliknij)"
+    sort-lore-current: "&7Obecnie: &f{sort}"
+    sort-lore-cycle: "&eKliknij aby przełączyć:"
+    sort-lore-options: "&fNAZWA → CENA → ZMIANA"
+    
+    # Holdings button
+    holdings-title: "&dMoje Zasoby &7(kliknij)"
+    holdings-count: "&6{count} &e/ {max} przedmiotów"
+    holdings-materials: "&7{count} różnych materiałów"
+    holdings-click-hint: "&8Kliknij aby zobaczyć i wypłacić"
+    holdings-empty: "&7Brak przedmiotów w zasobach"
+    holdings-empty-hint: "&8Kup przedmioty aby je tu dodać"
+    
+    # Pagination
+    prev-page: "&e« Poprzednia Strona"
+    prev-page-lore: "&7Idź do strony {page}"
+    next-page: "&eNastępna Strona »"
+    next-page-lore: "&7Idź do strony {page}"
+    
+    # Category icon
+    category-items: "&7{count} przedmiotów"
+    category-click: "&eKliknij aby przeglądać"
+    
+    # Close button
+    close: "&cZamknij"
+    close-lore: "&7Zamknij to menu"
+    
+    # Item display in shop
+    item-separator: "&8────────────────"
+    item-buy-price: "&aCena Kupna: &f{price}"
+    item-sell-price: "&cCena Sprzedaży: &f{price}"
+    item-change: "&7Zmiana: {color}{symbol} {change}%"
+    item-permission: "&c⚠ Wymaga: {permission}"
+    item-left-click: "&eLewy-klik: &fKup x{amount}"
+    item-right-click: "&ePrawy-klik: &fSprzedaj x{amount}"
+    item-shift-click: "&eShift-klik: &fSzybka sprzedaż wszystkiego"
+    item-static: "&8Statyczna cena (nie śledzona)"
+    item-custom: "&d✦ Własny Przedmiot"
+    
+    # Details view
+    details-buy-1: "&aKup 1"
+    details-buy-64: "&aKup 64"
+    details-sell-1: "&cSprzedaj 1"
+    details-sell-all: "&cSprzedaj Wszystko ({count})"
+    details-back: "&eWróć"
+    
+    # Custom item transactions
+    custom-purchased: "&aKupiono &f{amount}x {item} &aza &f{price}"
+    custom-sold: "&aSprzedano &f{amount}x {item} &aza &f{price} &7({details})"
+    custom-sold-inv: "{count}x z ekwipunku"
+    custom-sold-holdings: "{count}x z zasobów"
+    custom-no-item: "&cNie masz żadnych {item} na sprzedaż!"
+    custom-not-enough-money: "&cNiewystarczające środki! Potrzebujesz {need}, masz {have}"
+    custom-inventory-full: "&cTwój ekwipunek jest pełny!"
+    custom-transaction-failed: "&cTransakcja nieudana: {error}"
+    custom-economy-unavailable: "&cSystem ekonomii niedostępny!"
+    
+    # Custom item details
+    custom-item-info-name: "&d✦ &f{name}"
+    custom-item-info-prices: "&aKup: &f{buy} &7| &cSprzedaj: &f{sell}"
+    
+    # Balance display
+    balance-display: "&6Saldo: {balance}"
+
+# =============================================================================
+# ADMIN COMMANDS
+# =============================================================================
+admin:
+  reload: "&aPrzeładowano konfigurację i pliki językowe The Endex!"
+  economy-reset: "&cZresetowano dane ekonomii dla wszystkich graczy."
+  player-reset: "&cZresetowano dane ekonomii dla {player}."
+  price-set: "&aUstawiono cenę dla {item}: Kup={buy}, Sprzedaj={sell}"
+  price-reset: "&aZresetowano cenę dla {item} do domyślnej."
+  market-paused: "&cRynek został wstrzymany. Handel wyłączony."
+  market-resumed: "&aRynek został wznowiony. Handel włączony."
+  give-holdings: "&aDano {amount}x {item} do zasobów gracza {player}."
+  not-in-config: "&c{item} nie jest w konfiguracji przedmiotów."
+  already-in-config: "&c{item} jest już w konfiguracji przedmiotów."
+  
+  # Add item command
+  add:
+    success: "&aDodano &e{item}&a do rynku! Baza: &e{base}&a, Min: &e{min}&a, Max: &e{max}"
+    usage: "&cUżycie: /market additem <material> <basePrice> [minPrice] [maxPrice]"
+    invalid-material: "&cNieprawidłowy materiał: {material}"
+    
+  # Remove item command
+  remove:
+    success: "&aUsunięto &e{item}&a z rynku."
+    usage: "&cUżycie: /market removeitem <material>"
+    
+  # Set base price command
+  setbase:
+    success: "&aUstawiono cenę bazową dla &e{item}&a na &e{price}"
+    usage: "&cUżycie: /market setbase <material> <price>"
+    
+  # Set min price command
+  setmin:
+    success: "&aUstawiono cenę minimalną dla &e{item}&a na &e{price}"
+    usage: "&cUżycie: /market setmin <material> <price>"
+    
+  # Set max price command
+  setmax:
+    success: "&aUstawiono cenę maksymalną dla &e{item}&a na &e{price}"
+    usage: "&cUżycie: /market setmax <material> <price>"
+    
+  # Set current price command
+  setprice:
+    success: "&aUstawiono obecną cenę dla &e{item}&a na &e{price}"
+    usage: "&cUżycie: /market setprice <material> <price>"
+    
+  # Enable item command
+  enable:
+    success: "&aWłączono &e{item}&a w rynku."
+    usage: "&cUżycie: /market enableitem <material>"
+    already: "&e{item}&a jest już włączony."
+    
+  # Disable item command
+  disable:
+    success: "&aWyłączono &e{item}&a w rynku."
+    usage: "&cUżycie: /market disableitem <material>"
+    already: "&e{item}&a jest już wyłączony."
+    
+  # List items command
+  items:
+    empty: "&7Brak skonfigurowanych przedmiotów w rynku."
+    header: "&6=== Przedmioty Rynkowe (Strona {page}/{total}) ==="
+    entry: "&e{item} &7- Baza: &a{base}&7, Min: &c{min}&7, Max: &a{max}&7, Obecna: &e{current} {status}"
+    enabled: "&a[WŁ]"
+    disabled: "&c[WYŁ]"
+    page-usage: "&7Użyj &e/market items <page> &7aby zobaczyć więcej."
+  
+  stats:
+    header: "&6=== Statystyki The Endex ==="
+    total-transactions: "&7Wszystkie Transakcje: &e{count}"
+    total-volume: "&7Całkowity Wolumen: &e{amount}"
+    active-players: "&7Aktywni Handlarze: &e{count}"
+    items-tracked: "&7Śledzone Przedmioty: &e{count}"
+
+# =============================================================================
+# EVENTS
+# =============================================================================
+events:
+  market-crash:
+    start: "&c&l⚠ KRACH RYNKOWY! &eWszystkie ceny spadły o {percent}%! Kupuj teraz!"
+    end: "&a&l✓ Rynek ustabilizował się."
+    
+  market-boom:
+    start: "&a&l↑ BOOM RYNKOWY! &eCeny wzrosły o {percent}%!"
+    end: "&7Boom rynkowy zakończony."
+    
+  flash-sale:
+    start: "&b&l★ SZYBKA WYPRZEDAŻ! &e{item} jest tańszy o {percent}% przez następne {time}!"
+    end: "&7Szybka wyprzedaż zakończona."
+    
+  double-xp:
+    start: "&6&l✦ WYDARZENIE PODWÓJNE XP! &eWszystkie transakcje dają 2x doświadczenia!"
+    end: "&7Wydarzenie podwójnego XP zakończone."
+    
+  happy-hour:
+    start: "&d&l♫ HAPPY HOUR! &eBrak opłat transakcyjnych przez następne {time}!"
+    end: "&7Happy hour zakończone."
+
+# =============================================================================
+# NOTIFICATIONS
+# =============================================================================
+notifications:
+  price-alert:
+    reached: "&e{item} osiągnął Twoją cenę docelową {price}!"
+    above: "&a{item} jest teraz powyżej {price}!"
+    below: "&c{item} jest teraz poniżej {price}!"
+    
+  investment:
+    profit: "&aTwoja inwestycja w {item} wzrosła o {percent}%! ({profit} zysku)"
+    loss: "&cTwoja inwestycja w {item} spadła o {percent}%. ({loss} straty)"
+    
+  daily-summary:
+    header: "&6=== Dzienne Podsumowanie Rynku ==="
+    portfolio-value: "&7Wartość Portfela: &e{value}"
+    daily-change: "&7Dzienna Zmiana: {change}"
+    top-performer: "&7Najlepszy Wynik: &a{item} (+{percent}%)"
+    worst-performer: "&7Najgorszy Wynik: &c{item} ({percent}%)"
+
+# =============================================================================
+# ENDEX COMMAND
+# =============================================================================
+endex:
+  plugin-info: "&6[The Endex] &bDynamiczny rynek przedmiotów"
+  usage-hint: "&7Użyj &b/endex help&7 lub &b/endex market&7 aby otworzyć GUI."
+  
+  help:
+    header: "&6[The Endex] &bKomendy:"
+    base-info: "&b/endex&7 — Pokaż info o pluginie"
+    market: "&b/endex market&7 — Otwórz GUI rynku"
+    price: "&b/market price <material>&7 — Info o cenie"
+    top: "&b/market top&7 — Największe zmiany"
+    buy: "&b/market buy <mat> <amt>&7 — Kup"
+    sell: "&b/market sell <mat> <amt>&7 — Sprzedaj"
+    invest: "&b/market invest [buy|list|redeem-all]&7 — Pasywne inwestycje"
+    reload: "&b/endex reload&7 — Przeładuj konfigurację i dane rynku"
+    shopedit: "&b/endex shopedit&7 — Otwórz edytor sklepu"
+    webui-export: "&b/endex webui export&7 — Eksportuj (nadpisz) wbudowane web UI do własnego folderu"
+    webui-reload: "&b/endex webui reload&7 — Wymuś ponowne wczytanie index.html przy następnym żądaniu"
+    event: "&b/market event [list|<name>|end <name>|clear]&7 — Zarządzaj wydarzeniami"
+    web: "&b/endex web&7 — Otwórz interfejs handlowy w przeglądarce"
+  
+  market:
+    player-only: "&cTylko gracze mogą otwierać GUI rynku."
+  
+  version:
+    info: "&6[The Endex] &bv{version} &7(magazyn: {storage})"
+    help-hint: "&7Użyj &b/endex help&7 dla komend."
+  
+  reload:
+    no-permission: "&cBrak uprawnień."
+  
+  webui:
+    no-permission: "&cBrak uprawnień."
+    not-available: "&cSerwer web nie jest dostępny."
+    export-success: "&6[The Endex] &aWyeksportowano wbudowane UI do własnego folderu (wymuszone nadpisanie)."
+    reload-success: "&6[The Endex] &bCache własnego web UI wyczyszczony; następne żądanie wczyta index.html ponownie."
+    help-export: "&6[The Endex] &b/endex webui export &7- Eksportuj (nadpisz) wbudowane UI do własnego katalogu"
+    help-reload: "&6[The Endex] &b/endex webui reload &7- Wymuś ponowne wczytanie własnego index.html przy następnym żądaniu"
+  
+  track:
+    no-permission: "&cBrak uprawnień."
+    disabled: "&cŚledzenie zasobów jest wyłączone."
+    header: "&6[The Endex] &bNajczęściej zbierane materiały (od startu):"
+    no-data: "&7(brak danych)"
+    entry: "&b{material}&7: {amount}"
+    footer: "&7Sumy zapisane w tracking.yml (aktualizowane okresowo)"
+    unable-to-read: "&cNie można odczytać trackera."
+    usage: "&cUżycie: /endex track dump"
+  
+  web:
+    player-only: "&cTa komenda może być używana tylko przez graczy."
+    no-permission: "&cNie masz uprawnień do używania interfejsu web."
+    not-available: "&cSerwer web nie jest dostępny."
+    session-header: "&6[The Endex] &bTwoja osobista sesja handlowa:"
+    link-clickable: "&b&nKliknij tutaj aby otworzyć Interfejs Handlowy The Endex"
+    link-hover: "&7Otwórz interfejs handlowy w przeglądarce"
+    link-plain: "&b&n{url}"
+    link-hint: "&7(Kliknij lub skopiuj link powyżej aby otworzyć)"
+    session-expires: "&7Sesja wygasa za 2 godziny."
+  
+  shopedit:
+    player-only: "&cTa komenda może być używana tylko przez graczy."
+    no-permission: "&cNie masz uprawnień do używania edytora sklepu."
+    not-available: "&cEdytor sklepu nie jest dostępny."
+  
+  unknown-subcommand: "&cNieznana podkomenda. Użyj /endex help"
+
+# =============================================================================
+# MARKET COMMAND HELP
+# =============================================================================
+market-help:
+  separator: "&6═══════════════════════════════════════"
+  title: "&d&lThe Endex &7- Komendy Rynku"
+  empty-line: ""
+  
+  basic:
+    market: "&e/market &7- Otwórz GUI rynku/sklepu"
+    shop: "&e/market shop [id] &7- Otwórz własny sklep (jeśli włączony)"
+    stock: "&e/market stock &7- Otwórz domyślne GUI giełdy"
+    price: "&e/market price <item> &7- Sprawdź cenę przedmiotu"
+    buy: "&e/market buy <item> <amount> &7- Kup przedmioty"
+    sell: "&e/market sell <item> <amount> &7- Sprzedaj przedmioty z ekwipunku"
+    sellholdings: "&e/market sellholdings <item> <amount> &7- Sprzedaj przedmioty z zasobów"
+    top: "&e/market top &7- Zobacz największe wzrosty/spadki"
+  
+  holdings-section: "&bZasoby & Dostawy:"
+  holdings:
+    holdings: "&e/market holdings &7- Zobacz swoje wirtualne zasoby"
+    withdraw: "&e/market withdraw <item> [amount] &7- Wypłać z zasobów"
+    withdraw-all: "&e/market withdraw all &7- Wypłać wszystkie zasoby"
+    delivery: "&e/market delivery &7- Zobacz oczekujące dostawy"
+    delivery-claim: "&e/market delivery claim <item> &7- Odbierz konkretną dostawę"
+    delivery-claim-all: "&e/market delivery claim-all &7- Odbierz wszystkie dostawy"
+  
+  invest-section: "&bInwestycje:"
+  invest:
+    buy: "&e/market invest buy <item> <amount> &7- Kup inwestycję"
+    list: "&e/market invest list &7- Zobacz inwestycje"
+    redeem: "&e/market invest redeem-all &7- Odbierz wszystkie inwestycje"
+  
+  admin-events-section: "&cWydarzenia Admina:"
+  admin-events:
+    list: "&e/market event &7- Lista/wywołaj wydarzenia"
+    trigger: "&e/market event <name> &7- Wywołaj wydarzenie"
+    end: "&e/market event end <name> &7- Zakończ wydarzenie"
+    clear: "&e/market event clear &7- Wyczyść wszystkie wydarzenia"
+  
+  admin-editor-section: "&cEdytor Sklepu Admina:"
+  admin-editor:
+    editor: "&e/market editor &7- Otwórz GUI edytora sklepu"
+  
+  admin-items-section: "&cZarządzanie Przedmiotami Admina:"
+  admin-items:
+    add: "&e/market add <item> <base> [min] [max] &7- Dodaj przedmiot"
+    remove: "&e/market remove <item> &7- Usuń przedmiot"
+    setbase: "&e/market setbase <item> <price> &7- Ustaw cenę bazową"
+    setmin: "&e/market setmin <item> <price> &7- Ustaw cenę min"
+    setmax: "&e/market setmax <item> <price> &7- Ustaw cenę max"
+    setprice: "&e/market setprice <item> <price> &7- Ustaw obecną cenę (tymczasowo)"
+    toggle: "&e/market enable/disable <item> &7- Włącz/wyłącz przedmiot"
+    items: "&e/market items [page] &7- Lista skonfigurowanych przedmiotów"
+
+# Price command
+market-price:
+  usage: "&cUżycie: /market price <material>"
+  unknown-material: "&cNieznany materiał: {material}"
+  not-tracked: "&c{material} nie jest śledzony przez rynek."
+  header: "&6[The Endex] &b{item}&7: &a{price} &7({arrow}&7 {diff})"
+  event-multiplier: "&3Mnożnik wydarzenia: &bx{multiplier}  &7Efektywny: &a{effective}"
+  stats: "&8Baza {base}  Min {min}  Max {max}"
+  history-label: "&7Historia: {history}"
+  chart-label: "&8Wykres: &7{chart}"
+
+# Transaction messages
+market-transaction:
+  item-dropped: "&e[TheEndex] &6{count} {item} upuszczono (limit dostaw osiągnięty / zero-akceptacji)."
+  item-dropped-zero: "&e[TheEndex] &6{count} {item} upuszczono (zerowy postęp)."
+  item-dropped-limit: "&e[TheEndex] &6{count} {item} upuszczono (limit dostaw osiągnięty)."
+  item-dropped-full: "&e[TheEndex] &6{count} {item} upuszczono (pełny ekwipunek)."
+  buy-success: "&6[TheEndex] &aKupiono {amount} {item} za {price}."
+  buy-delivered: "&e  Dostarczono: {delivered} | Oczekujące: {pending} &7(kliknij Skrzynię Kresu w GUI rynku)"
+  buy-with-tax: "&6[TheEndex] &aKupiono {amount} {item} za {price} (podatek {tax} przy {taxpct}%)."
+  buy-dropped: "&6[TheEndex] &aKupiono {amount} {item} za {price}."
+  buy-dropped-note: "&e  Dostarczono: {delivered} | Upuszczono: {dropped}"
+  top-gainer: "&a+{percent}% &b{item}"
+  top-loser: "&c{percent}% &b{item}"
+
+# Holdings display
+market-holdings-display:
+  entry: "&7- &b{item}&7 {id}  P: {principal}  Naliczone: &a{accrued}"
+  item-line: "&b{item}: &e{amount}"
+  item-detail: "&b{item}: &e{qty} &7@ &a{price} {pnl_color}({pnl_sign}{pnl})"
+  total-value: "&7{label}: &a{value} {pnl_color}({pnl_sign}{pnl} Z/S)"
+  delivery-item: "&7  • &b{item}: &6{count}"
+
+# Event display
+market-event-display:
+  available: "&b{name}&7 -> {target} x{multiplier} {duration}m {broadcast}"
+  active: "&b{name}&7 kończy się za &e{remaining}m"
+
+# Investment display  
+market-invest-display:
+  entry: "&7- &b{item}&7 {id}  P: {principal}  Naliczone: &a{accrued}"
+
+# Admin items list
+market-items-list:
+  entry: "{status} &b{item} &7B:{base} Min:{min} Max:{max}"
+
+# Display formatting (for list outputs)
+market-display:
+  investment-entry: "&7- &b{material}&7 {id_short}…  P: {principal}  Naliczone: &a{accrued}"
+  event-available: "&b{name}&7 -> {target} x{multiplier} {duration}m {broadcast}"
+  event-active: "&b{name}&7 kończy się za &e{remaining}m"
+  delivery-detail: "&7  • &b{item}: &6{count}"
+  items-list-entry: "{status} &b{item} &7B:{base} Min:{min} Max:{max}"
+
+# =============================================================================
+# SHOP EDITOR
+# =============================================================================
+shop-editor:
+  no-permission: "&cNie masz uprawnień do używania edytora sklepu!"
+  not-loaded: "&cSystem własnych sklepów nie jest załadowany."
+  shop-not-found: "&cSklep nie znaleziony: {shop}"
+  unsaved-warning: "&e⚠ Masz niezapisane zmiany! Otwórz edytor ponownie aby zapisać."
+  input-cancelled: "&eWprowadzanie anulowane."
+  mode-changed: "&aTryb sklepu zmieniony na {mode}. Uruchom &e/endex reload&a aby zastosować."
+  cannot-delete-main: "&cNie można usunąć głównego sklepu!"
+  set-main-shop: "&aUstawiono '{shop}' jako główny sklep."
+  category-settings-soon: "&eEdytor ustawień kategorii wkrótce!"
+  mode-changed-layout: "&eTryb zmieniony na: &f{mode}"
+  click-empty-slot: "&eKliknij pusty slot najpierw aby wybrać gdzie umieścić kategorię"
+  fill-toggle-hint: "&ePrzełącznik wypełnienia - użyj config.yml na razie"
+  drag-filler-hint: "&ePrzeciągnij przedmiot z ekwipunku aby ustawić materiał wypełniacza"
+  border-mode-hint: "&eTryb obramowania: Kliknij sloty aby przełączyć jako obramowanie"
+  unsaved-changes-warning: "&eOstrzeżenie: Masz niezapisane zmiany!"
+  opening-preview: "&dOtwieranie podglądu sklepu..."
+  undo-not-implemented: "&6Cofnij jeszcze nie zaimplementowane"
+  editing-slot: "&eEdytowanie slotu {slot} ({type})"
+  editing-slot-prompt: "&7Wpisz nową nazwę najpierw, potem zostaniesz zapytany o opis."
+  removed-slot: "&cUsunięto zawartość ze slotu {slot}"
+  click-move-target: "&eKliknij inny slot aby przenieść ten {type} tam, lub kliknij tutaj ponownie aby anulować"
+  moved-content: "&aPrzeniesiono zawartość do slotu {slot}"
+  move-cancelled: "&7Przenoszenie anulowane"
+  placed-decoration: "&aUmieszczono dekorację w slocie {slot}"
+  cursor-item-hint: "&eUmieść przedmiot na kursorze aby umieścić jako dekorację"
+  slot-empty: "&cTen slot jest pusty - nic do edycji"
+  slot-already-empty: "&7Slot jest już pusty"
+  shop-file-not-found: "&cPlik sklepu nie znaleziony!"
+  layout-saved: "&aUkład zapisany do shops/{shop}.yml"
+  placed-category: "&aUmieszczono kategorię '{category}' w slocie {slot}"
+  placed-button: "&aUmieszczono przycisk {button} w slocie {slot}"
+  item-settings-saved: "&aUstawienia przedmiotu zapisane!"
+  shop-exists: "&cSklep o ID '{shop}' już istnieje!"
+  shop-created: "&aUtworzono nowy sklep: {name} (ID: {id})"
+  category-creation-soon: "&aTworzenie kategorii wkrótce!"
+  invalid-price: "&cNieprawidłowa cena! Proszę podać liczbę dodatnią."
+  buy-price-set: "&aCena kupna ustawiona na ${price}"
+  sell-price-set: "&aCena sprzedaży ustawiona na ${price}"
+  permission-set: "&aUprawnienie ustawione na: {permission}"
+  invalid-number: "&cNieprawidłowa liczba! Proszę podać liczbę całkowitą."
+  stock-limit-set: "&aLimit zapasów ustawiony na: {limit}"
+  no-slot-selected: "&cNie wybrano slotu!"
+  slot-is-empty: "&cSlot jest pusty!"
+  slot-name-updated: "&aNazwa slotu zaktualizowana na: {name}"
+  keeping-current-name: "&7Zachowywanie obecnej nazwy."
+  slot-lore-updated: "&aOpis slotu zaktualizowany!"
+  keeping-current-lore: "&7Zachowywanie obecnego opisu."
+  item-added: "&aDodano {item} do slotu {slot}. Kliknij aby ustawić cenę!"
+  item-removed: "&eUsunięto {item} ze slotu {slot}"
+  items-saved: "&aZapisano {count} przedmiotów do kategorii '{category}'!"
+  items-saved-note: "&7Przedmioty zostały dodane do items.yml i market.db"
+  shop-deleted: "&aUsunięto sklep: {shop}"
+  shop-file-not-found-delete: "&cPlik sklepu nie znaleziony!"
+  category-deletion-soon: "&eUsuwanie kategorii wkrótce!"
+  shop-changes-saved: "&aZmiany w sklepie zapisane!"
+
+# =============================================================================
+# WEB SERVER (Web Trading Interface)
+# =============================================================================
+web-trading:
+  holdings-limit: "&c[TheEndex] Limit zasobów osiągnięty (max {limit} przedmiotów). Wypłać trochę przedmiotów."
+  buy-success-simple: "&6[TheEndex] &aKupiono {amount} {item}!"
+  buy-withdraw-hint: "&7Użyj /market withdraw {item} aby odebrać przedmioty."
+  buy-capped: "&e[TheEndex] &6Zakup ograniczony do {amount} {item} z powodu miejsca w ekwipunku (żądano: {requested})."
+  buy-with-delivery: "&6[TheEndex] &aKupiono {amount} {item}."
+  buy-delivery-status: "&e  Dostarczono: {delivered} | Oczekujące: {pending} &7(kliknij Skrzynię Kresu w GUI rynku)"
+  withdraw-success: "&a[TheEndex] Wypłacono &6{amount} {item}&a do ekwipunku!"
+  withdraw-remaining: "&e[TheEndex] {remaining} {item} wciąż w zasobach."
+  withdraw-all-success: "&a[TheEndex] Wypłacono &6{total} &aprzedmiotów z zasobów!"
+  withdraw-all-remaining: "&e[TheEndex] {remaining} przedmiotów wciąż w zasobach (pełny ekwipunek)."
+  items-added-holdings: "&e  → Przedmioty dodane do Twoich &dZasobów&e."
+  inventory-full-web: "&c[TheEndex] Twój ekwipunek jest pełny. Zrób miejsce i spróbuj ponownie."
+  tip-empty-inventory: "&7Wskazówka: Opróżnij ekwipunek lub użyj Skrzyni Kresu dla większych zamówień."
+
+# =============================================================================
+# DELIVERY MANAGER (Auto-claim)
+# =============================================================================
+delivery-autoclaim:
+  success: "&a[TheEndex] &7Automatycznie odebrano &e{total}&7 oczekujących przedmiotów z dostaw!"
+  item-line: "&7  +{amount} {item}"
+  remaining: "&7Pozostało: &e{remaining}&7 przedmiotów (pełny ekwipunek)."
+
+# =============================================================================
+# UPDATE CHECKER
+# =============================================================================
+update-checker:
+  header-console: "&6&l[The Endex] &eDostępna aktualizacja!"
+  header-player: "&6&l[The Endex] &eNowa aktualizacja jest dostępna!"
+  version-info: "&7Obecna: &c{current} &7→ Najnowsza: &a{latest}"
+  download-url: "&7Pobierz: &b{url}"
+
+# =============================================================================
+# HELP MESSAGES
+# =============================================================================
+help:
+  header: "&6=== Pomoc The Endex ==="
+  footer: "&7Użyj &e/market help <command> &7dla szczegółowych informacji."
+  
+  commands:
+    market: "&e/market &7- Otwórz GUI rynku"
+    buy: "&e/market buy <item> [amount] &7- Kup przedmioty"
+    sell: "&e/market sell [item] [amount] &7- Sprzedaj przedmioty"
+    price: "&e/market price <item> &7- Sprawdź ceny przedmiotów"
+    holdings: "&e/market holdings &7- Zobacz swoje inwestycje"
+    delivery: "&e/market delivery &7- Odbierz oczekujące dostawy"
+    invest: "&e/market invest <item> <amount> &7- Zainwestuj w przedmioty"
+    liquidate: "&e/market liquidate <item> [amount] &7- Upłynnij zasoby"
+    trend: "&e/market trend &7- Zobacz trendy rynkowe"
+    history: "&e/market history &7- Zobacz historię transakcji"
+    search: "&e/market search <query> &7- Szukaj przedmiotów"
+    web: "&e/market web &7- Otwórz interfejs web"
+    help: "&e/market help &7- Pokaż tę wiadomość pomocy"
+    
+  admin:
+    reload: "&e/endex reload &7- Przeładuj konfigurację"
+    admin: "&e/endex admin &7- Komendy admina"
+    stats: "&e/endex stats &7- Zobacz statystyki"
+
+# =============================================================================
+# ERROR MESSAGES  
+# =============================================================================
+errors:
+  database-error: "&cWystąpił błąd bazy danych. Spróbuj ponownie później."
+  rate-limited: "&cProszę poczekać przed wykonaniem kolejnej akcji."
+  market-paused: "&cRynek jest obecnie wstrzymany."
+  feature-disabled: "&cTa funkcja jest obecnie wyłączona."
+  internal-error: "&cWystąpił błąd wewnętrzny. Skontaktuj się z administratorem."
+  cooldown: "&cProszę poczekać {time} przed ponownym użyciem."
+  economy-unavailable: "&cEkonomia niedostępna. Zainstaluj Vault i plugin ekonomii."
+  payment-failed: "&cPłatność nieudana: {error}"
+  
+# =============================================================================
+# TIME FORMATS
+# =============================================================================
+time:
+  seconds: "{value}s"
+  minutes: "{value}m"
+  hours: "{value}h"
+  days: "{value}d"
+  ago: "{time} temu"
+  remaining: "{time} pozostało"
+  now: "przed chwilą"
+  never: "nigdy"

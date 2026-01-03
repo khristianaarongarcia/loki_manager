@@ -1,0 +1,124 @@
+# ═══════════════════════════════════════════════════════════════════════════════
+# The Endex - Command Aliases Configuration
+# ═══════════════════════════════════════════════════════════════════════════════
+# Customize command names and create shortcuts for your players.
+# After editing, run /endex reload to apply changes.
+
+# ───────────────────────────────────────────────────────────────────────────────
+# MAIN COMMAND ALIASES
+# ───────────────────────────────────────────────────────────────────────────────
+# Define alternative names for the main /market and /endex commands.
+# Players can use any of these aliases to run the same command.
+#
+# Note: These require a server restart to fully register with Bukkit.
+# For runtime aliases, use the 'shortcuts' section below.
+
+main-commands:
+  # Aliases for /market command
+  market:
+    - "m"
+    - "shop"
+    - "trade"
+    - "exchange"
+    - "bazaar"
+  
+  # Aliases for /endex command (admin)
+  endex:
+    - "ex"
+    - "theendex"
+
+# ───────────────────────────────────────────────────────────────────────────────
+# SUBCOMMAND ALIASES
+# ───────────────────────────────────────────────────────────────────────────────
+# Create shortcuts for frequently used subcommands.
+# Format: alias: "full command"
+#
+# Example: typing "/market b diamond 64" runs "/market buy diamond 64"
+
+subcommands:
+  # Buy/Sell shortcuts
+  b: "buy"
+  s: "sell"
+  p: "price"
+  
+  # Holdings shortcuts
+  h: "holdings"
+  w: "withdraw"
+  
+  # Investment shortcuts
+  i: "invest"
+  inv: "invest"
+  
+  # Delivery shortcuts
+  d: "delivery"
+  del: "delivery"
+  claim: "delivery claim"
+
+# ───────────────────────────────────────────────────────────────────────────────
+# QUICK SHORTCUTS
+# ───────────────────────────────────────────────────────────────────────────────
+# Create standalone commands that map to full market commands.
+# These register as new commands (requires restart).
+#
+# Format:
+#   command-name:
+#     target: "market subcommand args..."
+#     permission: "permission.node" (optional)
+#     description: "Description shown in /help"
+
+shortcuts:
+  # Quick buy command: /buy <item> <amount>
+  buy:
+    target: "market buy"
+    permission: "theendex.trade"
+    description: "Quick buy items from the market"
+  
+  # Quick sell command: /sell <item> <amount>
+  sell:
+    target: "market sell"
+    permission: "theendex.trade"
+    description: "Quick sell items to the market"
+  
+  # Quick price check: /price <item>
+  price:
+    target: "market price"
+    permission: "theendex.use"
+    description: "Check market price of an item"
+  
+  # Open holdings: /holdings
+  holdings:
+    target: "market holdings"
+    permission: "theendex.use"
+    description: "View your virtual holdings"
+  
+  # Open market GUI: /shop
+  shop:
+    target: "market"
+    permission: "theendex.use"
+    description: "Open the market GUI"
+
+# ───────────────────────────────────────────────────────────────────────────────
+# DISABLED COMMANDS
+# ───────────────────────────────────────────────────────────────────────────────
+# List commands/subcommands to disable completely.
+# Useful if you don't want certain features available.
+
+disabled:
+  # Example: disable investment feature
+  # - "invest"
+  
+  # Example: disable event commands for non-admins
+  # - "event"
+
+# ───────────────────────────────────────────────────────────────────────────────
+# PERMISSION OVERRIDES
+# ───────────────────────────────────────────────────────────────────────────────
+# Override default permissions for specific commands.
+# Format: command: "new.permission.node"
+
+permission-overrides:
+  # Example: require VIP permission for investments
+  # invest: "theendex.vip.invest"
+  
+  # Example: restrict holdings to donors
+  # holdings: "theendex.donor.holdings"

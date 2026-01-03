@@ -1,0 +1,71 @@
+# WERM Plugin Configuration
+# =========================
+
+# ============================================================================
+# SECURITY WARNING
+# ============================================================================
+# This file contains your plugin token which grants access to your server's
+# WERM account. Keep this file secure:
+#
+# 1. NEVER share this file or your token with anyone
+# 2. Set file permissions so only trusted users can read it
+#    - Linux: chmod 600 plugins/WERM/config.yml
+#    - Windows: Right-click > Properties > Security > Edit permissions
+# 3. If you suspect your token is compromised:
+#    - Go to your dashboard and click "Regenerate Token"
+#    - The old token will be immediately invalidated
+# 4. IP changes are logged - you'll see security alerts in your dashboard
+#    if someone uses your token from a different location
+# ============================================================================
+
+# Plugin Token
+# Generate this in your WERM dashboard at https://wermpay.com/dashboard/servers
+# Go to Server Settings > Plugin > Generate Token
+# KEEP THIS SECRET - Anyone with this token can control deliveries to your server!
+plugin-token: "werm_XXXXXXXX_XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+
+# Debug Mode
+# Set to true to enable verbose logging for troubleshooting
+# Logs detailed API requests, responses, and delivery processing
+# WARNING: Debug mode redacts sensitive data but may still contain info useful for attackers
+debug: false
+
+# API Endpoint (Advanced - usually leave empty)
+# Only change this if directed by WERM support
+# Must be HTTPS and from a trusted WERM domain
+# Invalid or untrusted endpoints will be rejected for security
+# api-endpoint: ""
+
+# API Fallback Settings (Issue #9 - Requires explicit opt-in)
+# Only enable this if you experience connectivity issues with the primary API
+api-fallback:
+  # Set to true to enable fallback endpoint (disabled by default for security)
+  enabled: false
+  # Fallback endpoint - must be HTTPS and from a trusted WERM domain
+  # endpoint: "https://werm.vercel.app/api/plugin"
+
+# Heartbeat Settings
+heartbeat:
+  # Send server status to WERM every X seconds
+  interval: 60
+  # Include player count in heartbeat
+  send-player-count: true
+
+# Delivery Settings
+delivery:
+  # Check for pending deliveries every X seconds
+  interval: 15
+
+# Messages (supports color codes with &)
+messages:
+  prefix: "&8[&6WERM&8] &r"
+  verify-success: "&aYour Minecraft account has been linked successfully!"
+  verify-failed: "&cVerification failed: &7%reason%"
+  verify-usage: "&eUsage: &f/werm verify <code>"
+  verify-processing: "&7Verifying your account..."
+  already-linked: "&cThis Minecraft account is already linked to another user."
+  invalid-code: "&cInvalid verification code. Please check and try again."
+  code-expired: "&cThis code has expired. Please generate a new one on the website."
+  no-permission: "&cYou don't have permission to use this command."
+  token-not-configured: "&cPlugin not configured! Please ask the server admin to set up WERM."
+  delivery-received: "&aYou received: &e{product} &ax{quantity}"

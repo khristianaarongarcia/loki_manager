@@ -1,0 +1,76 @@
+# Depo configuration
+# Controls automatic dependency downloading behavior.
+
+# Config version for internal migrations
+config-version: 4
+
+# If false, Depo will only log missing dependencies and not download them.
+auto-download: true
+
+# If true, soft dependencies (softdepend) are also auto-downloaded.
+# Default false: only hard 'depend' entries auto-download; soft ones are reported.
+auto-download-soft: false
+
+# Optional automatic update of already-installed dependencies.
+# Currently not implemented; reserved for future use.
+auto-update: false
+
+# Repository priority. Valid values: [modrinth, spiget]
+# Depo will try the first repository, then fall back to the other.
+repository-priority:
+  - modrinth
+  - spiget
+
+# Manual overrides for specific plugin dependencies.
+# Map plugin name (as referenced in plugin.yml depend/softdepend) to a direct JAR URL.
+# Example:
+# overrides:
+#   Vault: "https://example.com/Vault-1.0.jar"
+overrides: {}
+
+# Aliases: treat a dependency name as provided by another installed plugin name.
+# Example maps Vault -> ComplexVault, so ComplexVault satisfies a dependency on Vault.
+aliases: {}
+
+# Optional checksums: map plugin name to lowercase hex SHA-256 to validate downloads
+checksums: {}
+
+# Optional version constraints for dependencies.
+# Map plugin name -> constraint expression.
+# Supported forms:
+#   1.2.3            (exact)
+#   >=1.2.0          (comparators: >, >=, <, <=)
+#   ^1.2.3           (caret: compatible with 1.x, >=1.2.3 <2.0.0)
+#   ~1.2.3           (tilde: >=1.2.3 <1.3.0)
+#   1.2.x            (wildcard patch)
+#   1.x              (wildcard minor/patch)
+#   1.2.0 - 1.4.5    (range inclusive)
+# If a constraint is specified and no matching version is found in repositories, the dependency will not be downloaded.
+version-constraints: {}
+
+# Optional plugin categories (for status grouping). Map plugin name -> category label.
+categories: {}
+
+# Show download progress (approximate) in console for large files.
+download-progress: true
+
+# Timeout settings in milliseconds for HTTP requests
+http:
+  connect-timeout: 10000
+  read-timeout: 30000
+
+# Whether to print colored messages in console
+colored-logs: true
+
+# Metrics (bStats)
+metrics:
+  enabled: true
+  service-id: 0 # Set your bStats project ID here
+
+# Update checker (notify only)
+update-checker:
+  enabled: true
+
+# Security: reject non-HTTPS direct downloads
+security:
+  block-insecure-downloads: true

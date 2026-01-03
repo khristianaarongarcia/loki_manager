@@ -1,0 +1,66 @@
+name: TheEndex
+version: 1.5.7-dec1038
+main: org.lokixcz.theendex.Endex
+api-version: 1.20
+authors:
+  - TheLokia
+description: Dynamic, demand-driven market with GUI, events, and Vault economy
+softdepend:
+  - Vault
+  - PlaceholderAPI
+  - Essentials
+  - EssentialsX
+  - CMI
+  - SimpleEconomy
+  - Economy
+  - iConomy
+  - Fe
+  - XConomy
+  - PlayerPoints
+  - TokenManager
+  - CoinsEngine
+  - GemsEconomy
+  - RoyaleEconomy
+  - TheNewEconomy
+  - EzEconomy
+
+commands:
+  endex:
+    description: The Endex main command
+    usage: /endex [help|market|version]
+    permission: theendex.market
+    aliases: [ ex ]
+  market:
+    description: Shortcut to The Endex market commands
+    usage: /market [buy|sell|price|top|invest]
+    permission: theendex.market
+    aliases: [ shop, m, trade, exchange, bazaar ]
+
+permissions:
+  theendex.market:
+    default: true
+  theendex.buy:
+    default: true
+  theendex.sell:
+    default: true
+  theendex.admin:
+    default: op
+  theendex.invest:
+    default: true
+  theendex.web:
+    default: true
+  # Crypto addon permissions
+  theendex.crypto.info:
+    default: true
+  theendex.crypto.balance:
+    default: true
+  theendex.crypto.buy:
+    default: true
+  theendex.crypto.sell:
+    default: true
+  theendex.crypto.transfer:
+    default: true
+  theendex.crypto.shop:
+    default: true
+  theendex.crypto.admin:
+    default: op

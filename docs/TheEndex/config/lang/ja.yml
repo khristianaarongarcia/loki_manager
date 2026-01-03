@@ -1,0 +1,790 @@
+# The Endex - 日本語言語ファイル
+# 言語: 日本語 (ja)
+# 翻訳: Gemini AI
+
+# =============================================================================
+# 一般メッセージ (GENERAL MESSAGES)
+# =============================================================================
+general:
+  prefix: "&6[TheEndex]"
+  no-permission: "&c権限がありません。"
+  player-only: "&cこのコマンドはプレイヤーのみが使用できます。"
+  invalid-args: "&c引数が無効です。&e/market help &cでコマンドを確認してください。"
+  player-not-found: "&cプレイヤーが見つかりません: {player}"
+  invalid-number: "&c無効な数値です: {value}"
+  invalid-amount: "&c有効な数量を指定してください。"
+  invalid-item: "&c不明なアイテムです: {item}"
+  must-hold-item: "&cこのコマンドを使用するにはアイテムを手に持ってください。"
+  reload-success: "&a設定を正常に再読み込みしました！"
+  reload-complete: "&6[The Endex] &a再読み込み完了。"
+  enabled: "&a有効"
+  disabled: "&c無効"
+  yes: "はい"
+  no: "いいえ"
+  none: "なし"
+  page: "ページ"
+  
+# =============================================================================
+# 市場コマンド (MARKET COMMANDS)
+# =============================================================================
+market:
+  shop:
+    not-available: "&cカスタムショップシステムは利用できません。"
+    opened: "&aショップを開きました: {name}"
+    not-found: "&cショップが見つかりません: {name}"
+    
+  default:
+    opened-gui: "&a市場GUIを開きました。"
+    no-gui-console: "&cコンソールからGUIを開くことはできません。"
+    
+  editor:
+    opened: "&a市場エディタを開きました。"
+    not-available: "&cこのバージョンでは市場エディタは利用できません。"
+    
+  top:
+    header: "&6=== トップトレーダー ==="
+    entry: "&e{rank}. &f{player} &7- &a{amount}"
+    invalid-type: "&c無効なタイプです。使用可能: bought, sold, profit"
+    no-data: "&7データがまだありません。"
+    page-info: "&7ページ {page}/{total}"
+    
+  event:
+    header: "&6=== 開催中の市場イベント ==="
+    none: "&7現在開催中のイベントはありません。"
+    broadcast: "&a[{event}] が開始されました！ &7(倍率: {multiplier}倍)"
+    silent: "&7[{event}] が静かに開始されました。 &7(倍率: {multiplier}倍)"
+    active: "&e{event} &7- 倍率: &a{multiplier}倍"
+    usage-hint: "&7&e/market event <イベント名> [silent] &7でイベントを発生させます。"
+    cleared: "&aすべての市場イベントが終了しました。"
+    end-usage: "&c使用法: /market event end <イベント名>"
+    ended: "&aイベント終了: &e{event}"
+    not-found: "&cイベント '{event}' は現在開催されていません。"
+    unknown: "&c不明なイベントです: {event}"
+    usage: "&c使用法: /market event <start|end|clear|list> [イベント名] [silent]"
+
+  delivery:
+    not-enabled: "&c配送システムは有効になっていません。"
+    usage: "&c使用法: /market delivery [list|claim|claimall]"
+    gui-hint: "&7&e/market delivery list &7で保留中の配送を確認できます。"
+    no-pending: "&7保留中の配送はありません。"
+    header: "&6=== 保留中の配送 (ページ {page}/{total}) ==="
+    entry: "&e{item} &7x&a{amount}"
+    claim-usage: "&c使用法: /market delivery claim <素材>"
+    claim-none: "&c{item} の配送待ちはありません。"
+    claim-success: "&a{amount}個の {item} を受け取りました！"
+    claim-partial: "&a{amount}個の {item} を受け取りました。&e{remaining}個が保留中です &7(インベントリ満杯)。"
+    still-pending: "&7インベントリがいっぱいのため、{remaining}個の {item} が保留中です。"
+    make-space: "&7インベントリを空けてから再度お試しください。"
+    claimall-none: "&c受け取る配送物はありません。"
+    claimall-success: "&aすべての配送物を受け取りました！ ({count}個のアイテム)"
+    claimall-partial: "&a{claimed}件の配送を受け取りました。{remaining}個がまだ保留中です。"
+
+  holdings:
+    not-enabled: "&c倉庫システムは有効になっていません。"
+    empty: "&7倉庫にアイテムはありません。"
+    header: "&6=== あなたの倉庫 (ページ {page}/{total}) ==="
+    entry: "&e{item} &7x&a{amount} &7(価値: &e{value}&7)"
+    and-more: "&7...他 {count} 種類のアイテム"
+    total-value: "&6総資産価値: &e{value}"
+    withdraw-hint: "&7&e/market withdraw <アイテム> &7でアイテムを取り出せます。"
+    gui-hint: "&7または &e/market gui holdings &7で視覚的なインターフェースを開きます。"
+
+  withdraw:
+    header: "&6=== アイテムの取り出し ==="
+    usage-single: "&e/market withdraw <素材> [数量] &7- 特定のアイテムを取り出す"
+    usage-all: "&e/market withdraw all &7- 取り出せるものをすべて取り出す"
+    success: "&e{amount}個の {item}&a を取り出しました！"
+    failed: "&c{item} の取り出しに失敗しました。"
+    inventory-full: "&cインベントリが満杯です。&e{remaining}個の {item} が倉庫に残っています。"
+    still-holding: "&7{remaining}個の {item} が倉庫に残っています。"
+    nothing: "&c倉庫に {item} はありません。"
+    all-header: "&6倉庫からすべてのアイテムを取り出しています..."
+    none-withdrawn: "&cアイテムを取り出せませんでした。インベントリを確認してください。"
+    total-success: "&a{count} 種類のアイテムを取り出しました！"
+    and-more: "&7({remaining} 種類のアイテムが倉庫に残っています)"
+    still-remaining: "&7インベントリの空きがないため、一部のアイテムを取り出せませんでした。"
+    make-space: "&7空きを作ってから &e/market withdraw all &7を再度実行してください。"
+
+  buy:
+    success: "&a{amount}個の {item} を {price} で購入しました！"
+    success-single: "&a{item} を {price} で購入しました！"
+    not-enough-money: "&c{price} 必要ですが、{balance} しか所持していません。"
+    item-not-available: "&cこのアイテムは購入できません。"
+    item-not-tracked: "&c{item} は市場で追跡されていません。"
+    inventory-full: "&cインベントリがいっぱいです。"
+    max-exceeded: "&c一度に購入できるのは最大 {max} 個までです。"
+    price-info: "&7{item}: &e単価 {price} &7(最大 {max} 個購入可能)"
+    usage: "&c使用法: /market buy <素材> <数量>"
+    cancelled: "&cサーバーポリシーにより購入がキャンセルされました。"
+    capped: "&6空き容量の関係で、{amount}個の {item} に制限されました (要求: {requested})。"
+    capacity-hint: "&7ヒント: 大量注文の場合はインベントリを空けるかエンダーチェストを使用してください。"
+    tax-info: "&8(税金: {percent}% で {tax})"
+    
+  sell:
+    success: "&a{amount}個の {item} を {price} で売却しました！ (税 {tax} / {percent}%)"
+    success-single: "&a{item} を {price} で売却しました！"
+    not-enough-items: "&c{item} が {required}個必要ですが、{owned}個しか持っていません。"
+    item-not-sellable: "&cこのアイテムは売却できません。"
+    item-not-tracked: "&c{item} は市場で追跡されていません。"
+    not-holding-item: "&c売却するにはアイテムを手に持つ必要があります。"
+    price-info: "&7{item}: &e単価 {price}"
+    sold-all: "&aすべての {item} ({amount}個) を {price} で売却しました！"
+    nothing-to-sell: "&c売却できるアイテムを持っていません。"
+    usage: "&c使用法: /market sell <素材> <数量>"
+    cancelled: "&cサーバーポリシーにより売却がキャンセルされました。"
+
+  sellholdings:
+    success: "&a倉庫から {amount}個の {item} を {price} で売却しました！ (税 {tax} / {percent}%)"
+    usage: "&c使用法: /market sellholdings <素材> <数量>"
+    
+  price:
+    header: "&6=== {item} の価格 ==="
+    buy-price: "&a購入価格: &e{price}"
+    sell-price: "&c売却価格: &e{price}"
+    not-tradeable: "&cこのアイテムは取引できません。"
+    price-change: "&7価格変動 (24h): {change}"
+    trend-up: "&a↑ {percent}%"
+    trend-down: "&c↓ {percent}%"
+    trend-stable: "&7→ 安定"
+    usage: "&c使用法: /market price <素材>"
+    invalid-material: "&c不明な素材: {material}"
+    
+  holdings_alt: # en.ymlの重複キーに対応
+    header: "&6=== あなたの資産 ==="
+    no-holdings: "&7まだ投資はありません。"
+    item-line: "&e{item}: &a{amount} &7(価値: &e{value}&7)"
+    total-value: "&6ポートフォリオ総価値: &e{value}"
+    profit-loss: "&7損益: {pl}"
+    limit-reached: "&c倉庫の制限に達しました (最大 {max} 個)。アイテムを取り出してください。"
+    added-to-holdings: "&e  → アイテムが &d倉庫&e に追加されました。"
+    withdraw-command: "&7&e/market withdraw {item} &7でインベントリに回収できます。"
+    none-of-item: "&c倉庫に {item} はありません。"
+    not-enough: "&c倉庫にある {item} は {owned}個のみです (要求: {required})。"
+    
+  invest:
+    success: "&a{price} を {amount}個の {item} に投資しました！"
+    not-enough-money: "&c投資には {price} 必要です。"
+    invalid-amount: "&c有効な投資額を指定してください。"
+    not-enabled: "&c投資機能は設定で無効になっています。"
+    usage: "&e/market invest buy <素材> <数量> &7| &e/market invest list &7| &e/market invest redeem-all"
+    
+  trend:
+    header: "&6=== 市場トレンド ==="
+    top-gainers: "&a▲ 値上がり上位"
+    top-losers: "&c▼ 値下がり上位"
+    item-line: "&e{item}: {change}"
+    no-data: "&7市場アイテムがありません。"
+    
+  history:
+    header: "&6=== 取引履歴 ==="
+    no-history: "&7取引履歴は見つかりませんでした。"
+    buy-line: "&a[購入] &e{item} x{amount} &7価格: &e{price} &7({time})"
+    sell-line: "&c[売却] &e{item} x{amount} &7価格: &e{price} &7({time})"
+    
+  search:
+    header: "&6=== '{query}' の検索結果 ==="
+    no-results: "&7'{query}' に一致するアイテムはありません。"
+    result-line: "&e{item} &7- 購入: &a{buy} &7| 売却: &c{sell}"
+
+# =============================================================================
+# 市場GUI (MARKET GUI)
+# =============================================================================
+gui:
+  market:
+    title: "&5The Endex"
+    buy-title: "&5購入: {item}"
+    sell-title: "&5売却: {item}"
+    category-title: "&5{category}"
+    category_section: "&8カテゴリーセクション"
+    search_prompt: "&e検索ワードをチャットに入力してください。空メッセージでクリア。"
+    
+  details:
+    title: "&5Endex: &b{item}"
+    title_prefix: "Endex:"
+    chart: "&8チャート: &7{bars}"
+    inventory_holdings: "&7インベントリ: &b{inv} &7| 倉庫: &d{holdings}"
+    buy_1: "&a1個購入"
+    buy_64: "&a64個購入"
+    sell_1_inv: "&cインベントリから1個売却"
+    sell_all_inv: "&cインベントリからすべて売却 ({count})"
+    sell_1_holdings: "&d倉庫から1個売却"
+    sell_all_holdings: "&d倉庫からすべて売却 ({count})"
+    
+  deliveries:
+    title: "&5保留中の配送"
+    unavailable: "&c配送システムは利用できません。"
+    no_pending: "&7保留中の配送はありません"
+    all_claimed: "&8すべてのアイテムを回収しました！"
+    pending_count: "&6&e{count} &6個のアイテムが保留中です"
+    click_hint: "&8クリックで詳細表示と回収"
+    empty: "&7配送待ちはありません"
+    item_pending: "&6保留中: &e{count}"
+    inv_space: "&7インベントリの空き: &a{space}"
+    left_click: "&a左クリック: &7入るだけ回収"
+    right_click: "&e右クリック: &71スタック回収 ({stack})"
+    claim_all: "&aすべて回収"
+    claim_all_desc: "&7保留中の配送をすべて回収します"
+    claim_all_hint: "&8(インベントリに入る分のみ)"
+    claimed: "&a{count}個の {item} を回収しました！"
+    still_pending: "&e{count}個の {item} が保留中です (インベントリ満杯)。"
+    still_pending_simple: "&e{count}個の {item} が保留中です。"
+    claimed_total: "&a合計 {count} 個のアイテムを回収しました！"
+    items_remaining: "&e{count} 個のアイテムが保留中です (インベントリ満杯)。"
+    item-detail: "&7  • &b{item}: &6{count}"
+    
+  holdings:
+    title: "&5私の倉庫"
+    unavailable: "&c倉庫システムは利用できません。"
+    count: "&6{count} &e/ {max} 個"
+    materials: "&7{count} 種類の素材"
+    click_hint: "&8クリックで詳細表示と取り出し"
+    empty: "&7倉庫は空です"
+    empty_hint: "&8アイテムを購入するとここに追加されます"
+    no_items: "&7倉庫にアイテムはありません"
+    no_items_hint1: "&8アイテムを購入して追加しましょう"
+    no_items_hint2: "&8使用法: /market buy <item> <amount>"
+    item_qty: "&6数量: &e{qty}"
+    item_avg_cost: "&7平均取得単価: &f{cost}"
+    item_current_price: "&7現在価格: &a{price}"
+    item_value: "&7価値: &a{value} {pnl_color}({pnl})"
+    inv_space: "&7インベントリの空き: &a{space}"
+    left_click: "&a左クリック: &7すべて取り出す"
+    right_click: "&e右クリック: &71スタック取り出す ({stack})"
+    stats_title: "&6ポートフォリオ統計"
+    stats_total_items: "&7総アイテム数: &e{count} / {max}"
+    stats_unique: "&7素材数: &e{count}"
+    stats_total_value: "&7総価値: &a{value}"
+    stats_total_cost: "&7総コスト: &f{cost}"
+    stats_pnl: "損益: {pnl}"
+    withdraw_all: "&aすべて取り出す"
+    withdraw_all_desc: "&7倉庫からすべてのアイテムを取り出します"
+    withdraw_all_hint: "&8(インベントリに入る分のみ)"
+    withdrew: "&a{count}個の {item} を取り出しました！"
+    still_in_holdings: "&e{count}個の {item} が倉庫に残っています (インベントリ満杯)。"
+    still_in_holdings_simple: "&e{count}個の {item} が倉庫に残っています。"
+    withdrew_total: "&a合計 {count} 個のアイテムを取り出しました！"
+    items_remaining: "&e{count} 個のアイテムが倉庫に残っています (インベントリ満杯)。"
+    
+  buttons:
+    back: "&e戻る"
+    back_to_market: "&e市場に戻る"
+    next_page: "&e次のページ"
+    prev_page: "&e前のページ"
+    close: "&c閉じる"
+    search: "&b検索: {search} &7(左: 設定, 右: クリア)"
+    search_none: "&8<なし>"
+    category: "&bカテゴリー: {category} &7(クリック)"
+    group: "&dグループ化: {status} &7(クリック)"
+    group_on: "カテゴリー A-Z (ON)"
+    group_off: "OFF"
+    sort: "&d並び替え: {sort} &7(クリック)"
+    holdings: "&d私の倉庫 &7(クリック)"
+    deliveries: "&d保留中の配送 &7(クリック)"
+    
+  item:
+    price: "&7価格: &a{price} &7({arrow} {diff}, {pct})"
+    buy_sell: "&a購入: {buy} &7| &e売却: {sell}"
+    last_cycle: "&8直近サイクル: &7需要 {demand} / 供給 {supply} ({pct})"
+    event_multiplier: "&3イベント: {mul}倍 &7適用中: &a{effective}"
+    min_max: "&8最小 {min}  最大 {max}"
+    history: "&7履歴: {history}"
+    click_hint: "&8左: 購入  右: 売却  数量: {amount}"
+    details_hint: "&8Shift/中クリック: 詳細表示"
+    you_have: "&7所持数: &b{count} {material}"
+    balance: "&7残高: &6{balance}"
+
+# =============================================================================
+# カスタムショップ (CUSTOM SHOPS)
+# =============================================================================
+shops:
+  created: "&aカスタムショップ '{name}' を作成しました！"
+  deleted: "&cショップ '{name}' を削除しました。"
+  not-found: "&cショップが見つかりません: {name}"
+  not-available: "&cカスタムショップシステムは利用できません。"
+  already-exists: "&cその名前のショップは既に存在します。"
+  item-added: "&a{item} をショップ '{name}' に追加しました。"
+  item-removed: "&c{item} をショップ '{name}' から削除しました。"
+  buy-only: "&7このショップは購入専用です。"
+  sell-only: "&7このショップは売却専用です。"
+  editor-not-available: "&cショップエディタは利用できません。"
+  
+  editor:
+    title: "&5ショップエディタ: {name}"
+    add-item: "&aアイテム追加"
+    remove-item: "&cアイテム削除"
+    edit-prices: "&e価格編集"
+    toggle-buy: "&6購入切り替え"
+    toggle-sell: "&6売却切り替え"
+    save: "&a変更を保存"
+    
+  gui:
+    not-loaded: "&cカスタムショップシステムが読み込まれていません。"
+    back-to-menu: "&c« メニューに戻る"
+    back-to-menu-lore: "&7カテゴリー一覧に戻る"
+    search-title: "&b🔍 検索"
+    search-title-with: "&b🔍 検索: {query}"
+    search-lore-empty: "&7クリックしてアイテムを検索"
+    search-lore-current: "&7現在: &b{query}"
+    search-lore-found: "&7ヒット: &f{count} 個"
+    search-lore-left: "&e左クリック: &f検索ワード入力"
+    search-lore-new: "&e左クリック: &f新規検索"
+    search-lore-right: "&c右クリック: &f検索クリア"
+    search-lore-hint: "&8チャットで絞り込み"
+    search-prompt: "&a✎ &e検索ワードを入力してください。&ccancel &eでキャンセル。"
+    search-cancelled: "&e検索をキャンセルしました。"
+    search-applied: "&a✔ &7検索中: &f{query}"
+    search-cleared: "&e検索をクリアしました。"
+    sort-title: "&d並び替え: {sort} &7(クリック)"
+    sort-lore-current: "&7現在: &f{sort}"
+    sort-lore-cycle: "&eクリックで切り替え:"
+    sort-lore-options: "&f名前 → 価格 → 変動"
+    holdings-title: "&d私の倉庫 &7(クリック)"
+    holdings-count: "&6{count} &e/ {max} 個"
+    holdings-materials: "&7{count} 種類の素材"
+    holdings-click-hint: "&8クリックで詳細・取り出し"
+    holdings-empty: "&7倉庫は空です"
+    holdings-empty-hint: "&8購入したアイテムがここに入ります"
+    prev-page: "&e« 前のページ"
+    prev-page-lore: "&7{page}ページ目へ"
+    next-page: "&e次のページ »"
+    next-page-lore: "&7{page}ページ目へ"
+    category-items: "&7{count} 個のアイテム"
+    category-click: "&eクリックして表示"
+    close: "&c閉じる"
+    close-lore: "&7このメニューを閉じます"
+    item-separator: "&8────────────────"
+    item-buy-price: "&a購入価格: &f{price}"
+    item-sell-price: "&c売却価格: &f{price}"
+    item-change: "&7変動: {color}{symbol} {change}%"
+    item-permission: "&c⚠ 必要権限: {permission}"
+    item-left-click: "&e左クリック: &fx{amount} 購入"
+    item-right-click: "&e右クリック: &fx{amount} 売却"
+    item-shift-click: "&eShiftクリック: &fすべて売却"
+    item-static: "&8固定価格 (市場連動なし)"
+    item-custom: "&d✦ 特殊アイテム"
+    details-buy-1: "&a1個購入"
+    details-buy-64: "&a64個購入"
+    details-sell-1: "&c1個売却"
+    details-sell-all: "&cすべて売却 ({count})"
+    details-back: "&e戻る"
+    custom-purchased: "&f{amount}個の {item} &aを &f{price} &aで購入しました"
+    custom-sold: "&f{amount}個の {item} &aを &f{price} &aで売却しました &7({details})"
+    custom-sold-inv: "インベントリから {count}個"
+    custom-sold-holdings: "倉庫から {count}個"
+    custom-no-item: "&c売却できる {item} を持っていません！"
+    custom-not-enough-money: "&cお金が足りません！ 必要: {need}, 所持: {have}"
+    custom-inventory-full: "&cインベントリが満杯です！"
+    custom-transaction-failed: "&c取引失敗: {error}"
+    custom-economy-unavailable: "&c経済システムが利用できません！"
+    custom-item-info-name: "&d✦ &f{name}"
+    custom-item-info-prices: "&a購入: &f{buy} &7| &c売却: &f{sell}"
+    balance-display: "&6残高: {balance}"
+
+# =============================================================================
+# 管理者コマンド (ADMIN COMMANDS)
+# =============================================================================
+admin:
+  reload: "&aThe Endex の設定と翻訳ファイルを再読み込みしました！"
+  economy-reset: "&c全プレイヤーの経済データをリセットしました。"
+  player-reset: "&c{player} の経済データをリセットしました。"
+  price-set: "&a{item} の価格を設定しました: 購入={buy}, 売却={sell}"
+  price-reset: "&a{item} の価格をデフォルトにリセットしました。"
+  market-paused: "&c市場を一時停止しました。取引はできません。"
+  market-resumed: "&a市場を再開しました。"
+  give-holdings: "&a{player} の倉庫に {amount}個の {item} を付与しました。"
+  not-in-config: "&c{item} は設定ファイルに存在しません。"
+  already-in-config: "&c{item} は既に設定されています。"
+  
+  add:
+    success: "&a{item}&a を市場に追加しました！ 基準: &e{base}&a, 最小: &e{min}&a, 最大: &e{max}"
+    usage: "&c使用法: /market additem <素材> <基準価格> [最小価格] [最大価格]"
+    invalid-material: "&c無効な素材です: {material}"
+    
+  remove:
+    success: "&a{item}&a を市場から削除しました。"
+    usage: "&c使用法: /market removeitem <素材>"
+    
+  setbase:
+    success: "&e{item}&a の基準価格を &e{price}&a に設定しました。"
+    usage: "&c使用法: /market setbase <素材> <価格>"
+    
+  setmin:
+    success: "&e{item}&a の最小価格を &e{price}&a に設定しました。"
+    usage: "&c使用法: /market setmin <素材> <価格>"
+    
+  setmax:
+    success: "&e{item}&a の最大価格を &e{price}&a に設定しました。"
+    usage: "&c使用法: /market setmax <素材> <価格>"
+    
+  setprice:
+    success: "&e{item}&a の現在価格を &e{price}&a に設定しました。"
+    usage: "&c使用法: /market setprice <素材> <価格>"
+    
+  enable:
+    success: "&e{item}&a を市場で有効化しました。"
+    usage: "&c使用法: /market enableitem <素材>"
+    already: "&e{item}&a は既に有効です。"
+    
+  disable:
+    success: "&e{item}&a を市場で無効化しました。"
+    usage: "&c使用法: /market disableitem <素材>"
+    already: "&e{item}&a は既に無効です。"
+    
+  items:
+    empty: "&7市場に設定されたアイテムはありません。"
+    header: "&6=== 市場アイテム (ページ {page}/{total}) ==="
+    entry: "&e{item} &7- 基準: &a{base}&7, 最小: &c{min}&7, 最大: &a{max}&7, 現在: &e{current} {status}"
+    enabled: "&a[ON]"
+    disabled: "&c[OFF]"
+    page-usage: "&7&e/market items <ページ> &7で他のページを表示。"
+  
+  stats:
+    header: "&6=== The Endex 統計 ==="
+    total-transactions: "&7総取引数: &e{count}"
+    total-volume: "&7総取引量: &e{amount}"
+    active-players: "&7アクティブトレーダー: &e{count}"
+    items-tracked: "&7追跡アイテム数: &e{count}"
+
+# =============================================================================
+# イベント (EVENTS)
+# =============================================================================
+events:
+  market-crash:
+    start: "&c&l⚠ 市場大暴落！ &e全アイテムの価格が {percent}% 下落しました！ 今が買い時です！"
+    end: "&a&l✓ 市場が安定しました。"
+    
+  market-boom:
+    start: "&a&l↑ 市場バブル到来！ &e価格が {percent}% 上昇しました！"
+    end: "&7市場のバブルが終了しました。"
+    
+  flash-sale:
+    start: "&b&l★ タイムセール！ &e{item} が今後 {time} の間 {percent}% オフ！"
+    end: "&7タイムセールが終了しました。"
+    
+  double-xp:
+    start: "&6&l✦ 経験値2倍イベント！ &eすべての取引で得られる経験値が2倍になります！"
+    end: "&7経験値2倍イベントが終了しました。"
+    
+  happy-hour:
+    start: "&d&l♫ ハッピーアワー！ &e今後 {time} の間、取引手数料が無料になります！"
+    end: "&7ハッピーアワーが終了しました。"
+
+# =============================================================================
+# 通知 (NOTIFICATIONS)
+# =============================================================================
+notifications:
+  price-alert:
+    reached: "&e{item} がターゲット価格 {price} に到達しました！"
+    above: "&a{item} が {price} を上回りました！"
+    below: "&c{item} が {price} を下回りました！"
+    
+  investment:
+    profit: "&a{item} への投資が {percent}% 上昇しました！ (+{profit} 利益)"
+    loss: "&c{item} への投資が {percent}% 下落しました。 ({loss} 損失)"
+    
+  daily-summary:
+    header: "&6=== 市場デイリーサマリー ==="
+    portfolio-value: "&7資産価値: &e{value}"
+    daily-change: "&7前日比: {change}"
+    top-performer: "&7最高パフォーマー: &a{item} (+{percent}%)"
+    worst-performer: "&7最低パフォーマー: &c{item} ({percent}%)"
+
+# =============================================================================
+# ENDEXコマンド (ENDEX COMMAND)
+# =============================================================================
+endex:
+  plugin-info: "&6[The Endex] &b動的アイテム市場"
+  usage-hint: "&7&b/endex help &7または &b/endex market &7でGUIを開きます。"
+  
+  help:
+    header: "&6[The Endex] &bコマンド一覧:"
+    base-info: "&b/endex&7 — プラグイン情報を表示"
+    market: "&b/endex market&7 — 市場GUIを開く"
+    price: "&b/market price <素材>&7 — 価格情報"
+    top: "&b/market top&7 — ランキング"
+    buy: "&b/market buy <素材> <数量>&7 — 購入"
+    sell: "&b/market sell <素材> <数量>&7 — 売却"
+    invest: "&b/market invest [buy|list|redeem-all]&7 — 投資"
+    reload: "&b/endex reload&7 — 設定とデータを再読み込み"
+    shopedit: "&b/endex shopedit&7 — ショップエディタを開く"
+    webui-export: "&b/endex webui export&7 — ウェブUIをエクスポート"
+    webui-reload: "&b/endex webui reload&7 — ウェブキャッシュをクリア"
+    event: "&b/market event [list|<名前>|end <名前>|clear]&7 — イベント管理"
+    web: "&b/endex web&7 — ウェブ取引画面を開く"
+  
+  market:
+    player-only: "&cプレイヤーのみが市場GUIを開けます。"
+  
+  version:
+    info: "&6[The Endex] &bv{version} &7(保存方式: {storage})"
+    help-hint: "&7&b/endex help &7でコマンドを確認できます。"
+  
+  reload:
+    no-permission: "&c権限がありません。"
+  
+  webui:
+    no-permission: "&c権限がありません。"
+    not-available: "&cウェブサーバーが利用できません。"
+    export-success: "&6[The Endex] &aUIをカスタムフォルダにエクスポートしました。"
+    reload-success: "&6[The Endex] &bウェブキャッシュをクリアしました。"
+  
+  track:
+    no-permission: "&c権限がありません。"
+    disabled: "&cリソース追跡は無効です。"
+    header: "&6[The Endex] &b収集された素材上位 (起動後):"
+    no-data: "&7(データなし)"
+    entry: "&b{material}&7: {amount}"
+    footer: "&7合計は tracking.yml に保存されます"
+    unable-to-read: "&cトラッカーを読み込めません。"
+    usage: "&c使用法: /endex track dump"
+  
+  web:
+    player-only: "&cプレイヤーのみが使用可能です。"
+    no-permission: "&cウェブインターフェースを使用する権限がありません。"
+    not-available: "&cウェブサーバーが利用できません。"
+    session-header: "&6[The Endex] &bあなたの個人取引セッション:"
+    link-clickable: "&b&nこちらをクリックして取引画面を開く"
+    link-hover: "&7ブラウザで取引画面を開きます"
+    link-plain: "&b&n{url}"
+    link-hint: "&7(上のリンクをクリックまたはコピーしてください)"
+    session-expires: "&7セッションは2時間で失効します。"
+  
+  shopedit:
+    player-only: "&cプレイヤーのみが使用可能です。"
+    no-permission: "&cショップエディタを使用する権限がありません。"
+    not-available: "&cショップエディタは利用できません。"
+  
+  unknown-subcommand: "&c不明なサブコマンドです。/endex help を確認してください。"
+
+# =============================================================================
+# 市場コマンドヘルプ (MARKET COMMAND HELP)
+# =============================================================================
+market-help:
+  separator: "&6═══════════════════════════════════════"
+  title: "&d&lThe Endex &7- 市場コマンド"
+  empty-line: ""
+  
+  basic:
+    market: "&e/market &7- 市場/ショップGUIを開く"
+    shop: "&e/market shop [ID] &7- カスタムショップを開く"
+    stock: "&e/market stock &7- デフォルトの株式市場を開く"
+    price: "&e/market price <アイテム> &7- アイテム価格を確認"
+    buy: "&e/market buy <アイテム> <数量> &7- アイテムを購入"
+    sell: "&e/market sell <アイテム> <数量> &7- インベントリから売却"
+    sellholdings: "&e/market sellholdings <アイテム> <数量> &7- 倉庫から売却"
+    top: "&e/market top &7- 上昇/下落ランキングを表示"
+  
+  holdings-section: "&b倉庫 & 配送:"
+  holdings:
+    holdings: "&e/market holdings &7- 仮想倉庫を表示"
+    withdraw: "&e/market withdraw <アイテム> [数量] &7- 倉庫から取り出す"
+    withdraw-all: "&e/market withdraw all &7- 倉庫からすべて取り出す"
+    delivery: "&e/market delivery &7- 保留中の配送を表示"
+    delivery-claim: "&e/market delivery claim <アイテム> &7- 特定の配送を回収"
+    delivery-claim-all: "&e/market delivery claim-all &7- すべての配送を回収"
+  
+  invest-section: "&b投資:"
+  invest:
+    buy: "&e/market invest buy <アイテム> <数量> &7- 投資を購入"
+    list: "&e/market invest list &7- 投資一覧を表示"
+    redeem: "&e/market invest redeem-all &7- すべての投資を回収"
+  
+  admin-events-section: "&c管理者用イベント:"
+  admin-events:
+    list: "&e/market event &7- イベント一覧/発生"
+    trigger: "&e/market event <名前> &7- イベントを発生させる"
+    end: "&e/market event end <名前> &7- イベントを終了させる"
+    clear: "&e/market event clear &7- すべてのイベントを消去"
+  
+  admin-editor-section: "&c管理者用ショップエディタ:"
+  admin-editor:
+    editor: "&e/market editor &7- ショップエディタを開く"
+  
+  admin-items-section: "&c管理者用アイテム管理:"
+  admin-items:
+    add: "&e/market add <アイテム> <基準> [最小] [最大] &7- 追加"
+    remove: "&e/market remove <アイテム> &7- 削除"
+    setbase: "&e/market setbase <アイテム> <価格> &7- 基準価格設定"
+    setmin: "&e/market setmin <アイテム> <価格> &7- 最小価格設定"
+    setmax: "&e/market setmax <アイテム> <価格> &7- 最大価格設定"
+    setprice: "&e/market setprice <アイテム> <価格> &7- 現在価格を強制設定"
+    toggle: "&e/market enable/disable <アイテム> &7- 有効/無効化"
+    items: "&e/market items [ページ] &7- 設定済みアイテム一覧"
+
+# 価格コマンド詳細
+market-price:
+  usage: "&c使用法: /market price <素材>"
+  unknown-material: "&c不明な素材: {material}"
+  not-tracked: "&c{material} は市場で追跡されていません。"
+  header: "&6[The Endex] &b{item}&7: &a{price} &7({arrow}&7 {diff})"
+  event-multiplier: "&3イベント倍率: &bx{multiplier}  &7適用後: &a{effective}"
+  stats: "&8基準 {base}  最小 {min}  最大 {max}"
+  history-label: "&7履歴: {history}"
+  chart-label: "&8チャート: &7{chart}"
+
+# 取引メッセージ
+market-transaction:
+  item-dropped: "&e[TheEndex] &6{count}個の {item} がドロップしました (配送制限または受取不可)。"
+  item-dropped-zero: "&e[TheEndex] &6{count}個の {item} がドロップしました。"
+  item-dropped-limit: "&e[TheEndex] &6{count}個の {item} がドロップしました (配送制限に到達)。"
+  item-dropped-full: "&e[TheEndex] &6{count}個の {item} がドロップしました (インベントリ満杯)。"
+  buy-success: "&6[TheEndex] &a{amount}個の {item} を {price} で購入しました。"
+  buy-delivered: "&e  納品: {delivered} | 保留: {pending} &7(市場GUIのエンダーチェストを確認)"
+  buy-with-tax: "&6[TheEndex] &a{amount}個の {item} を {price} で購入しました (税 {tax} / {taxpct}%)。"
+  buy-dropped: "&6[TheEndex] &a{amount}個の {item} を {price} で購入しました。"
+  buy-dropped-note: "&e  納品: {delivered} | ドロップ: {dropped}"
+  top-gainer: "&a+{percent}% &b{item}"
+  top-loser: "&c{percent}% &b{item}"
+
+# 倉庫表示
+market-holdings-display:
+  entry: "&7- &b{item}&7 {id}  元本: {principal}  利息: &a{accrued}"
+  item-line: "&b{item}: &e{amount}"
+  item-detail: "&b{item}: &e{qty} &7@ &a{price} {pnl_color}({pnl_sign}{pnl})"
+  total-value: "&7{label}: &a{value} {pnl_color}({pnl_sign}{pnl} 損益)"
+  delivery-item: "&7  • &b{item}: &6{count}"
+
+# 配送・イベント・投資表示
+market-event-display:
+  available: "&b{name}&7 -> {target} {multiplier}倍 {duration}分間 {broadcast}"
+  active: "&b{name}&7 終了まで &e{remaining}分"
+market-invest-display:
+  entry: "&7- &b{item}&7 {id}  元本: {principal}  累計: &a{accrued}"
+market-items-list:
+  entry: "{status} &b{item} &7B:{base} Min:{min} Max:{max}"
+market-display:
+  investment-entry: "&7- &b{material}&7 {id_short}…  元本: {principal}  累計: &a{accrued}"
+  event-available: "&b{name}&7 -> {target} {multiplier}倍 {duration}分間 {broadcast}"
+  event-active: "&b{name}&7 終了まで &e{remaining}分"
+  delivery-detail: "&7  • &b{item}: &6{count}"
+  items-list-entry: "{status} &b{item} &7B:{base} Min:{min} Max:{max}"
+
+# =============================================================================
+# ショップエディタ (SHOP EDITOR)
+# =============================================================================
+shop-editor:
+  no-permission: "&cショップエディタを使用する権限がありません！"
+  not-loaded: "&cカスタムショップシステムが読み込まれていません。"
+  shop-not-found: "&cショップが見つかりません: {shop}"
+  unsaved-warning: "&e⚠ 未保存の変更があります！再度エディタを開いて保存してください。"
+  input-cancelled: "&e入力をキャンセルしました。"
+  mode-changed: "&aショップモードを {mode} に変更しました。&e/endex reload &aで適用されます。"
+  cannot-delete-main: "&cメインショップは削除できません！"
+  set-main-shop: "&a'{shop}' をメインショップに設定しました。"
+  category-settings-soon: "&eカテゴリー設定エディタは近日公開予定です！"
+  mode-changed-layout: "&eモードを &f{mode} &eに変更しました。"
+  click-empty-slot: "&eまず、カテゴリーを配置する空きスロットをクリックしてください。"
+  fill-toggle-hint: "&e塗りつぶしパターンの切り替え - 現在は config.yml で設定してください"
+  drag-filler-hint: "&eインベントリからアイテムをドラッグして塗りつぶし素材を設定します"
+  border-mode-hint: "&eボーダーモード: スロットをクリックしてボーダーを切り替えます"
+  unsaved-changes-warning: "&e警告: 未保存の変更があります！"
+  opening-preview: "&dショップのプレビューを表示中..."
+  undo-not-implemented: "&6元に戻す機能はまだ実装されていません"
+  editing-slot: "&eスロット {slot} ({type}) を編集しています"
+  editing-slot-prompt: "&7まず新しい名前を入力してください。その後に説明文（Lore）を聞きます。"
+  removed-slot: "&cスロット {slot} の内容を削除しました"
+  click-move-target: "&e別のスロットをクリックして移動させるか、ここを再度クリックしてキャンセルします"
+  moved-content: "&aスロット {slot} に内容を移動しました"
+  move-cancelled: "&7移動をキャンセルしました"
+  placed-decoration: "&aスロット {slot} に装飾を配置しました"
+  cursor-item-hint: "&eカーソルにアイテムを持って配置してください"
+  slot-empty: "&cこのスロットは空です"
+  slot-already-empty: "&7スロットは既に空です"
+  shop-file-not-found: "&cショップファイルが見つかりません！"
+  layout-saved: "&aレイアウトを shops/{shop}.yml に保存しました"
+  placed-category: "&aカテゴリー '{category}' をスロット {slot} に配置しました"
+  placed-button: "&a{button} ボタンをスロット {slot} に配置しました"
+  item-settings-saved: "&aアイテム設定を保存しました！"
+  shop-exists: "&cID '{shop}' のショップは既に存在します！"
+  shop-created: "&a新しいショップを作成しました: {name} (ID: {id})"
+  category-creation-soon: "&aカテゴリー作成機能は近日公開予定です！"
+  invalid-price: "&c無効な価格です！正の数値を入力してください。"
+  buy-price-set: "&a購入価格を {price} に設定しました"
+  sell-price-set: "&a売却価格を {price} に設定しました"
+  permission-set: "&a必要権限を設定しました: {permission}"
+  invalid-number: "&c無効な数値です！整数を入力してください。"
+  stock-limit-set: "&a在庫制限を {limit} に設定しました"
+  no-slot-selected: "&cスロットが選択されていません！"
+  slot-is-empty: "&cスロットが空です！"
+  slot-name-updated: "&aスロット名を更新しました: {name}"
+  keeping-current-name: "&7現在の名前を維持します。"
+  slot-lore-updated: "&aスロットの説明文を更新しました！"
+  keeping-current-lore: "&7現在の説明文を維持します。"
+  item-added: "&a{item} をスロット {slot} に追加しました。クリックで価格を設定してください！"
+  item-removed: "&eスロット {slot} から {item} を削除しました"
+  items-saved: "&aカテゴリー '{category}' に {count} 個のアイテムを保存しました！"
+  items-saved-note: "&7アイテムが items.yml と market.db に追加されました。"
+  shop-deleted: "&aショップを削除しました: {shop}"
+  shop-file-not-found-delete: "&c削除するショップファイルが見つかりません！"
+  category-deletion-soon: "&eカテゴリー削除機能は近日公開予定です！"
+  shop-changes-saved: "&aショップの変更を保存しました！"
+
+# =============================================================================
+# ウェブ取引 (WEB TRADING)
+# =============================================================================
+web-trading:
+  holdings-limit: "&c[TheEndex] 倉庫の制限に達しました (最大 {limit} 個)。アイテムを取り出してください。"
+  buy-success-simple: "&6[TheEndex] &a{amount}個の {item} を購入しました！"
+  buy-withdraw-hint: "&7/market withdraw {item} で回収できます。"
+  buy-capped: "&e[TheEndex] &6空き容量の関係で、購入を {amount}個の {item} に制限しました。"
+  buy-with-delivery: "&6[TheEndex] &a{amount}個の {item} を購入しました。"
+  buy-delivery-status: "&e  納品: {delivered} | 保留: {pending} &7(市場GUIで確認)"
+  withdraw-success: "&a[TheEndex] {amount}個の {item} をインベントリに取り出しました！"
+  withdraw-remaining: "&e[TheEndex] {remaining}個の {item} が倉庫に残っています。"
+  withdraw-all-success: "&a[TheEndex] 倉庫から {total} 個のアイテムを取り出しました！"
+  withdraw-all-remaining: "&e[TheEndex] インベントリ満杯のため、{remaining} 個が倉庫に残っています。"
+  items-added-holdings: "&e  → アイテムが &d倉庫&e に追加されました。"
+  inventory-full-web: "&c[TheEndex] インベントリが満杯です。空きを作ってから再度お試しください。"
+  tip-empty-inventory: "&7ヒント: 大量注文の前にはインベントリを空けることをお勧めします。"
+
+# =============================================================================
+# 自動配送・更新・ヘルプ (DELIVERY/UPDATE/HELP)
+# =============================================================================
+delivery-autoclaim:
+  success: "&a[TheEndex] &7保留されていた {total}&7 個のアイテムを自動回収しました！"
+  item-line: "&7  +{amount} {item}"
+  remaining: "&7残り: &e{remaining}&7 個 (インベントリ満杯のため)。"
+update-checker:
+  header-console: "&6&l[The Endex] &eアップデートがあります！"
+  header-player: "&6&l[The Endex] &e新しいバージョンが利用可能です！"
+  version-info: "&7現在: &c{current} &7→ 最新: &a{latest}"
+  download-url: "&7ダウンロード: &b{url}"
+help:
+  header: "&6=== The Endex ヘルプ ==="
+  footer: "&7詳細は &e/market help <コマンド名> &7で確認できます。"
+  commands:
+    market: "&e/market &7- 市場GUIを開く"
+    buy: "&e/market buy <アイテム> [数量] &7- 購入"
+    sell: "&e/market sell [アイテム] [数量] &7- 売却"
+    price: "&e/market price <アイテム> &7- 価格確認"
+    holdings: "&e/market holdings &7- 倉庫/投資確認"
+    delivery: "&e/market delivery &7- 配送回収"
+    invest: "&e/market invest <アイテム> <数量> &7- 投資"
+    liquidate: "&e/market liquidate <アイテム> [数量] &7- 倉庫資産を現金化"
+    trend: "&e/market trend &7- トレンド表示"
+    history: "&e/market history &7- 取引履歴"
+    search: "&e/market search <ワード> &7- 検索"
+    web: "&e/market web &7- ウェブ画面を開く"
+    help: "&e/market help &7- ヘルプ表示"
+  admin:
+    reload: "&e/endex reload &7- 設定再読み込み"
+    admin: "&e/endex admin &7- 管理者コマンド"
+    stats: "&e/endex stats &7- 統計表示"
+errors:
+  database-error: "&cデータベースエラーが発生しました。"
+  rate-limited: "&c少し待ってから再度実行してください。"
+  market-paused: "&c市場は現在停止中です。"
+  feature-disabled: "&cこの機能は現在無効化されています。"
+  internal-error: "&c内部エラーが発生しました。管理者に連絡してください。"
+  cooldown: "&cあと {time} 待ってから使用してください。"
+  economy-unavailable: "&c経済システムが見つかりません。Vaultが必要です。"
+  payment-failed: "&c支払い失敗: {error}"
+time:
+  seconds: "{value}秒"
+  minutes: "{value}分"
+  hours: "{value}時間"
+  days: "{value}日"
+  ago: "{time}前"
+  remaining: "残り {time}"
+  now: "たった今"
+  never: "なし"

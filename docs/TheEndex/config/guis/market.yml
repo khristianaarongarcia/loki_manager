@@ -1,0 +1,214 @@
+# ═══════════════════════════════════════════════════════════════════════════════
+# The Endex - Market GUI Configuration
+# ═══════════════════════════════════════════════════════════════════════════════
+# This file controls the layout, colors, and behavior of the main market GUI.
+# Place custom GUI configs in plugins/TheEndex/guis/ folder.
+
+# GUI identifier (used internally, do not change)
+id: market
+
+# Enable this GUI configuration
+enabled: true
+
+# ───────────────────────────────────────────────────────────────────────────────
+# BASIC SETTINGS
+# ───────────────────────────────────────────────────────────────────────────────
+title: "&5The Endex"
+size: 54  # Must be multiple of 9 (9, 18, 27, 36, 45, 54)
+
+# ───────────────────────────────────────────────────────────────────────────────
+# LAYOUT
+# ───────────────────────────────────────────────────────────────────────────────
+# Item display area (slots where market items appear)
+item-slots:
+  start: 0
+  end: 44  # 5 rows of items (45 slots)
+
+# Control bar (bottom row)
+controls:
+  previous-page:
+    slot: 45
+    material: ARROW
+    name: "&ePrevious Page"
+  
+  category:
+    slot: 46
+    material: BOOK
+    name: "&bCategory: %category%"
+    lore:
+      - "&7Click to cycle categories"
+  
+  grouping:
+    slot: 47
+    material: LECTERN
+    name: "&dGroup: %state%"
+    lore:
+      - "&7Click to toggle grouping"
+  
+  search:
+    slot: 48
+    material: OAK_SIGN
+    name: "&bSearch: %query%"
+    lore:
+      - "&7Left-click: Set search"
+      - "&7Right-click: Clear"
+  
+  amount:
+    slot: 49
+    material: HOPPER
+    name: "&bAmount: %amount%"
+    lore:
+      - "&7Click to cycle amounts"
+  
+  sort:
+    slot: 50
+    material: COMPARATOR
+    name: "&dSort: %sort%"
+    lore:
+      - "&7Click to cycle sort mode"
+  
+  holdings:
+    slot: 51
+    material: CHEST
+    name: "&dMy Holdings"
+    lore:
+      - "&7Click to view holdings"
+  
+  next-page:
+    slot: 53
+    material: ARROW
+    name: "&eNext Page"
+
+# ───────────────────────────────────────────────────────────────────────────────
+# COLORS & FORMATTING
+# ───────────────────────────────────────────────────────────────────────────────
+colors:
+  # Item name color
+  item-name: "&b"
+  
+  # Price colors
+  price-up: "&a"      # Green for price increase
+  price-down: "&c"    # Red for price decrease
+  price-stable: "&e"  # Yellow for no change
+  
+  # Category header
+  category-header: "&d"
+  
+  # Lore text colors
+  lore-label: "&7"
+  lore-value: "&f"
+  lore-hint: "&8"
+
+# ───────────────────────────────────────────────────────────────────────────────
+# CATEGORIES
+# ───────────────────────────────────────────────────────────────────────────────
+# Define custom categories and which materials belong to them
+categories:
+  ALL:
+    name: "All Items"
+    icon: COMPASS
+    filter: "*"  # Wildcard means all items
+  
+  ORES:
+    name: "Ores & Metals"
+    icon: DIAMOND
+    filter:
+      - "*_ORE"
+      - "*_INGOT"
+      - "*_BLOCK"
+      - "RAW_*"
+      - "DIAMOND"
+      - "EMERALD"
+      - "COAL"
+      - "LAPIS_LAZULI"
+      - "REDSTONE"
+      - "QUARTZ"
+      - "AMETHYST_SHARD"
+  
+  FARMING:
+    name: "Farming"
+    icon: WHEAT
+    filter:
+      - "WHEAT"
+      - "WHEAT_SEEDS"
+      - "CARROT"
+      - "POTATO"
+      - "BEETROOT"
+      - "BEETROOT_SEEDS"
+      - "MELON"
+      - "MELON_SLICE"
+      - "PUMPKIN"
+      - "SUGAR_CANE"
+      - "BAMBOO"
+      - "COCOA_BEANS"
+      - "SWEET_BERRIES"
+      - "GLOW_BERRIES"
+      - "NETHER_WART"
+  
+  MOB_DROPS:
+    name: "Mob Drops"
+    icon: ROTTEN_FLESH
+    filter:
+      - "ROTTEN_FLESH"
+      - "BONE"
+      - "STRING"
+      - "SPIDER_EYE"
+      - "ENDER_PEARL"
+      - "GUNPOWDER"
+      - "BLAZE_ROD"
+      - "GHAST_TEAR"
+      - "SLIME_BALL"
+      - "LEATHER"
+      - "FEATHER"
+      - "INK_SAC"
+      - "GLOW_INK_SAC"
+      - "PHANTOM_MEMBRANE"
+      - "RABBIT_HIDE"
+      - "RABBIT_FOOT"
+  
+  BLOCKS:
+    name: "Building Blocks"
+    icon: STONE
+    filter: "blocks"  # Special keyword for all block materials
+
+# ───────────────────────────────────────────────────────────────────────────────
+# AMOUNT PRESETS
+# ───────────────────────────────────────────────────────────────────────────────
+amounts:
+  - 1
+  - 8
+  - 16
+  - 32
+  - 64
+
+# ───────────────────────────────────────────────────────────────────────────────
+# SORT MODES
+# ───────────────────────────────────────────────────────────────────────────────
+sort-modes:
+  NAME:
+    name: "A-Z"
+    icon: NAME_TAG
+  PRICE:
+    name: "Price"
+    icon: GOLD_INGOT
+  CHANGE:
+    name: "% Change"
+    icon: EXPERIENCE_BOTTLE
+
+# ───────────────────────────────────────────────────────────────────────────────
+# ITEM DISPLAY FORMAT
+# ───────────────────────────────────────────────────────────────────────────────
+item-lore:
+  - "&7Price: &a%price% &7(%arrow% %diff%, %pct%)"
+  - "&aBuy: %buy_price% &7| &eSell: %sell_price%"
+  - "&8Last cycle: &7D %demand% / S %supply% (%impact%)"
+  - "&8Min %min%  Max %max%"
+  - "&7History: %history%"
+  - "&8Left: Buy  Right: Sell  Amount: %amount%"
+  - "&8Shift/Middle-click: Details"
+  - "&7You have: &b%inventory_count%"
+  - "&7Balance: &6%balance%"
+
+# Show event multiplier line when active
+show-event-multiplier: true
+event-multiplier-format: "&3Event: x%multiplier% &7Eff: &a%effective_price%"

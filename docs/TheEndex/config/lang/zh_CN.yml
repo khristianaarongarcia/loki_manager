@@ -1,0 +1,529 @@
+# The Endex - 简体中文语言文件
+# 语言: Simplified Chinese (zh_CN)
+# 翻译: Gemini AI
+
+# =============================================================================
+# 通用消息
+# =============================================================================
+general:
+  prefix: "&6[TheEndex]"
+  no-permission: "&c您没有权限执行此操作。"
+  player-only: "&c此命令只能由玩家使用。"
+  invalid-args: "&c无效参数。使用 &e/market help &c查看命令。"
+  player-not-found: "&c找不到玩家: {player}"
+  invalid-number: "&c无效数字: {value}"
+  invalid-amount: "&c请指定有效的数量。"
+  invalid-item: "&c未知物品: {item}"
+  must-hold-item: "&c您必须手持物品才能使用此命令。"
+  reload-success: "&a配置已成功重载！"
+  reload-complete: "&6[The Endex] &a重载完成。"
+  enabled: "&a已启用"
+  disabled: "&c已禁用"
+  yes: "是"
+  no: "否"
+  none: "无"
+  page: "页码"
+  
+# =============================================================================
+# 市场命令
+# =============================================================================
+market:
+  # 商店/界面访问
+  shop:
+    not-available: "&c自定义商店系统不可用。"
+    opened: "&a已打开商店: {name}"
+    not-found: "&c找不到商店: {name}"
+    
+  # 默认市场
+  default:
+    opened-gui: "&a已打开市场界面。"
+    no-gui-console: "&c无法从控制台打开界面。请使用子命令。"
+    
+  # 编辑器命令
+  editor:
+    opened: "&a已打开市场编辑器。"
+    not-available: "&c当前版本不支持市场编辑器。"
+    
+  # 排行榜命令
+  top:
+    header: "&6=== 富豪榜 ==="
+    entry: "&e{rank}. &f{player} &7- &a{amount}"
+    invalid-type: "&c无效类型。请使用: bought (购买), sold (出售), profit (利润)"
+    no-data: "&7暂无数据。"
+    page-info: "&7第 {page}/{total} 页"
+    
+  # 活动命令
+  event:
+    header: "&6=== 进行中的市场活动 ==="
+    none: "&7当前没有正在进行的市场活动。"
+    broadcast: "&a[{event}] 已开始！ &7(倍率: {multiplier}x)"
+    silent: "&7[{event}] 已静默开始。 &7(倍率: {multiplier}x)"
+    active: "&e{event} &7- 倍率: &a{multiplier}x"
+    usage-hint: "&7使用 &e/market event <活动名> [silent] &7来触发活动。"
+    cleared: "&a所有市场活动已清除。"
+    end-usage: "&c用法: /market event end <活动名>"
+    ended: "&a活动已结束: &e{event}"
+    not-found: "&c活动 '{event}' 当前未激活。"
+    unknown: "&c未知活动: {event}"
+    usage: "&c用法: /market event <start|end|clear|list> [活动名] [silent]"
+
+  # 提货命令
+  delivery:
+    not-enabled: "&c提货系统未启用。"
+    usage: "&c用法: /market delivery [list|claim|claimall]"
+    gui-hint: "&7使用 &e/market delivery list &7查看待提取物品。"
+    no-pending: "&7您没有待提取的物品。"
+    header: "&6=== 待提取物品 (第 {page}/{total} 页) ==="
+    entry: "&e{item} &7x&a{amount}"
+    claim-usage: "&c用法: /market delivery claim <材料>"
+    claim-none: "&c您没有待提取的 {item}。"
+    claim-success: "&a已将 &e{amount}x {item}&a 提取到您的背包！"
+    claim-partial: "&a已提取 &e{amount}x {item}&a。 &e{remaining} 仍在待领列表 &7(背包已满)。"
+    still-pending: "&7由于背包空间不足，{remaining}x {item} 仍在待领中。"
+    make-space: "&7请清理背包空间后重试。"
+    claimall-none: "&c您没有可领取的物品。"
+    claimall-success: "&a已领取所有物品！ ({count} 件)"
+    claimall-partial: "&a已领取 {claimed} 件。 {remaining} 件物品仍在待领中。"
+
+  # 持仓命令
+  holdings:
+    not-enabled: "&c持仓系统未启用。"
+    empty: "&7您的仓库中没有任何物品。"
+    header: "&6=== 您的持仓 (第 {page}/{total} 页) ==="
+    entry: "&e{item} &7x&a{amount} &7(价值: &e{value}&7)"
+    and-more: "&7...以及另外 {count} 种物品。"
+    total-value: "&6总价值: &e{value}"
+    withdraw-hint: "&7使用 &e/market withdraw <物品> &7来领取物品。"
+    gui-hint: "&7或使用 &e/market gui holdings &7打开图形界面。"
+
+  # 取回命令  
+  withdraw:
+    header: "&6=== 取回物品 ==="
+    usage-single: "&e/market withdraw <材料> [数量] &7- 取回指定物品"
+    usage-all: "&e/market withdraw all &7- 取回所有可能的物品"
+    success: "&a已取回 &e{amount}x {item}&a 到背包！"
+    failed: "&c取回 {item} 失败。请重试。"
+    inventory-full: "&c背包已满。 &e{remaining} {item} 仍留在仓库中。"
+    still-holding: "&7仓库中还剩下 {remaining}x {item}。"
+    nothing: "&c您的仓库中没有 {item}。"
+    all-header: "&6正在从仓库取回所有物品..."
+    none-withdrawn: "&c无法取回任何物品。您的背包可能已满。"
+    total-success: "&a已将 {count} 种不同的物品取回到背包！"
+    and-more: "&7({remaining} 种物品仍留在仓库中)"
+    still-remaining: "&7由于背包空间不足，部分物品无法取出。"
+    make-space: "&7请清理空间后再次使用 &e/market withdraw all&7。"
+
+  # 购买命令
+  buy:
+    success: "&a已花费 {price} 购买 {amount}x {item}！"
+    success-single: "&a已花费 {price} 购买 {item}！"
+    not-enough-money: "&c您需要 {price}，但当前只有 {balance}。"
+    item-not-available: "&c该物品不可购买。"
+    item-not-tracked: "&c市场未追踪物品 {item}。"
+    inventory-full: "&c您的背包已满。请清理空间后重试。"
+    max-exceeded: "&c一次最多只能购买 {max} 个。"
+    price-info: "&7{item}: 单价 &e{price} &7(最多购买 {max})"
+    usage: "&c用法: /market buy <材料> <数量>"
+    cancelled: "&c购买操作已被服务器策略取消。"
+    capped: "&6由于背包空间限制，购买量已限制为 {amount} {item} (原请求: {requested})。"
+    capacity-hint: "&7提示: 清空背包或使用末影箱来处理大额订单。"
+    tax-info: "&8(税费: {tax}，税率 {percent}%)"
+    
+  # 出售命令
+  sell:
+    success: "&a已出售 {amount}x {item}，获得 {price}！ (税费 {tax}，税率 {percent}%)"
+    success-single: "&a已出售 {item}，获得 {price}！"
+    not-enough-items: "&c您只有 {owned} 个 {item}，而出售需要 {required} 个。"
+    item-not-sellable: "&c该物品不可出售。"
+    item-not-tracked: "&c市场未追踪物品 {item}。"
+    not-holding-item: "&c您必须手持物品才能出售。"
+    price-info: "&7{item}: 单价 &e{price}"
+    sold-all: "&a已出售所有 {item} ({amount} 个)，获得 {price}！"
+    nothing-to-sell: "&c您没有任何该物品可供出售。"
+    usage: "&c用法: /market sell <材料> <数量>"
+    cancelled: "&c出售操作已被服务器策略取消。"
+
+  # 虚拟仓库出售
+  sellholdings:
+    success: "&a已从持仓中出售 {amount}x {item}，获得 {price}！ (税费 {tax}，税率 {percent}%)"
+    usage: "&c用法: /market sellholdings <材料> <数量>"
+    
+  # 价格命令
+  price:
+    header: "&6=== {item} 价格信息 ==="
+    buy-price: "&a买入价: &e{price}"
+    sell-price: "&c卖出价: &e{price}"
+    not-tradeable: "&c该物品不可交易。"
+    price-change: "&7价格波动 (24h): {change}"
+    trend-up: "&a↑ {percent}%"
+    trend-down: "&c↓ {percent}%"
+    trend-stable: "&7→ 稳定"
+    usage: "&c用法: /market price <材料>"
+    invalid-material: "&c未知材料: {material}"
+    
+  # 趋势命令
+  trend:
+    header: "&6=== 市场趋势 ==="
+    top-gainers: "&a▲ 涨幅榜"
+    top-losers: "&c▼ 跌幅榜"
+    item-line: "&e{item}: {change}"
+    no-data: "&7市场中暂无物品数据。"
+    
+  # 历史命令
+  history:
+    header: "&6=== 交易历史 ==="
+    no-history: "&7未找到交易记录。"
+    buy-line: "&a[购买] &e{item} x{amount} &7花费 &e{price} &7({time})"
+    sell-line: "&c[出售] &e{item} x{amount} &7获得 &e{price} &7({time})"
+    
+  # 搜索命令
+  search:
+    header: "&6=== '{query}' 的搜索结果 ==="
+    no-results: "&7未找到匹配 '{query}' 的物品。"
+    result-line: "&e{item} &7- 买入: &a{buy} &7| 卖出: &c{sell}"
+
+# =============================================================================
+# 市场图形界面 (GUI)
+# =============================================================================
+gui:
+  market:
+    title: "&5The Endex 市场"
+    buy-title: "&5买入: {item}"
+    sell-title: "&5卖出: {item}"
+    category-title: "&5{category}"
+    category_section: "&8分类区域"
+    search_prompt: "&e在聊天栏输入搜索内容。发送空消息以清除搜索。"
+    
+  details:
+    title: "&5Endex: &b{item}"
+    title_prefix: "Endex:"
+    chart: "&8走势: &7{bars}"
+    inventory_holdings: "&7背包: &b{inv} &7| 仓库: &d{holdings}"
+    buy_1: "&a购买 1 个"
+    buy_64: "&a购买 64 个"
+    sell_1_inv: "&c出售背包中的 1 个"
+    sell_all_inv: "&c出售背包中所有 ({count} 个)"
+    sell_1_holdings: "&d出售仓库中的 1 个"
+    sell_all_holdings: "&d出售仓库中所有 ({count} 个)"
+    
+  deliveries:
+    title: "&5待提取物品"
+    unavailable: "&c提货系统不可用。"
+    no_pending: "&7暂无待提取物品"
+    all_claimed: "&8所有物品已领取完毕！"
+    pending_count: "&6您有 &e{count} &6件待领物品"
+    click_hint: "&8点击查看并领取"
+    empty: "&7暂无待领物品"
+    item_pending: "&6待领: &e{count}"
+    inv_space: "&7背包剩余空间: &a{space}"
+    left_click: "&a左键: &7领取 (直到背包满)"
+    right_click: "&e右键: &7领取 1 组 ({stack})"
+    claim_all: "&a全部领取"
+    claim_all_desc: "&7领取所有待提取物品"
+    claim_all_hint: "&8(取决于背包剩余空间)"
+    claimed: "&a已领取 &6{count} {item}&a！"
+    still_pending: "&e{count} {item} 仍在待领中 (背包已满)。"
+    still_pending_simple: "&e{count} {item} 仍在待领中。"
+    claimed_total: "&a已成功领取 &6{count} &a件物品！"
+    items_remaining: "&e仍有 {count} 件物品待领 (背包已满)。"
+    item-detail: "&7  • &b{item}: &6{count}"
+    
+  holdings:
+    title: "&5我的仓库"
+    unavailable: "&c持仓系统不可用。"
+    count: "&6{count} &e/ {max} 件物品"
+    materials: "&7{count} 种不同材料"
+    click_hint: "&8点击查看并取回"
+    empty: "&7仓库为空"
+    empty_hint: "&8购买物品后会显示在这里"
+    no_items: "&7持仓中没有物品"
+    no_items_hint1: "&8购买物品后会显示在这里"
+    no_items_hint2: "&8使用 /market buy <物品> <数量>"
+    item_qty: "&6数量: &e{qty}"
+    item_avg_cost: "&7平均成本: &f{cost}"
+    item_current_price: "&7当前市价: &a{price}"
+    item_value: "&7价值: &a{value} {pnl_color}({pnl})"
+    inv_space: "&7背包剩余空间: &a{space}"
+    left_click: "&a左键: &7全部取回"
+    right_click: "&e右键: &7取回 1 组 ({stack})"
+    stats_title: "&6投资组合统计"
+    stats_total_items: "&7总物品数: &e{count} / {max}"
+    stats_unique: "&7不同材料数: &e{count}"
+    stats_total_value: "&7总资产价值: &a{value}"
+    stats_total_cost: "&7总投入成本: &f{cost}"
+    stats_pnl: "盈亏 (P/L): {pnl}"
+    withdraw_all: "&a全部取回"
+    withdraw_all_desc: "&7取回仓库中所有物品"
+    withdraw_all_hint: "&8(取决于背包剩余空间)"
+    withdrew: "&a已取回 &6{count} {item}&a！"
+    still_in_holdings: "&e{count} {item} 仍在持仓中 (背包已满)。"
+    still_in_holdings_simple: "&e{count} {item} 仍在持仓中。"
+    withdrew_total: "&a已成功取回 &6{count} &a件物品！"
+    items_remaining: "&e仍有 {count} 件物品留在持仓中。"
+    
+  buttons:
+    back: "&e返回"
+    back_to_market: "&e返回市场"
+    next_page: "&e下一页"
+    prev_page: "&e上一页"
+    close: "&c关闭"
+    search: "&b搜索: {search} &7(左键设置, 右键清除)"
+    search_none: "&8<无>"
+    category: "&b分类: {category} &7(点击切换)"
+    group: "&d分组: {status} &7(点击切换)"
+    group_on: "分类 A–Z (开启)"
+    group_off: "关闭"
+    sort: "&d排序: {sort} &7(点击切换)"
+    holdings: "&d我的仓库 &7(点击查看)"
+    deliveries: "&d待提取物品 &7(点击查看)"
+    
+  item:
+    price: "&7价格: &a{price} &7({arrow} {diff}, {pct})"
+    buy_sell: "&a买入: {buy} &7| &e卖出: {sell}"
+    last_cycle: "&8上轮周期: &7需求 {demand} / 供应 {supply} ({pct})"
+    event_multiplier: "&3活动: x{mul} &7生效价格: &a{effective}"
+    min_max: "&8最低 {min}  最高 {max}"
+    history: "&7历史记录: {history}"
+    click_hint: "&8左键: 买入  右键: 卖出  数量: {amount}"
+    details_hint: "&8Shift/中键: 查看详情"
+    you_have: "&7您拥有: &b{count} {material}"
+    balance: "&7余额: &6{balance}"
+
+# =============================================================================
+# 自定义商店
+# =============================================================================
+shops:
+  created: "&a自定义商店 '{name}' 已创建！"
+  deleted: "&c商店 '{name}' 已删除。"
+  not-found: "&c找不到商店: {name}"
+  not-available: "&c自定义商店系统不可用。"
+  already-exists: "&c该名称的商店已存在。"
+  item-added: "&a已将 {item} 添加到商店 '{name}'。"
+  item-removed: "&c已从商店 '{name}' 中移除 {item}。"
+  buy-only: "&7该商店仅允许买入。"
+  sell-only: "&7该商店仅允许卖出。"
+  editor-not-available: "&c商店编辑器不可用。"
+  
+  editor:
+    title: "&5商店编辑器: {name}"
+    add-item: "&a添加物品"
+    remove-item: "&c移除物品"
+    edit-prices: "&e修改价格"
+    toggle-buy: "&6切换买入状态"
+    toggle-sell: "&6切换卖出状态"
+    save: "&a保存更改"
+    
+  gui:
+    not-loaded: "&c自定义商店系统未加载。"
+    back-to-menu: "&c« 返回菜单"
+    back-to-menu-lore: "&7返回分类列表"
+    search-title: "&b🔍 搜索"
+    search-title-with: "&b🔍 搜索: {query}"
+    search-lore-empty: "&7点击搜索物品"
+    search-lore-current: "&7当前搜索: &b{query}"
+    search-lore-found: "&7找到: &f{count} 件物品"
+    search-lore-left: "&e左键: &f输入关键词"
+    search-lore-new: "&e左键: &f开始新搜索"
+    search-lore-right: "&c右键: &f清除搜索"
+    search-lore-hint: "&8在聊天框输入内容以过滤"
+    search-prompt: "&a✎ &e在聊天中输入搜索词，或输入 &ccancel &e取消。"
+    search-cancelled: "&e搜索已取消。"
+    search-applied: "&a✔ &7正在搜索: &f{query}"
+    search-cleared: "&e搜索已清除。"
+    sort-title: "&d排序: {sort} &7(点击)"
+    sort-lore-current: "&7当前: &f{sort}"
+    sort-lore-cycle: "&e点击切换:"
+    sort-lore-options: "&f名称 → 价格 → 涨跌幅"
+    holdings-title: "&d我的仓库 &7(点击)"
+    holdings-count: "&6{count} &e/ {max} 件物品"
+    holdings-materials: "&7{count} 种不同材料"
+    holdings-click-hint: "&8点击查看并取回"
+    holdings-empty: "&7仓库为空"
+    holdings-empty-hint: "&8购买物品后会显示在这里"
+    prev-page: "&e« 上一页"
+    prev-page-lore: "&7转到第 {page} 页"
+    next-page: "&e下一页 »"
+    next-page-lore: "&7转到第 {page} 页"
+    category-items: "&7{count} 件物品"
+    category-click: "&e点击浏览"
+    close: "&c关闭"
+    close-lore: "&7关闭当前菜单"
+    item-separator: "&8────────────────"
+    item-buy-price: "&a买入价: &f{price}"
+    item-sell-price: "&c卖出价: &f{price}"
+    item-change: "&7幅度: {color}{symbol} {change}%"
+    item-permission: "&c⚠ 需要权限: {permission}"
+    item-left-click: "&e左键: &f买入 x{amount}"
+    item-right-click: "&e右键: &f卖出 x{amount}"
+    item-shift-click: "&eShift+左键: &f快捷售出全部"
+    item-static: "&8固定价格 (不随市场波动)"
+    item-custom: "&d✦ 特殊物品"
+    details-buy-1: "&a买入 1 个"
+    details-buy-64: "&a买入 64 个"
+    details-sell-1: "&c卖出 1 个"
+    details-sell-all: "&c卖出全部 ({count} 个)"
+    details-back: "&e返回"
+    custom-purchased: "&a已买入 &f{amount}x {item} &a花费 &f{price}"
+    custom-sold: "&a已卖出 &f{amount}x {item} &a获得 &f{price} &7({details})"
+    custom-sold-inv: "来自背包: {count}x"
+    custom-sold-holdings: "来自仓库: {count}x"
+    custom-no-item: "&c您没有 {item} 可供出售！"
+    custom-not-enough-money: "&c余额不足！需要 {need}，当前只有 {have}"
+    custom-inventory-full: "&c您的背包已满！"
+    custom-transaction-failed: "&c交易失败: {error}"
+    custom-economy-unavailable: "&c经济系统不可用！"
+    custom-item-info-name: "&d✦ &f{name}"
+    custom-item-info-prices: "&a买入: &f{buy} &7| &c卖出: &f{sell}"
+    balance-display: "&6余额: {balance}"
+
+# =============================================================================
+# 管理员命令
+# =============================================================================
+admin:
+  reload: "&aThe Endex 配置与语言文件已重载！"
+  economy-reset: "&c已重置所有玩家的经济数据。"
+  player-reset: "&c已重置玩家 {player} 的经济数据。"
+  price-set: "&a已设置 {item} 价格: 买入={buy}, 卖出={sell}"
+  price-reset: "&a已将 {item} 价格重置为默认值。"
+  market-paused: "&c市场已暂停。交易已禁用。"
+  market-resumed: "&a市场已恢复。交易已启用。"
+  give-holdings: "&a已向玩家 {player} 的仓库发放了 {amount}x {item}。"
+  not-in-config: "&c{item} 不在物品配置文件中。"
+  already-in-config: "&c{item} 已存在于物品配置中。"
+  
+  add:
+    success: "&a已添加 &e{item}&a 到市场！基础价: &e{base}&a, 最低: &e{min}&a, 最高: &e{max}"
+    usage: "&c用法: /market additem <材料> <基础价> [最低价] [最高价]"
+    invalid-material: "&c无效材料: {material}"
+    
+  remove:
+    success: "&a已从市场移除 &e{item}&a。"
+    usage: "&c用法: /market removeitem <材料>"
+    
+  setbase:
+    success: "&a已将 &e{item}&a 的基础价设为 &e{price}"
+    usage: "&c用法: /market setbase <材料> <价格>"
+    
+  setmin:
+    success: "&a已将 &e{item}&a 的最低价设为 &e{price}"
+    usage: "&c用法: /market setmin <材料> <价格>"
+    
+  setmax:
+    success: "&a已将 &e{item}&a 的最高价设为 &e{price}"
+    usage: "&c用法: /market setmax <材料> <价格>"
+    
+  setprice:
+    success: "&a已强制将 &e{item}&a 的当前价格设为 &e{price}"
+    usage: "&c用法: /market setprice <材料> <价格>"
+    
+  enable:
+    success: "&a已在市场中启用 &e{item}&a。"
+    usage: "&c用法: /market enableitem <材料>"
+    already: "&e{item}&a 已经处于启用状态。"
+    
+  disable:
+    success: "&a已在市场中禁用 &e{item}&a。"
+    usage: "&c用法: /market disableitem <材料>"
+    already: "&e{item}&a 已经处于禁用状态。"
+    
+  items:
+    empty: "&7市场中未配置任何物品。"
+    header: "&6=== 市场物品列表 (第 {page}/{total} 页) ==="
+    entry: "&e{item} &7- 基础: &a{base}&7, 最低: &c{min}&7, 最高: &a{max}&7, 当前: &e{current} {status}"
+    enabled: "&a[开启]"
+    disabled: "&c[关闭]"
+    page-usage: "&7使用 &e/market items <页码> &7查看更多。"
+  
+  stats:
+    header: "&6=== The Endex 统计数据 ==="
+    total-transactions: "&7总交易笔数: &e{count}"
+    total-volume: "&7总交易量: &e{amount}"
+    active-players: "&7活跃交易人数: &e{count}"
+    items-tracked: "&7已追踪物品数: &e{count}"
+
+# =============================================================================
+# 事件消息
+# =============================================================================
+events:
+  market-crash:
+    start: "&c&l⚠ 市场崩盘！ &e所有价格暴跌 {percent}%！ 抄底时机已到！"
+    end: "&a&l✓ 市场已恢复平稳。"
+    
+  market-boom:
+    start: "&a&l↑ 市场繁荣！ &e物价上涨了 {percent}%！"
+    end: "&7市场繁荣期已结束。"
+    
+  flash-sale:
+    start: "&b&l★ 闪购活动！ &e{item} 在接下来的 {time} 内降价 {percent}%！"
+    end: "&7闪购活动已结束。"
+    
+  double-xp:
+    start: "&6&l✦ 双倍经验！ &e所有交易现在可获得 2 倍经验值！"
+    end: "&7双倍经验活动已结束。"
+    
+  happy-hour:
+    start: "&d&l♫ 欢乐时光！ &e接下来的 {time} 内免收交易税费！"
+    end: "&7欢乐时光已结束。"
+
+# =============================================================================
+# ENDEX 命令
+# =============================================================================
+endex:
+  plugin-info: "&6[The Endex] &b动态物品市场"
+  usage-hint: "&7使用 &b/endex help&7 或 &b/endex market&7 打开界面。"
+  
+  help:
+    header: "&6[The Endex] &b命令列表:"
+    base-info: "&b/endex&7 — 显示插件信息"
+    market: "&b/endex market&7 — 打开市场界面"
+    price: "&b/market price <材料>&7 — 价格查询"
+    top: "&b/market top&7 — 交易排行/趋势"
+    buy: "&b/market buy <材料> <数量>&7 — 买入物品"
+    sell: "&b/market sell <材料> <数量>&7 — 卖出物品"
+    invest: "&b/market invest [buy|list|redeem-all]&7 — 长期投资"
+    reload: "&b/endex reload&7 — 重载配置和数据"
+    shopedit: "&b/endex shopedit&7 — 打开商店编辑器"
+    web: "&b/endex web&7 — 获取网页交易界面链接"
+  
+  version:
+    info: "&6[The Endex] &bv{version} &7(存储类型: {storage})"
+    help-hint: "&7使用 &b/endex help&7 查看命令说明。"
+  
+  web:
+    player-only: "&c此命令只能由玩家使用。"
+    no-permission: "&c您没有权限使用网页界面。"
+    not-available: "&c网页服务器未开启。"
+    session-header: "&6[The Endex] &b您的个人交易会话:"
+    link-clickable: "&b&n点击此处打开交易面板"
+    link-hover: "&7在浏览器中打开交易界面"
+    link-plain: "&b&n{url}"
+    link-hint: "&7(点击或复制上方链接打开)"
+    session-expires: "&7会话将在 2 小时后过期。"
+  
+  unknown-subcommand: "&c未知子命令。使用 /endex help 查看。"
+
+# =============================================================================
+# 错误消息  
+# =============================================================================
+errors:
+  database-error: "&c数据库发生错误。请稍后重试。"
+  rate-limited: "&c操作太频繁，请稍后再试。"
+  market-paused: "&c市场目前处于暂停状态。"
+  feature-disabled: "&c此功能目前已禁用。"
+  internal-error: "&c发生内部错误。请联系管理员。"
+  cooldown: "&c请等待 {time} 后再再次使用。"
+  economy-unavailable: "&c经济系统不可用。请确保已安装 Vault 和经济插件。"
+  payment-failed: "&c支付失败: {error}"
+  
+# =============================================================================
+# 时间格式
+# =============================================================================
+time:
+  seconds: "{value}秒"
+  minutes: "{value}分"
+  hours: "{value}时"
+  days: "{value}天"
+  ago: "{time}前"
+  remaining: "剩余 {time}"
+  now: "刚刚"
+  never: "从未"

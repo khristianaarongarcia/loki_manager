@@ -1,0 +1,387 @@
+# ═══════════════════════════════════════════════════════════════════════════════
+# The Endex - Custom Shop Configuration
+# ═══════════════════════════════════════════════════════════════════════════════
+# This is the main shop configuration. It defines categories that players
+# can browse and trade. Prices come from items.yml - this file only controls
+# which items appear in each category and how the shop is laid out.
+#
+# To enable this shop, set shop.mode: CUSTOM in config.yml
+# ═══════════════════════════════════════════════════════════════════════════════
+
+# Unique identifier for this shop (used internally)
+id: main
+
+# Is this shop enabled?
+enabled: true
+
+# Shop title (shown in main menu)
+title: "&5&lServer Shop"
+
+# ───────────────────────────────────────────────────────────────────────────────
+# MAIN MENU SETTINGS
+# ───────────────────────────────────────────────────────────────────────────────
+menu:
+  title: "&8Server Shop"
+  size: 54  # Must be multiple of 9 (9, 18, 27, 36, 45, 54)
+  
+  # Layout defines what goes in each slot of the main menu
+  # Available types: CATEGORY, DECORATION, EMPTY, CLOSE, INFO
+  layout:
+    # Row 1 - Decorative border
+    0:
+      type: DECORATION
+      material: BLACK_STAINED_GLASS_PANE
+      name: " "
+    1:
+      type: DECORATION
+      material: BLACK_STAINED_GLASS_PANE
+      name: " "
+    2:
+      type: DECORATION
+      material: BLACK_STAINED_GLASS_PANE
+      name: " "
+    3:
+      type: DECORATION
+      material: BLACK_STAINED_GLASS_PANE
+      name: " "
+    4:
+      type: INFO
+      material: GOLD_INGOT
+      name: "&6Your Balance: &f%balance%"
+      lore:
+        - "&7Browse the shop categories below!"
+        - "&7"
+        - "&eLeft Click &7- Buy items"
+        - "&cRight Click &7- Sell items"
+    5:
+      type: DECORATION
+      material: BLACK_STAINED_GLASS_PANE
+      name: " "
+    6:
+      type: DECORATION
+      material: BLACK_STAINED_GLASS_PANE
+      name: " "
+    7:
+      type: DECORATION
+      material: BLACK_STAINED_GLASS_PANE
+      name: " "
+    8:
+      type: DECORATION
+      material: BLACK_STAINED_GLASS_PANE
+      name: " "
+    
+    # Row 2 - Categories
+    19:
+      type: CATEGORY
+      category: all
+    21:
+      type: CATEGORY
+      category: ores
+    23:
+      type: CATEGORY
+      category: farming
+    25:
+      type: CATEGORY
+      category: mob_drops
+    
+    # Row 3 - More categories
+    29:
+      type: CATEGORY
+      category: blocks
+    31:
+      type: CATEGORY
+      category: food
+    33:
+      type: CATEGORY
+      category: redstone
+    
+    # Row 4 - Additional categories
+    39:
+      type: CATEGORY
+      category: tools
+    41:
+      type: CATEGORY
+      category: armor
+    43:
+      type: CATEGORY
+      category: misc
+    
+    # Row 6 - Bottom decorative + close
+    45:
+      type: DECORATION
+      material: BLACK_STAINED_GLASS_PANE
+      name: " "
+    46:
+      type: DECORATION
+      material: BLACK_STAINED_GLASS_PANE
+      name: " "
+    47:
+      type: DECORATION
+      material: BLACK_STAINED_GLASS_PANE
+      name: " "
+    48:
+      type: DECORATION
+      material: BLACK_STAINED_GLASS_PANE
+      name: " "
+    49:
+      type: CLOSE
+      material: BARRIER
+      name: "&cClose"
+    50:
+      type: DECORATION
+      material: BLACK_STAINED_GLASS_PANE
+      name: " "
+    51:
+      type: DECORATION
+      material: BLACK_STAINED_GLASS_PANE
+      name: " "
+    52:
+      type: DECORATION
+      material: BLACK_STAINED_GLASS_PANE
+      name: " "
+    53:
+      type: DECORATION
+      material: BLACK_STAINED_GLASS_PANE
+      name: " "
+
+# ───────────────────────────────────────────────────────────────────────────────
+# DECORATION SETTINGS (applies to all pages)
+# ───────────────────────────────────────────────────────────────────────────────
+decoration:
+  fill-empty: false
+  empty-material: GRAY_STAINED_GLASS_PANE
+  border-material: BLACK_STAINED_GLASS_PANE
+  border-slots: []
+
+# ───────────────────────────────────────────────────────────────────────────────
+# SOUND EFFECTS
+# ───────────────────────────────────────────────────────────────────────────────
+sounds:
+  open-menu: UI_BUTTON_CLICK
+  open-category: UI_BUTTON_CLICK
+  buy: ENTITY_EXPERIENCE_ORB_PICKUP
+  sell: ENTITY_EXPERIENCE_ORB_PICKUP
+  error: ENTITY_VILLAGER_NO
+  page-change: UI_BUTTON_CLICK
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# CATEGORIES
+# ═══════════════════════════════════════════════════════════════════════════════
+# Each category appears as an icon in the main menu and has its own page of items.
+#
+# FILTER TYPES:
+# Categories automatically show items from items.yml based on the filter setting:
+#   - ALL: All market items
+#   - ORES: Ores, ingots, raw materials
+#   - FARMING: Crops, seeds, farming items
+#   - MOB_DROPS: Items dropped by mobs
+#   - BLOCKS: Block items
+#   - FOOD: Edible items and food
+#   - TOOLS: Pickaxes, swords, shovels, etc.
+#   - ARMOR: Helmets, chestplates, leggings, boots
+#   - REDSTONE: Redstone components and mechanisms
+#   - POTIONS: Potions and brewing ingredients
+#   - MISC: Items that don't fit other categories
+#
+# NOTE: All prices come from items.yml - this file only controls category layout!
+
+categories:
+  # ─────────────────────────────────────────────────────────────────────────────
+  # ALL ITEMS CATEGORY
+  # ─────────────────────────────────────────────────────────────────────────────
+  all:
+    name: "All Items"
+    icon: CHEST
+    icon-name: "&fAll Items"
+    icon-lore:
+      - "&7Browse all tradeable items"
+      - "&7"
+      - "&eClick to browse!"
+    page-title: "&8All Items"
+    page-size: 54
+    item-slots:
+      start: 0
+      end: 44
+    fill-empty: false
+    filter: ALL
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # BLOCKS CATEGORY
+  # ─────────────────────────────────────────────────────────────────────────────
+  blocks:
+    name: "Blocks"
+    icon: BRICKS
+    icon-name: "&6Blocks"
+    icon-lore:
+      - "&7Building materials and blocks"
+      - "&7"
+      - "&eClick to browse!"
+    page-title: "&8Blocks"
+    page-size: 54
+    item-slots:
+      start: 0
+      end: 44
+    fill-empty: false
+    filter: BLOCKS
+      
+  # ─────────────────────────────────────────────────────────────────────────────
+  # ORES CATEGORY
+  # ─────────────────────────────────────────────────────────────────────────────
+  ores:
+    name: "Ores & Minerals"
+    icon: DIAMOND
+    icon-name: "&bOres & Minerals"
+    icon-lore:
+      - "&7Valuable ores and minerals"
+      - "&7"
+      - "&eClick to browse!"
+    page-title: "&8Ores & Minerals"
+    page-size: 54
+    item-slots:
+      start: 0
+      end: 44
+    filter: ORES
+      
+  # ─────────────────────────────────────────────────────────────────────────────
+  # FARMING CATEGORY
+  # ─────────────────────────────────────────────────────────────────────────────
+  farming:
+    name: "Farming"
+    icon: WHEAT
+    icon-name: "&aFarming"
+    icon-lore:
+      - "&7Crops, seeds, and farming items"
+      - "&7"
+      - "&eClick to browse!"
+    page-title: "&8Farming"
+    page-size: 54
+    item-slots:
+      start: 0
+      end: 44
+    filter: FARMING
+      
+  # ─────────────────────────────────────────────────────────────────────────────
+  # MOB DROPS CATEGORY
+  # ─────────────────────────────────────────────────────────────────────────────
+  mob_drops:
+    name: "Mob Drops"
+    icon: ROTTEN_FLESH
+    icon-name: "&cMob Drops"
+    icon-lore:
+      - "&7Items dropped by mobs"
+      - "&7"
+      - "&eClick to browse!"
+    page-title: "&8Mob Drops"
+    page-size: 54
+    item-slots:
+      start: 0
+      end: 44
+    filter: MOB_DROPS
+      
+  # ─────────────────────────────────────────────────────────────────────────────
+  # REDSTONE CATEGORY
+  # ─────────────────────────────────────────────────────────────────────────────
+  redstone:
+    name: "Redstone"
+    icon: REDSTONE
+    icon-name: "&4Redstone"
+    icon-lore:
+      - "&7Redstone components and mechanisms"
+      - "&7"
+      - "&eClick to browse!"
+    page-title: "&8Redstone"
+    page-size: 54
+    item-slots:
+      start: 0
+      end: 44
+    filter: REDSTONE
+      
+  # ─────────────────────────────────────────────────────────────────────────────
+  # POTIONS CATEGORY
+  # ─────────────────────────────────────────────────────────────────────────────
+  potions:
+    name: "Potions & Brewing"
+    icon: BREWING_STAND
+    icon-name: "&dPotions & Brewing"
+    icon-lore:
+      - "&7Potions and brewing ingredients"
+      - "&7"
+      - "&eClick to browse!"
+    page-title: "&8Potions & Brewing"
+    page-size: 54
+    item-slots:
+      start: 0
+      end: 44
+    filter: POTIONS
+      
+  # ─────────────────────────────────────────────────────────────────────────────
+  # FOOD CATEGORY
+  # ─────────────────────────────────────────────────────────────────────────────
+  food:
+    name: "Food"
+    icon: COOKED_BEEF
+    icon-name: "&6Food"
+    icon-lore:
+      - "&7Cooked meats and food items"
+      - "&7"
+      - "&eClick to browse!"
+    page-title: "&8Food"
+    page-size: 54
+    item-slots:
+      start: 0
+      end: 44
+    filter: FOOD
+      
+  # ─────────────────────────────────────────────────────────────────────────────
+  # TOOLS CATEGORY
+  # ─────────────────────────────────────────────────────────────────────────────
+  tools:
+    name: "Tools"
+    icon: DIAMOND_PICKAXE
+    icon-name: "&bTools"
+    icon-lore:
+      - "&7Pickaxes, shovels, axes, and more"
+      - "&7"
+      - "&eClick to browse!"
+    page-title: "&8Tools"
+    page-size: 54
+    item-slots:
+      start: 0
+      end: 44
+    filter: TOOLS
+      
+  # ─────────────────────────────────────────────────────────────────────────────
+  # ARMOR CATEGORY
+  # ─────────────────────────────────────────────────────────────────────────────
+  armor:
+    name: "Armor"
+    icon: DIAMOND_CHESTPLATE
+    icon-name: "&9Armor"
+    icon-lore:
+      - "&7Protective gear and equipment"
+      - "&7"
+      - "&eClick to browse!"
+    page-title: "&8Armor"
+    page-size: 54
+    item-slots:
+      start: 0
+      end: 44
+    filter: ARMOR
+      
+  # ─────────────────────────────────────────────────────────────────────────────
+  # MISC CATEGORY
+  # ─────────────────────────────────────────────────────────────────────────────
+  misc:
+    name: "Miscellaneous"
+    icon: ENDER_CHEST
+    icon-name: "&5Miscellaneous"
+    icon-lore:
+      - "&7Various other items"
+      - "&7"
+      - "&eClick to browse!"
+    page-title: "&8Miscellaneous"
+    page-size: 54
+    item-slots:
+      start: 0
+      end: 44
+    filter: MISC

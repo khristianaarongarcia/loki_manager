@@ -1,0 +1,21 @@
+events:
+  # Example: targets a specific item
+  - name: "Zombie Plague"
+    affected_item: "ROTTEN_FLESH"
+    multiplier: 3.0
+    duration_minutes: 60
+    broadcast: true
+    start_message: "&6[The Endex] &bZombie Plague &7started. Rotten Flesh x3."
+    end_message: "&6[The Endex] &bZombie Plague &7ended."
+  # Example: targets a category (ORES, FARMING, MOB_DROPS, BLOCKS)
+  - name: "Iron Mine Collapse"
+    affected_category: "ORES"
+    multiplier: 2.0
+    duration_minutes: 30
+    broadcast: true
+  - name: "All-out Harvest"
+    affected_category: "FARMING"
+    multiplier: 0.8
+    duration_minutes: 20
+    broadcast: false
+

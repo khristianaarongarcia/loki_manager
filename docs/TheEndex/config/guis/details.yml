@@ -1,0 +1,73 @@
+# ═══════════════════════════════════════════════════════════════════════════════
+# The Endex - Item Details GUI Configuration
+# ═══════════════════════════════════════════════════════════════════════════════
+# This file controls the item details view (shown when shift-clicking an item).
+
+# GUI identifier
+id: details
+
+# Enable this GUI configuration
+enabled: true
+
+# ───────────────────────────────────────────────────────────────────────────────
+# BASIC SETTINGS
+# ───────────────────────────────────────────────────────────────────────────────
+title: "&5Endex: &b%item_name%"
+size: 27  # 3 rows
+
+# ───────────────────────────────────────────────────────────────────────────────
+# LAYOUT
+# ───────────────────────────────────────────────────────────────────────────────
+# Center slot for item display
+item-display-slot: 13
+
+# Action buttons
+buttons:
+  buy-1:
+    slot: 18
+    material: LIME_DYE
+    name: "&aBuy 1"
+  
+  buy-64:
+    slot: 20
+    material: EMERALD_BLOCK
+    name: "&aBuy 64"
+  
+  sell-1:
+    slot: 24
+    material: RED_DYE
+    name: "&cSell 1"
+  
+  sell-all:
+    slot: 26
+    material: BARREL
+    name: "&cSell All (%count%)"
+  
+  back:
+    slot: 22
+    material: ARROW
+    name: "&eBack"
+
+# ───────────────────────────────────────────────────────────────────────────────
+# COLORS
+# ───────────────────────────────────────────────────────────────────────────────
+colors:
+  item-name: "&b"
+  price-up: "&a"
+  price-down: "&c"
+  price-stable: "&e"
+
+# ───────────────────────────────────────────────────────────────────────────────
+# ITEM DISPLAY FORMAT
+# ───────────────────────────────────────────────────────────────────────────────
+item-lore:
+  - "&7Price: &a%price% &7(%arrow% %diff%, %pct%)"
+  - "&aBuy: %buy_price% &7| &eSell: %sell_price%"
+  - "&8Min %min%  Max %max%"
+  - "&8Chart: &7%chart%"
+  - "&7You have: &b%inventory_count%"
+  - "&7Balance: &6%balance%"
+
+# Show price chart (sparkline)
+show-chart: true
+chart-length: 12

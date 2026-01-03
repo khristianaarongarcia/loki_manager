@@ -1,0 +1,80 @@
+# ═══════════════════════════════════════════════════════════════════════════════
+# The Endex - Holdings GUI Configuration
+# ═══════════════════════════════════════════════════════════════════════════════
+# This file controls the virtual holdings view (player's purchased items).
+
+# GUI identifier
+id: holdings
+
+# Enable this GUI configuration
+enabled: true
+
+# ───────────────────────────────────────────────────────────────────────────────
+# BASIC SETTINGS
+# ───────────────────────────────────────────────────────────────────────────────
+title: "&5My Holdings"
+size: 54  # 6 rows
+
+# ───────────────────────────────────────────────────────────────────────────────
+# LAYOUT
+# ───────────────────────────────────────────────────────────────────────────────
+# Item display area
+item-slots:
+  start: 0
+  end: 44
+
+# Control bar (bottom row)
+controls:
+  stats:
+    slot: 45
+    material: PAPER
+    name: "&6Portfolio Stats"
+    lore:
+      - "&7Total Items: &e%total_items% / %max_items%"
+      - "&7Unique Materials: &e%unique_count%"
+      - "&7Total Value: &a%total_value%"
+      - "&7Total Cost: &f%total_cost%"
+      - "%pnl_color%P/L: %pnl%"
+  
+  withdraw-all:
+    slot: 49
+    material: EMERALD_BLOCK
+    name: "&aWithdraw All"
+    lore:
+      - "&7Withdraw all items from holdings"
+      - "&8(as much as fits in inventory)"
+  
+  back:
+    slot: 53
+    material: ARROW
+    name: "&eBack to Market"
+
+# ───────────────────────────────────────────────────────────────────────────────
+# COLORS
+# ───────────────────────────────────────────────────────────────────────────────
+colors:
+  item-name: "&b"
+  profit: "&a"
+  loss: "&c"
+  neutral: "&7"
+
+# ───────────────────────────────────────────────────────────────────────────────
+# ITEM DISPLAY FORMAT
+# ───────────────────────────────────────────────────────────────────────────────
+item-lore:
+  - "&6Quantity: &e%quantity%"
+  - "&7Avg Cost: &f%avg_cost%"
+  - "&7Current Price: &a%current_price%"
+  - "&7Value: &a%value% %pnl_color%(%pnl%)"
+  - ""
+  - "&7Inventory space: &a%capacity%"
+  - "&aLeft-click: &7Withdraw all"
+  - "&eRight-click: &7Withdraw 1 stack (%stack_size%)"
+
+# Empty holdings message
+empty:
+  material: BARRIER
+  name: "&7No items in holdings"
+  lore:
+    - "&8Buy items to add them here"
+    - "&8Use /market buy <item> <amount>"
