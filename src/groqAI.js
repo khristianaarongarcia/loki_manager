@@ -159,7 +159,8 @@ class GroqAI {
 
     /**
      * Use AI to determine if a message is a plugin-specific support question
-     * More accurate than pattern matching but uses API calls
+     * First checks if the question relates to anything in the plugin documentation,
+     * then uses AI for final classification
      */
     async isPluginQuestionAI(message, pluginKey) {
         const pluginConfig = config.plugins[pluginKey];
@@ -173,41 +174,92 @@ class GroqAI {
             return false;
         }
 
-        console.log(`🤖 [AI Check] Classifying: "${text.substring(0, 60)}${text.length > 60 ? '...' : ''}"`);
+        console.log(`🤖 [AI Check] Analyzing: "${text.substring(0, 60)}${text.length > 60 ? '...' : ''}"`);
 
         try {
-            const systemPrompt = `You are a classifier that determines if a Discord message is a genuine support question about a Minecraft plugin called "${pluginConfig.displayName}".
+            // Step 1: Search the knowledge base for relevant documentation
+            const relevantDocs = knowledgeBase.searchDocuments(pluginKey, text);
+            const hasRelevantDocs = relevantDocs.length > 0;
+            
+            console.log(`📚 [Docs Check] Found ${relevantDocs.length} relevant doc(s) for query`);
+            if (relevantDocs.length > 0) {
+                console.log(`   Matching files: ${relevantDocs.slice(0, 3).map(d => d.path).join(', ')}`);
+            }
 
-Your task: Respond with ONLY "yes" or "no" (lowercase, nothing else).
+            // Step 2: Extract keywords from docs to provide context to AI
+            let docContext = '';
+            if (hasRelevantDocs) {
+                // Get keywords and topics from relevant docs
+                const keywords = new Set();
+                const topics = [];
+                
+                relevantDocs.forEach(doc => {
+                    doc.keywords.forEach(k => keywords.add(k));
+                    // Extract first heading or filename as topic
+                    const topicMatch = doc.content.match(/^#\s+(.+)$/m);
+                    if (topicMatch) {
+                        topics.push(topicMatch[1]);
+                    } else {
+                        topics.push(doc.path);
+                    }
+                });
+                
+                docContext = `\n\nRelevant plugin documentation topics found:\n- ${topics.slice(0, 5).join('\n- ')}\nRelated keywords: ${Array.from(keywords).slice(0, 20).join(', ')}`;
+            }
 
-Answer "yes" if the message is:
-- A question about how to use, configure, or troubleshoot the plugin
-- A request for help with features, commands, permissions, or settings
-- Reporting a bug, error, or issue with the plugin
-- Asking about plugin compatibility, updates, or functionality
+            // Step 3: Get all available topics from the plugin docs for context
+            const allDocs = knowledgeBase.getPluginDocuments(pluginKey);
+            const allTopics = allDocs.slice(0, 15).map(d => {
+                const topicMatch = d.content.match(/^#\s+(.+)$/m);
+                return topicMatch ? topicMatch[1] : d.path.replace(/\.[^.]+$/, '');
+            });
 
-Answer "no" if the message is:
-- Casual chat, greetings, or social conversation (e.g., "hey", "thanks", "lol", "nice")
-- Off-topic discussion not related to plugin support
-- Simple acknowledgments or reactions
-- Questions about other topics unrelated to Minecraft plugins
-- Spam or meaningless text
-- Just expressing emotions or opinions without asking for help`;
+            // Step 4: Use AI to classify with documentation context
+            const systemPrompt = `You are a classifier for a Discord support bot for the Minecraft plugin "${pluginConfig.displayName}".
+
+Your task: Determine if a message is a genuine support question about this plugin. Respond with ONLY "yes" or "no" (lowercase, nothing else).
+
+The plugin documentation covers these topics:
+${allTopics.join(', ')}
+${docContext}
+
+Answer "yes" if:
+- The message asks about ANY topic covered in the plugin documentation
+- It's a question about how to use, configure, or troubleshoot the plugin
+- It asks about features, commands, permissions, GUIs, or settings
+- It reports a bug, error, or issue that could relate to the plugin
+- It asks about compatibility, updates, or plugin functionality
+- The question matches or relates to keywords/topics from the documentation
+
+Answer "no" if:
+- It's casual chat, greetings, or social conversation ("hey", "thanks", "lol")
+- It's completely off-topic and unrelated to ANY plugin documentation topic
+- It's a simple acknowledgment or reaction
+- It's spam or meaningless text
+- It's asking about something entirely different (other games, general chat)
+
+Be INCLUSIVE - if the question MIGHT be about the plugin or its features, answer "yes".`;
 
             const completion = await this.client.chat.completions.create({
-                model: 'llama-3.1-8b-instant', // Use faster model for classification
+                model: 'llama-3.1-8b-instant',
                 messages: [
                     { role: 'system', content: systemPrompt },
                     { role: 'user', content: `Message to classify: "${text}"` }
                 ],
                 max_tokens: 5,
-                temperature: 0.1 // Low temperature for consistent classification
+                temperature: 0.1
             });
 
             const response = completion.choices[0]?.message?.content?.trim().toLowerCase();
             const isQuestion = response === 'yes';
             
             console.log(`🤖 [AI Check] Result: ${response} → ${isQuestion ? '✅ Is a plugin question' : '❌ Not a plugin question'}`);
+            
+            // Additional boost: If we found highly relevant docs, lean towards yes
+            if (!isQuestion && hasRelevantDocs && relevantDocs.length >= 2) {
+                console.log(`🤖 [AI Check] Override: Found ${relevantDocs.length} relevant docs, treating as plugin question`);
+                return true;
+            }
             
             return isQuestion;
         } catch (error) {
