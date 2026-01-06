@@ -306,6 +306,43 @@ _Consider adding documentation to cover this topic._`;
 }
 
 /**
+ * Notify in the developer channel about a user question
+ */
+async function notifyDevChannel(question, pluginName, user, channel, response, messageLink) {
+    try {
+        const devChannel = await client.channels.fetch(config.owner.developerChannel);
+        if (!devChannel) {
+            console.error('❌ Could not fetch developer channel for notification');
+            return;
+        }
+
+        const { EmbedBuilder } = require('discord.js');
+        
+        const embed = new EmbedBuilder()
+            .setColor(0x5865F2)
+            .setTitle('📩 New Support Question')
+            .setDescription(`A user asked a question and I provided an answer.`)
+            .addFields(
+                { name: '👤 User', value: `${user.tag} (<@${user.id}>)`, inline: true },
+                { name: '📦 Plugin', value: pluginName, inline: true },
+                { name: '📍 Channel', value: `<#${channel.id}>`, inline: true },
+                { name: '❓ Question', value: question.substring(0, 1000) + (question.length > 1000 ? '...' : '') },
+                { name: '🤖 My Answer', value: response.substring(0, 1000) + (response.length > 1000 ? '...' : '') }
+            )
+            .setTimestamp();
+        
+        if (messageLink) {
+            embed.addFields({ name: '🔗 Jump to Message', value: messageLink });
+        }
+
+        await devChannel.send({ embeds: [embed] });
+        console.log(`📢 Notified dev channel about question from ${user.tag}`);
+    } catch (error) {
+        console.error('❌ Could not send to developer channel:', error.message);
+    }
+}
+
+/**
  * Send DM warning to owner about missed active checks
  */
 async function notifyOwnerMissedChecks() {
@@ -436,9 +473,13 @@ function formatResponse(result) {
         response = `**${result.plugin} Support** 📚\n\n${response}`;
     }
 
+    // Always add the developer notification message at the end
+    const devNotice = `\n\n_If you're not satisfied with my answer, I've already notified the developer about your question._`;
+    response += devNotice;
+
     // Ensure response doesn't exceed Discord limit
     if (response.length > 1900) {
-        response = response.substring(0, 1900) + '\n\n*...response truncated*';
+        response = response.substring(0, 1850) + '\n\n*...response truncated*' + devNotice;
     }
 
     return response;
@@ -481,6 +522,13 @@ async function handleMessage(message) {
     const isQuestion = await groqAI.isQuestion(message.content);
     
     if (!isQuestion) {
+        return;
+    }
+
+    // Use AI to determine if this is actually a plugin-specific support question
+    // This prevents responding to casual chat in support channels
+    const isPluginQuestion = await groqAI.isPluginQuestionAI(message.content, pluginKey);
+    if (!isPluginQuestion) {
         return;
     }
 
@@ -563,9 +611,20 @@ async function handleMessage(message) {
             sentMessage = await message.reply(response);
         }
 
-        // Notify owner if question was unanswerable
+        // Always notify in developer channel about the question
+        const pluginConfig = config.plugins[pluginKey];
+        const messageLink = `https://discord.com/channels/${message.guild.id}/${message.channel.id}/${sentMessage.id}`;
+        await notifyDevChannel(
+            combinedQuestion,
+            pluginConfig.displayName,
+            message.author,
+            message.channel,
+            result.message,
+            messageLink
+        );
+
+        // Also DM owner if question was unanswerable
         if (result.unanswerable) {
-            const pluginConfig = config.plugins[pluginKey];
             await notifyOwnerUnanswerable(
                 combinedQuestion,
                 pluginConfig.displayName,

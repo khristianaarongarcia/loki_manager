@@ -67,6 +67,135 @@ class GroqAI {
     }
 
     /**
+     * Check if a message is actually a plugin-specific support question
+     * This is more strict than isQuestion() to avoid responding to casual chat
+     */
+    isPluginSpecificQuestion(message, pluginKey) {
+        const text = message.trim().toLowerCase();
+        const pluginConfig = config.plugins[pluginKey];
+        
+        if (!pluginConfig) return false;
+        
+        // Plugin-specific terms that indicate a real support question
+        const pluginTerms = pluginConfig.keywords || [];
+        
+        // General support/technical terms
+        const technicalTerms = [
+            // Configuration & Setup
+            'config', 'configuration', 'configure', 'setup', 'install', 'setting', 'settings',
+            'enable', 'disable', 'permission', 'permissions', 'perm', 'perms',
+            
+            // Commands & Usage
+            'command', 'commands', 'cmd', '//', 'placeholder', 'placeholders',
+            'argument', 'arguments', 'syntax', 'usage', 'use',
+            
+            // Problems & Errors
+            'error', 'bug', 'issue', 'problem', 'broken', 'crash', 'exception',
+            'not working', 'doesn\'t work', 'won\'t work', 'failed', 'failing',
+            'can\'t', 'cannot', 'unable', 'stuck',
+            
+            // Technical terms
+            'plugin', 'server', 'spigot', 'paper', 'bukkit', 'minecraft',
+            'yml', 'yaml', 'file', 'folder', 'directory', 'path',
+            'reload', 'restart', 'update', 'version', 'api',
+            'database', 'mysql', 'sqlite', 'storage', 'data',
+            'gui', 'menu', 'inventory', 'item', 'items',
+            'player', 'players', 'world', 'worlds',
+            'event', 'events', 'hook', 'hooks', 'integration',
+            
+            // Questions
+            'how do i', 'how can i', 'how to', 'what is', 'what are',
+            'where is', 'where can', 'why is', 'why does', 'why won\'t',
+            'can i', 'is it possible', 'does it', 'will it',
+            'help me', 'need help', 'please help', 'anyone know'
+        ];
+        
+        // Check for plugin-specific keywords
+        const hasPluginKeyword = pluginTerms.some(term => text.includes(term.toLowerCase()));
+        
+        // Check for technical/support terms
+        const hasTechnicalTerm = technicalTerms.some(term => text.includes(term));
+        
+        // Check for question patterns with technical context
+        const hasQuestionMark = text.includes('?');
+        const startsWithQuestion = /^(how|what|why|when|where|can|does|is|are|will|should|could|would|do|anyone|has anyone)/i.test(text);
+        
+        // Must have either:
+        // 1. Plugin keyword + question indicator
+        // 2. Technical term + question indicator
+        // 3. Plugin keyword + technical term
+        if (hasPluginKeyword && (hasQuestionMark || startsWithQuestion || hasTechnicalTerm)) {
+            return true;
+        }
+        
+        if (hasTechnicalTerm && (hasQuestionMark || startsWithQuestion)) {
+            return true;
+        }
+        
+        if (hasPluginKeyword && hasTechnicalTerm) {
+            return true;
+        }
+        
+        // Explicit help requests
+        if (/\b(help|support|assist|question)\b/i.test(text) && (hasPluginKeyword || hasTechnicalTerm)) {
+            return true;
+        }
+        
+        return false;
+    }
+
+    /**
+     * Use AI to determine if a message is a plugin-specific support question
+     * More accurate than pattern matching but uses API calls
+     */
+    async isPluginQuestionAI(message, pluginKey) {
+        const pluginConfig = config.plugins[pluginKey];
+        if (!pluginConfig) return false;
+
+        const text = message.trim();
+        
+        // Skip very short messages
+        if (text.length < 10) return false;
+
+        try {
+            const systemPrompt = `You are a classifier that determines if a Discord message is a genuine support question about a Minecraft plugin called "${pluginConfig.displayName}".
+
+Your task: Respond with ONLY "yes" or "no" (lowercase, nothing else).
+
+Answer "yes" if the message is:
+- A question about how to use, configure, or troubleshoot the plugin
+- A request for help with features, commands, permissions, or settings
+- Reporting a bug, error, or issue with the plugin
+- Asking about plugin compatibility, updates, or functionality
+
+Answer "no" if the message is:
+- Casual chat, greetings, or social conversation (e.g., "hey", "thanks", "lol", "nice")
+- Off-topic discussion not related to plugin support
+- Simple acknowledgments or reactions
+- Questions about other topics unrelated to Minecraft plugins
+- Spam or meaningless text
+- Just expressing emotions or opinions without asking for help`;
+
+            const completion = await this.client.chat.completions.create({
+                model: 'llama-3.1-8b-instant', // Use faster model for classification
+                messages: [
+                    { role: 'system', content: systemPrompt },
+                    { role: 'user', content: `Message to classify: "${text}"` }
+                ],
+                max_tokens: 5,
+                temperature: 0.1 // Low temperature for consistent classification
+            });
+
+            const response = completion.choices[0]?.message?.content?.trim().toLowerCase();
+            return response === 'yes';
+        } catch (error) {
+            console.error('❌ AI classification error:', error.message);
+            // Fall back to pattern matching if AI fails
+            return this.isPluginSpecificQuestion(message, pluginKey);
+        }
+    }
+
+    /**
      * Detect which plugin the question is about
      */
     detectPlugin(message, channelId) {
