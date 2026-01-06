@@ -284,10 +284,22 @@ class Updater {
         }
         
         try {
-            const output = await this.execGit('pull origin main');
+            // First, stash any local changes to avoid merge conflicts
+            console.log('📦 Stashing local changes...');
+            try {
+                await this.execGit('stash');
+            } catch (e) {
+                // Stash might fail if no changes, that's OK
+            }
+            
+            // Reset to match remote (discard local changes)
+            console.log('🔄 Resetting to remote state...');
+            await this.execGit('fetch origin');
+            await this.execGit('reset --hard origin/main');
+            
             console.log('✅ Updates pulled successfully');
             this.updateAvailable = false;
-            return { success: true, message: output };
+            return { success: true, message: 'Successfully updated to latest version' };
         } catch (error) {
             console.error('❌ Failed to pull updates:', error.message);
             return { success: false, message: error.message };

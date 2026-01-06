@@ -626,10 +626,16 @@ async function handleMessage(message) {
         return;
     }
 
+    console.log(`\n📩 [Message] From: ${message.author.tag} in #${message.channel.name || channelId}`);
+    console.log(`   Content: "${message.content.substring(0, 80)}${message.content.length > 80 ? '...' : ''}"`);
+    console.log(`   Plugin Channel: ${pluginKey}`);
+
     // Check if the message looks like a question
     const isQuestion = await groqAI.isQuestion(message.content);
+    console.log(`📋 [Basic Check] Is question pattern: ${isQuestion ? '✅ Yes' : '❌ No'}`);
     
     if (!isQuestion) {
+        console.log(`   ⏭️ Skipping - not a question pattern\n`);
         return;
     }
 
@@ -637,8 +643,11 @@ async function handleMessage(message) {
     // This prevents responding to casual chat in support channels
     const isPluginQuestion = await groqAI.isPluginQuestionAI(message.content, pluginKey);
     if (!isPluginQuestion) {
+        console.log(`   ⏭️ Skipping - AI says not a plugin support question\n`);
         return;
     }
+
+    console.log(`✅ [Decision] Will respond to this message\n`);
 
     // Check cooldown
     if (isOnCooldown(message.author.id)) {

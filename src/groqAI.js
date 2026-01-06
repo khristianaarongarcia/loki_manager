@@ -115,32 +115,45 @@ class GroqAI {
         
         // Check for technical/support terms
         const hasTechnicalTerm = technicalTerms.some(term => text.includes(term));
+        const matchedTechnicalTerms = technicalTerms.filter(term => text.includes(term));
         
         // Check for question patterns with technical context
         const hasQuestionMark = text.includes('?');
         const startsWithQuestion = /^(how|what|why|when|where|can|does|is|are|will|should|could|would|do|anyone|has anyone)/i.test(text);
+        
+        // Logging for debugging
+        console.log(`🔍 [Pattern Check] Message: "${text.substring(0, 50)}${text.length > 50 ? '...' : ''}"`);
+        console.log(`   Plugin: ${pluginKey}, Plugin Keywords: [${pluginTerms.join(', ')}]`);
+        console.log(`   Has Plugin Keyword: ${hasPluginKeyword}`);
+        console.log(`   Has Technical Term: ${hasTechnicalTerm} (${matchedTechnicalTerms.join(', ') || 'none'})`);
+        console.log(`   Has Question Mark: ${hasQuestionMark}, Starts With Question: ${startsWithQuestion}`);
         
         // Must have either:
         // 1. Plugin keyword + question indicator
         // 2. Technical term + question indicator
         // 3. Plugin keyword + technical term
         if (hasPluginKeyword && (hasQuestionMark || startsWithQuestion || hasTechnicalTerm)) {
+            console.log(`   ✅ Pattern Match: Plugin keyword + question/technical term`);
             return true;
         }
         
         if (hasTechnicalTerm && (hasQuestionMark || startsWithQuestion)) {
+            console.log(`   ✅ Pattern Match: Technical term + question indicator`);
             return true;
         }
         
         if (hasPluginKeyword && hasTechnicalTerm) {
+            console.log(`   ✅ Pattern Match: Plugin keyword + technical term`);
             return true;
         }
         
         // Explicit help requests
         if (/\b(help|support|assist|question)\b/i.test(text) && (hasPluginKeyword || hasTechnicalTerm)) {
+            console.log(`   ✅ Pattern Match: Help request + plugin/technical term`);
             return true;
         }
         
+        console.log(`   ❌ Pattern Match: No match found`);
         return false;
     }
 
@@ -155,7 +168,12 @@ class GroqAI {
         const text = message.trim();
         
         // Skip very short messages
-        if (text.length < 10) return false;
+        if (text.length < 10) {
+            console.log(`🤖 [AI Check] Skipped - message too short (${text.length} chars)`);
+            return false;
+        }
+
+        console.log(`🤖 [AI Check] Classifying: "${text.substring(0, 60)}${text.length > 60 ? '...' : ''}"`);
 
         try {
             const systemPrompt = `You are a classifier that determines if a Discord message is a genuine support question about a Minecraft plugin called "${pluginConfig.displayName}".
@@ -187,9 +205,14 @@ Answer "no" if the message is:
             });
 
             const response = completion.choices[0]?.message?.content?.trim().toLowerCase();
-            return response === 'yes';
+            const isQuestion = response === 'yes';
+            
+            console.log(`🤖 [AI Check] Result: ${response} → ${isQuestion ? '✅ Is a plugin question' : '❌ Not a plugin question'}`);
+            
+            return isQuestion;
         } catch (error) {
             console.error('❌ AI classification error:', error.message);
+            console.log('🤖 [AI Check] Falling back to pattern matching...');
             // Fall back to pattern matching if AI fails
             return this.isPluginSpecificQuestion(message, pluginKey);
         }
