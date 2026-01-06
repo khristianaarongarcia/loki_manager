@@ -217,28 +217,27 @@ class GroqAI {
             // Step 4: Use AI to classify with documentation context
             const systemPrompt = `You are a classifier for a Discord support bot for the Minecraft plugin "${pluginConfig.displayName}".
 
-Your task: Determine if a message is a genuine support question about this plugin. Respond with ONLY "yes" or "no" (lowercase, nothing else).
+Your task: Determine if a message is a genuine TECHNICAL support question about this plugin. Respond with ONLY "yes" or "no" (lowercase, nothing else).
 
 The plugin documentation covers these topics:
 ${allTopics.join(', ')}
 ${docContext}
 
-Answer "yes" if:
-- The message asks about ANY topic covered in the plugin documentation
-- It's a question about how to use, configure, or troubleshoot the plugin
-- It asks about features, commands, permissions, GUIs, or settings
-- It reports a bug, error, or issue that could relate to the plugin
-- It asks about compatibility, updates, or plugin functionality
-- The question matches or relates to keywords/topics from the documentation
+Answer "yes" ONLY if:
+- The message asks a SPECIFIC question about plugin features, configuration, commands, or functionality
+- It's asking HOW to do something with the plugin
+- It reports a specific bug, error, or technical issue
+- It asks about specific settings, permissions, or options
+- The question contains technical terms related to the plugin
 
 Answer "no" if:
-- It's casual chat, greetings, or social conversation ("hey", "thanks", "lol")
-- It's completely off-topic and unrelated to ANY plugin documentation topic
-- It's a simple acknowledgment or reaction
-- It's spam or meaningless text
-- It's asking about something entirely different (other games, general chat)
+- It's casual chat, greetings, small talk ("hey", "hi", "how are you", "thanks", "what's up")
+- It's a general question not specifically about plugin functionality ("how are things?", "is this working?")
+- It's vague without any technical context
+- It's just testing or joking ("is this a plugin question?")
+- It doesn't ask about a SPECIFIC feature, setting, command, or problem
 
-Be INCLUSIVE - if the question MIGHT be about the plugin or its features, answer "yes".`;
+Important: Casual conversation should ALWAYS be "no" even if some words match documentation.`;
 
             const completion = await this.client.chat.completions.create({
                 model: 'llama-3.1-8b-instant',
@@ -255,12 +254,7 @@ Be INCLUSIVE - if the question MIGHT be about the plugin or its features, answer
             
             console.log(`🤖 [AI Check] Result: ${response} → ${isQuestion ? '✅ Is a plugin question' : '❌ Not a plugin question'}`);
             
-            // Additional boost: If we found highly relevant docs, lean towards yes
-            if (!isQuestion && hasRelevantDocs && relevantDocs.length >= 2) {
-                console.log(`🤖 [AI Check] Override: Found ${relevantDocs.length} relevant docs, treating as plugin question`);
-                return true;
-            }
-            
+            // Trust the AI's decision - no more override
             return isQuestion;
         } catch (error) {
             console.error('❌ AI classification error:', error.message);
