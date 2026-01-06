@@ -21,3 +21,12 @@ Thumbs.db
 # Build
 dist/
 build/
+
+# Archives
+*.zip
+*.tar.gz
+*.rar
+
+# Database files
+*.db
+*.sqlite
