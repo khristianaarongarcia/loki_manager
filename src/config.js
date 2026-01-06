@@ -45,6 +45,22 @@ module.exports = {
         activeCheckTimeout: 5 * 60 * 1000  // 5 minutes to click "I'm Active" button
     },
 
+    // Git/Update settings
+    git: {
+        // GitHub repository URL
+        repoUrl: 'https://github.com/khristianaarongarcia/loki_manager.git',
+        
+        // Path to the git repository (set to null to auto-detect from script location)
+        // For VPS/server deployment, set the full path: '/home/user/discord_bot'
+        repoPath: process.env.GIT_REPO_PATH || null,
+        
+        // How often to check for updates (in minutes)
+        checkInterval: 30,
+        
+        // Whether to notify owner when updates are available
+        notifyOnUpdate: true
+    },
+
     // Bot settings
     bot: {
         // How many recent messages to consider for context (multi-message questions)

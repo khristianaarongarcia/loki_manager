@@ -5,12 +5,13 @@
 
 require('dotenv').config();
 
-const { Client, GatewayIntentBits, Partials, Events, ChannelType, ActionRowBuilder, ButtonBuilder, ButtonStyle, PermissionFlagsBits } = require('discord.js');
+const { Client, GatewayIntentBits, Partials, Events, ChannelType, ActionRowBuilder, ButtonBuilder, ButtonStyle, PermissionFlagsBits, EmbedBuilder } = require('discord.js');
 const config = require('./config');
 const knowledgeBase = require('./knowledgeBase');
 const groqAI = require('./groqAI');
 const moderation = require('./moderation');
 const moderationDB = require('./moderationDB');
+const updater = require('./updater');
 
 // Create Discord client with necessary intents
 const client = new Client({
@@ -255,11 +256,91 @@ async function handleModerationCommand(message) {
                     { name: '`!warnings @user`', value: 'View user warnings', inline: false },
                     { name: '`!clearwarnings @user`', value: 'Clear all warnings for a user', inline: false },
                     { name: '`!removewarning <id>`', value: 'Remove a specific warning', inline: false },
-                    { name: '`!history @user`', value: 'View moderation history', inline: false }
+                    { name: '`!history @user`', value: 'View moderation history', inline: false },
+                    { name: '`!version`', value: 'Show current bot version', inline: false },
+                    { name: '`!checkupdate`', value: 'Check for available updates', inline: false },
+                    { name: '`!update`', value: 'Pull and apply updates (owner only)', inline: false }
                 )
                 .setFooter({ text: 'Auto-mod: 3 warnings = kick, 5 warnings = ban' });
             
             await message.reply({ embeds: [embed] });
+            return true;
+        }
+
+        case 'version': {
+            const currentVersion = await updater.getCurrentVersion();
+            const embed = new EmbedBuilder()
+                .setColor(0x5865F2)
+                .setTitle('📦 Bot Version')
+                .addFields(
+                    { name: 'Commit', value: `\`${currentVersion.hash}\``, inline: true },
+                    { name: 'Message', value: currentVersion.message, inline: true },
+                    { name: 'When', value: currentVersion.date, inline: true }
+                )
+                .setTimestamp();
+            
+            await message.reply({ embeds: [embed] });
+            return true;
+        }
+
+        case 'checkupdate': {
+            const statusMsg = await message.reply('🔍 Checking for updates...');
+            
+            const updateInfo = await updater.checkForUpdates();
+            
+            if (updateInfo.available) {
+                const embed = new EmbedBuilder()
+                    .setColor(0x00FF00)
+                    .setTitle('🔄 Update Available!')
+                    .setDescription(`There ${updateInfo.commits === 1 ? 'is' : 'are'} **${updateInfo.commits}** new commit(s) available.`)
+                    .addFields(
+                        { name: '📝 Latest Commit', value: updateInfo.latestMessage || 'Unknown', inline: false },
+                        { name: '👤 Author', value: updateInfo.latestAuthor || 'Unknown', inline: true },
+                        { name: '🕐 When', value: updateInfo.latestDate || 'Unknown', inline: true }
+                    )
+                    .setFooter({ text: 'Use !update to apply updates (owner only)' });
+                
+                await statusMsg.edit({ content: null, embeds: [embed] });
+            } else {
+                await statusMsg.edit('✅ Bot is up to date! No new updates available.');
+            }
+            return true;
+        }
+
+        case 'update': {
+            // Only owner can update
+            if (message.author.id !== config.owner.userId) {
+                await message.reply('❌ Only the bot owner can apply updates.');
+                return true;
+            }
+            
+            const statusMsg = await message.reply('🔍 Checking for updates...');
+            
+            const updateInfo = await updater.checkForUpdates();
+            
+            if (!updateInfo.available) {
+                await statusMsg.edit('✅ Bot is already up to date!');
+                return true;
+            }
+            
+            await statusMsg.edit(`📥 Pulling ${updateInfo.commits} update(s)...`);
+            
+            const result = await updater.pullUpdates();
+            
+            if (result.success) {
+                const embed = new EmbedBuilder()
+                    .setColor(0x00FF00)
+                    .setTitle('✅ Updates Applied!')
+                    .setDescription('The bot has been updated successfully.')
+                    .addFields(
+                        { name: '📝 Changes', value: result.message.substring(0, 500) || 'Updated' }
+                    )
+                    .setFooter({ text: '⚠️ Restart the bot to apply code changes' });
+                
+                await statusMsg.edit({ content: null, embeds: [embed] });
+            } else {
+                await statusMsg.edit(`❌ Failed to pull updates: ${result.message}`);
+            }
             return true;
         }
         
@@ -339,6 +420,33 @@ async function notifyDevChannel(question, pluginName, user, channel, response, m
         console.log(`📢 Notified dev channel about question from ${user.tag}`);
     } catch (error) {
         console.error('❌ Could not send to developer channel:', error.message);
+    }
+}
+
+/**
+ * Notify owner about available GitHub updates
+ */
+async function notifyOwnerUpdate(updateInfo) {
+    try {
+        const owner = await client.users.fetch(config.owner.userId);
+        if (!owner) return;
+
+        const embed = new EmbedBuilder()
+            .setColor(0x00FF00)
+            .setTitle('🔄 Bot Update Available!')
+            .setDescription(`There ${updateInfo.commits === 1 ? 'is' : 'are'} **${updateInfo.commits}** new commit(s) available.`)
+            .addFields(
+                { name: '📝 Latest Commit', value: updateInfo.latestMessage || 'Unknown', inline: false },
+                { name: '👤 Author', value: updateInfo.latestAuthor || 'Unknown', inline: true },
+                { name: '🕐 When', value: updateInfo.latestDate || 'Unknown', inline: true }
+            )
+            .setFooter({ text: 'Use !update in Discord or restart the bot to apply updates' })
+            .setTimestamp();
+
+        await owner.send({ embeds: [embed] });
+        console.log('📬 Notified owner about available update');
+    } catch (error) {
+        console.error('❌ Could not notify owner about update:', error.message);
     }
 }
 
@@ -710,6 +818,19 @@ client.once(Events.ClientReady, async (c) => {
         setInterval(() => {
             moderation.checkExpiredBans();
         }, config.moderation?.banCheckInterval || 60000);
+        
+        // Initialize GitHub updater (will auto-init git repo if needed)
+        await updater.initialize(async (updateInfo) => {
+            // Notify owner about available updates
+            await notifyOwnerUpdate(updateInfo);
+        });
+        
+        // Check for updates every 30 minutes
+        updater.startAutoCheck(config.git?.checkInterval || 30);
+        
+        // Log current version
+        const currentVersion = await updater.getCurrentVersion();
+        console.log(`📦 Current version: ${currentVersion.hash} - ${currentVersion.message}`);
         
         console.log('✅ Bot is ready to answer questions!\n');
         console.log('📢 Monitoring channels:');
