@@ -49,6 +49,9 @@ class Updater {
         } else {
             this.enabled = true;
             console.log(`🔄 GitHub updater initialized (repo: ${this.repoPath})`);
+            
+            // Ensure tracking is properly configured
+            await this.ensureTracking();
         }
     }
 
@@ -96,6 +99,60 @@ class Updater {
             return true;
         } catch (error) {
             console.error('❌ Failed to initialize git repo:', error.message);
+            return false;
+        }
+    }
+
+    /**
+     * Ensure tracking is set up correctly for the current branch
+     */
+    async ensureTracking() {
+        try {
+            // Get current branch name
+            const currentBranch = await this.execGit('rev-parse --abbrev-ref HEAD');
+            
+            // Check if tracking is set up
+            try {
+                await this.execGit('rev-parse --abbrev-ref --symbolic-full-name @{u}');
+                // Tracking is set up
+            } catch (e) {
+                // No tracking - set it up
+                console.log(`🔧 Setting up tracking for branch: ${currentBranch}`);
+                
+                // If local branch is 'master' but remote is 'main', switch to main
+                if (currentBranch === 'master') {
+                    try {
+                        // Check if origin/main exists
+                        await this.execGit('rev-parse origin/main');
+                        
+                        // Rename local branch from master to main
+                        console.log('🔄 Renaming branch from master to main...');
+                        await this.execCommand('git branch -m master main');
+                        await this.execCommand('git branch --set-upstream-to=origin/main main');
+                        console.log('✅ Branch tracking configured (main -> origin/main)');
+                    } catch (err) {
+                        // origin/main doesn't exist, try origin/master
+                        try {
+                            await this.execCommand(`git branch --set-upstream-to=origin/master ${currentBranch}`);
+                            console.log('✅ Branch tracking configured (master -> origin/master)');
+                        } catch (e2) {
+                            console.log('⚠️ Could not set up tracking automatically');
+                        }
+                    }
+                } else {
+                    // Try to set tracking to origin/<currentBranch>
+                    try {
+                        await this.execCommand(`git branch --set-upstream-to=origin/${currentBranch} ${currentBranch}`);
+                        console.log(`✅ Branch tracking configured (${currentBranch} -> origin/${currentBranch})`);
+                    } catch (e2) {
+                        console.log('⚠️ Could not set up tracking automatically');
+                    }
+                }
+            }
+            
+            return true;
+        } catch (error) {
+            console.error('⚠️ Error ensuring tracking:', error.message);
             return false;
         }
     }
